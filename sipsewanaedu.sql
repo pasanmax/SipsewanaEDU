@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Jul 06, 2021 at 01:59 PM
+-- Generation Time: Jul 08, 2021 at 04:36 AM
 -- Server version: 5.7.31
 -- PHP Version: 7.3.21
 
@@ -156,13 +156,31 @@ CREATE TABLE IF NOT EXISTS `homework` (
 DROP TABLE IF EXISTS `hw_creation`;
 CREATE TABLE IF NOT EXISTS `hw_creation` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `sub_hw_id` int(11) NOT NULL,
-  `sub_lec_id` int(11) NOT NULL,
+  `cre_hw_id` int(11) NOT NULL,
+  `cre_lec_id` int(11) NOT NULL,
   `createddate` date NOT NULL,
   `deadlinedate` date NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `fk_hwc_hw` (`sub_hw_id`),
-  KEY `fk_hwc_lec` (`sub_lec_id`)
+  KEY `fk_cre_hw` (`cre_hw_id`),
+  KEY `fk_cre_lec` (`cre_lec_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `hw_submission`
+--
+
+DROP TABLE IF EXISTS `hw_submission`;
+CREATE TABLE IF NOT EXISTS `hw_submission` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `sub_hw_id` int(11) NOT NULL,
+  `sub_st_id` int(11) NOT NULL,
+  `submitdate` date NOT NULL,
+  `submitfile` text NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_sub_hw` (`sub_hw_id`),
+  KEY `fk_sub_st` (`sub_st_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -445,8 +463,15 @@ ALTER TABLE `homework`
 -- Constraints for table `hw_creation`
 --
 ALTER TABLE `hw_creation`
-  ADD CONSTRAINT `fk_hwc_hw` FOREIGN KEY (`sub_hw_id`) REFERENCES `homework` (`hw_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_hwc_lec` FOREIGN KEY (`sub_lec_id`) REFERENCES `lecturer` (`lecturer_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_cre_hw` FOREIGN KEY (`cre_hw_id`) REFERENCES `homework` (`hw_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_cre_lec` FOREIGN KEY (`cre_lec_id`) REFERENCES `lecturer` (`lecturer_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `hw_submission`
+--
+ALTER TABLE `hw_submission`
+  ADD CONSTRAINT `fk_sub_hw` FOREIGN KEY (`sub_hw_id`) REFERENCES `homework` (`hw_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_sub_st` FOREIGN KEY (`sub_st_id`) REFERENCES `student` (`student_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `learning_module`
