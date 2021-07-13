@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Jul 08, 2021 at 04:36 AM
+-- Generation Time: Jul 13, 2021 at 09:13 PM
 -- Server version: 5.7.31
 -- PHP Version: 7.3.21
 
@@ -47,8 +47,8 @@ CREATE TABLE IF NOT EXISTS `cashier` (
   `cashier_id` int(11) NOT NULL AUTO_INCREMENT,
   `fname` char(20) NOT NULL,
   `lname` char(30) NOT NULL,
-  `usrname` varchar(30) NOT NULL,
-  `passwordhash` char(128) NOT NULL,
+  `usrname` varchar(30) DEFAULT NULL,
+  `passwordhash` char(128) DEFAULT NULL,
   `dob` date NOT NULL,
   `adrsl1` varchar(30) NOT NULL,
   `adrsl2` varchar(40) NOT NULL,
@@ -58,7 +58,7 @@ CREATE TABLE IF NOT EXISTS `cashier` (
   `zipcode` int(11) NOT NULL,
   `email` char(255) NOT NULL,
   `contactno` char(10) NOT NULL,
-  `frt_cas_id` int(11) NOT NULL,
+  `frt_cas_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`cashier_id`),
   KEY `fk_cas_fo` (`frt_cas_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -94,12 +94,12 @@ CREATE TABLE IF NOT EXISTS `director` (
   `dir_id` int(11) NOT NULL AUTO_INCREMENT,
   `fname` char(20) NOT NULL,
   `lname` char(30) NOT NULL,
-  `usrname` varchar(30) NOT NULL,
-  `passwordhash` char(128) NOT NULL,
+  `usrname` varchar(30) DEFAULT NULL,
+  `passwordhash` char(128) DEFAULT NULL,
   `dob` date NOT NULL,
   `email` char(255) NOT NULL,
   `contactno` char(10) NOT NULL,
-  `frt_dir_id` int(11) NOT NULL,
+  `frt_dir_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`dir_id`),
   KEY `fk_dir_fo` (`frt_dir_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -215,8 +215,8 @@ CREATE TABLE IF NOT EXISTS `lecturer` (
   `lecturer_id` int(11) NOT NULL AUTO_INCREMENT,
   `fname` char(20) NOT NULL,
   `lname` char(30) NOT NULL,
-  `usrname` varchar(30) NOT NULL,
-  `passwordhash` char(128) NOT NULL,
+  `usrname` varchar(30) DEFAULT NULL,
+  `passwordhash` char(128) DEFAULT NULL,
   `dob` date NOT NULL,
   `email` char(255) NOT NULL,
   `contactno` char(10) NOT NULL,
@@ -230,8 +230,9 @@ CREATE TABLE IF NOT EXISTS `lecturer` (
   `accountno` char(20) NOT NULL,
   `bankname` char(30) NOT NULL,
   `branchcode` int(11) NOT NULL,
+  `branchname` char(50) NOT NULL,
   `accountname` char(50) NOT NULL,
-  `frt_lec_id` int(11) NOT NULL,
+  `frt_lec_id` int(11) DEFAULT NULL,
   `submissiondate` date NOT NULL,
   PRIMARY KEY (`lecturer_id`),
   KEY `fk_lec_fo` (`frt_lec_id`)
@@ -249,6 +250,7 @@ CREATE TABLE IF NOT EXISTS `lecturer_reg` (
   `lec_reg_id` int(11) NOT NULL,
   `lec_sub_id` int(11) NOT NULL,
   `registrationdate` date NOT NULL,
+  `regfee` double NOT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_lecreg_lec` (`lec_reg_id`),
   KEY `fk_lecreg_sub` (`lec_sub_id`)
@@ -349,8 +351,8 @@ CREATE TABLE IF NOT EXISTS `student` (
   `student_id` int(11) NOT NULL AUTO_INCREMENT,
   `fname` char(20) NOT NULL,
   `lname` char(30) NOT NULL,
-  `usrname` varchar(30) NOT NULL,
-  `passwordhash` char(128) NOT NULL,
+  `usrname` varchar(30) DEFAULT NULL,
+  `passwordhash` char(128) DEFAULT NULL,
   `dob` date NOT NULL,
   `school` char(30) DEFAULT NULL,
   `adrsl1` varchar(30) NOT NULL,
@@ -364,7 +366,7 @@ CREATE TABLE IF NOT EXISTS `student` (
   `gemail` char(255) NOT NULL,
   `gcontactno` char(10) NOT NULL,
   `relationship` char(20) NOT NULL,
-  `frt_st_id` int(11) NOT NULL,
+  `frt_st_id` int(11) DEFAULT NULL,
   `submissiondate` date NOT NULL,
   PRIMARY KEY (`student_id`),
   KEY `fk_st_fo` (`frt_st_id`)
@@ -382,6 +384,7 @@ CREATE TABLE IF NOT EXISTS `student_reg` (
   `st_reg_id` int(11) NOT NULL,
   `st_sub_id` int(11) NOT NULL,
   `registrationdate` date NOT NULL,
+  `regfee` double NOT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_streg_st` (`st_reg_id`),
   KEY `fk_streg_sub` (`st_sub_id`)
