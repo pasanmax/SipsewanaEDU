@@ -3,31 +3,26 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Front Officer | Dashboard</title>
+  <title>Front Officer | Online Attendance List</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome -->
-  <link rel="stylesheet" href="../../plugins/fontawesome-free/css/all.min.css">
-  <!-- Ionicons -->
-  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-  <!-- Tempusdominus Bootstrap 4 -->
-  <link rel="stylesheet" href="../../plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+  <link rel="stylesheet" href="../../../../plugins/fontawesome-free/css/all.min.css">
+  <!-- DataTables -->
+  <link rel="stylesheet" href="../../../../plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+  <link rel="stylesheet" href="../../../../plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+  <link rel="stylesheet" href="../../../../plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
   <!-- Theme style -->
-  <link rel="stylesheet" href="../../dist/css/adminlte.min.css">
-  <!-- Daterange picker -->
-  <link rel="stylesheet" href="../../plugins/daterangepicker/daterangepicker.css">
-  <!-- overlayScrollbars -->
-  <link rel="stylesheet" href="../../plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+  <link rel="stylesheet" href="../../../../dist/css/adminlte.min.css">
 </head>
-<body class="hold-transition sidebar-mini layout-fixed">
+<body class="hold-transition sidebar-mini">
+<!-- Site wrapper -->
 <div class="wrapper">
-
   <!-- Preloader -->
   <div class="preloader flex-column justify-content-center align-items-center">
-    <img class="animation__shake" src="../../dist/img/dashboardImages/sipsewanaLogo.jpg" alt="SipsewanaLogo" height="60" width="60">
+    <img class="animation__shake" src="../../../../dist/img/dashboardImages/sipsewanaLogo.jpg" alt="SipsewanaLogo" height="60" width="60">
   </div>
-
   <!-- Navbar -->
   <nav class="main-header navbar navbar-expand navbar-white navbar-light">
     <!-- Left navbar links -->
@@ -40,7 +35,7 @@
     <ul class="navbar-nav ml-auto">
       <!-- Navbar log out -->
       <li class="nav-item">
-        <a href="./Login.html" class="nav-link">Log out</a>
+        <a href="../../Login.html" class="nav-link">Log out</a>
       </li>
     </ul>
   </nav>
@@ -50,7 +45,7 @@
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="#" class="brand-link">
-      <img src="../../dist/img/dashboardImages/sipsewanaLogo.jpg" alt="SipsewanaLogo" class="brand-image img-circle elevation-3" style="opacity: .8">
+      <img src="../../../../dist/img/dashboardImages/sipsewanaLogo.jpg" alt="SipsewanaLogo" class="brand-image img-circle elevation-3" style="opacity: .8">
       <span class="brand-text font-weight-light">Sipsewana EDU</span>
     </a>
 
@@ -59,7 +54,7 @@
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="../../dist/img/dashboardImages/user.png" class="img-circle elevation-2" alt="User Image">
+          <img src="../../../../dist/img/dashboardImages/user.png" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
           <a href="#" class="d-block">User's name</a>
@@ -84,7 +79,7 @@
         <!-- Add icons to the links using the .nav-icon class
               with font-awesome or any other icon font library -->
         <li class="nav-item">
-          <a href="#" class="nav-link active">
+          <a href="../../Dashboard.html" class="nav-link">
             <i class="nav-icon fas fa-tachometer-alt"></i>
             <p>
               Dashboard
@@ -102,31 +97,31 @@
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item">
-              <a href="./ManageRegistrations/PendingStudentRegistrations/PendingRegistrations.html" class="nav-link">
+              <a href="../../ManageRegistrations/PendingStudentRegistrations/PendingRegistrations.html" class="nav-link">
                 <i class="nav-icon fas fa-user"></i>
                 <p>Pending Student Registrations</p>
               </a>
             </li>
             <li class="nav-item">
-              <a href="./ManageRegistrations/PendingLecturerRegistrations/PendingRegistrations.html" class="nav-link">
+              <a href="../../ManageRegistrations/PendingLecturerRegistrations/PendingRegistrations.html" class="nav-link">
                 <i class="nav-icon fas fa-user-tie"></i>
                 <p>Pending Lecturer Registrations</p>
               </a>
             </li>
             <li class="nav-item">
-              <a href="./ManageRegistrations/PendingFrontOfficerRegistrations/PendingRegistrations.html" class="nav-link">
+              <a href="../../ManageRegistrations/PendingFrontOfficerRegistrations/PendingRegistrations.html" class="nav-link">
                 <i class="nav-icon fas fa-user-shield"></i>
                 <p>Pending Front Officer Registrations</p>
               </a>
             </li>
             <li class="nav-item">
-              <a href="./ManageRegistrations/PendingDirectorRegistrations/PendingRegistrations.html" class="nav-link">
+              <a href="../../ManageRegistrations/PendingDirectorRegistrations/PendingRegistrations.html" class="nav-link">
                 <i class="nav-icon fas fa-user-graduate"></i>
                 <p>Pending Director Registrations</p>
               </a>
             </li>
             <li class="nav-item">
-              <a href="./ManageRegistrations/PendingCashierRegistrations/PendingRegistrations.html" class="nav-link">
+              <a href="../../ManageRegistrations/PendingCashierRegistrations/PendingRegistrations.html" class="nav-link">
                 <i class="nav-icon far fa-user"></i>
                 <p>Pending Cashier Registrations</p>
               </a>
@@ -144,7 +139,7 @@
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item">
-              <a href="./ManageStudents/Manage/List.html" class="nav-link">
+              <a href="../../ManageStudents/Manage/List.html" class="nav-link">
                 <i class="nav-icon far fa-edit"></i>
                 <p>Manage Students</p>
               </a>
@@ -155,26 +150,26 @@
                 <p>Register Students</p>
               </a>
             </li>
-            <li class="nav-item">
-              <a href="../Front Officer/ManageStudents/Payment/List.html" class="nav-link">
+            <li class="nav-item menu-open">
+              <a href="../../ManageStudents/Payment/List.html" class="nav-link">
                 <i class="nav-icon fas fa-money-check-alt"></i>
                 <p>View Payments</p>
               </a>
             </li>
             <li class="nav-item">
-              <a href="../Front Officer/ManageStudents/Homework/List.html" class="nav-link">
+              <a href="../../ManageStudents/Homework/List.html" class="nav-link">
                 <i class="nav-icon far fa-file-archive"></i>
                 <p>View Homeworks</p>
               </a>
             </li>
             <li class="nav-item">
-              <a href="../Front Officer/ManageStudents/OnlineAttendance/List.html" class="nav-link">
+              <a href="../../ManageStudents/OnlineAttendance/List.html" class="nav-link">
                 <i class="nav-icon far fa-address-card"></i>
                 <p>View Online Attendance</p>
               </a>
             </li>
             <li class="nav-item">
-              <a href="../Front Officer/ManageStudents/OfflineAttendance/List.html" class="nav-link">
+              <a href="../../ManageStudents/OfflineAttendance/List.html" class="nav-link">
                 <i class="nav-icon far fa-address-card"></i>
                 <p>View Offline Attendance</p>
               </a>
@@ -182,8 +177,8 @@
           </ul>
         </li>
         <!-- Lectures -->
-        <li class="nav-item">
-          <a href="#" class="nav-link">
+        <li class="nav-item menu-open">
+          <a href="#" class="nav-link active">
             <i class="nav-icon fas fa-user-tie"></i>
             <p>
               Lecturers
@@ -192,7 +187,7 @@
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item">
-              <a href="../Front Officer/ManageLecturers/Manage/List.html" class="nav-link">
+              <a href="../Manage/List.html" class="nav-link">
                 <i class="nav-icon far fa-edit"></i>
                 <p>Manage Lecturers</p>
               </a>
@@ -204,25 +199,25 @@
               </a>
             </li>
             <li class="nav-item">
-              <a href="../Front Officer/ManageLecturers/Payment/List.html" class="nav-link">
+              <a href="../Payment/List.html" class="nav-link">
                 <i class="nav-icon fas fa-money-check-alt"></i>
                 <p>View Payments</p>
               </a>
             </li>
             <li class="nav-item">
-              <a href="../Front Officer/ManageLecturers/Homework/List.html" class="nav-link">
+              <a href="../Homework/List.html" class="nav-link">
                 <i class="nav-icon far fa-file-archive"></i>
                 <p>View Homeworks</p>
               </a>
             </li>
             <li class="nav-item">
-              <a href="../Front Officer/ManageLecturers/OnlineAttendance/List.html" class="nav-link">
+              <a href="#" class="nav-link active">
                 <i class="nav-icon far fa-address-card"></i>
                 <p>View Online Attendance</p>
               </a>
             </li>
             <li class="nav-item">
-              <a href="../Front Officer/ManageLecturers/OfflineAttendance/List.html" class="nav-link">
+              <a href="../OfflineAttendance/List.html" class="nav-link">
                 <i class="nav-icon far fa-address-card"></i>
                 <p>View Offline Attendance</p>
               </a>
@@ -240,7 +235,7 @@
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item">
-              <a href="../Front Officer/ManageFrontOfficers/Manage/List.html" class="nav-link">
+              <a href="../../ManageFrontOfficers/Manage/List.html" class="nav-link">
                 <i class="nav-icon far fa-edit"></i>
                 <p>Manage Front Officers</p>
               </a>
@@ -258,13 +253,13 @@
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item">
-              <a href="../Front Officer/ManageCashiers/Manage/List.html" class="nav-link">
+              <a href="../../ManageCashiers/Manage/List.html" class="nav-link">
                 <i class="nav-icon far fa-edit"></i>
                 <p>Manage Cashiers</p>
               </a>
             </li>
             <li class="nav-item">
-              <a href="../Front Officer/ManageCashiers/PaidPayment/List.html" class="nav-link">
+              <a href="../../ManageCashiers/PaidPayment/List.html" class="nav-link">
                 <i class="nav-icon fas fa-money-check-alt"></i>
                 <p>View Paid Payments</p>
               </a>
@@ -282,7 +277,7 @@
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item">
-              <a href="../Front Officer/ManageDirectors/Manage/List.html" class="nav-link">
+              <a href="../../ManageDirectors/Manage/List.html" class="nav-link">
                 <i class="nav-icon far fa-edit"></i>
                 <p>Manage Directors</p>
               </a>
@@ -300,19 +295,19 @@
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item">
-              <a href="../Front Officer/ManageSubjects/Manage/List.html" class="nav-link">
+              <a href="../../ManageSubjects/Manage/List.html" class="nav-link">
                 <i class="nav-icon far fa-edit"></i>
                 <p>Manage Subjects</p>
               </a>
             </li>
             <li class="nav-item">
-              <a href="../Front Officer/ManageSubjects/EnrolledStudents/List.html" class="nav-link">
+              <a href="../../ManageSubjects/EnrolledStudents/List.html" class="nav-link">
                 <i class="nav-icon fas fa-clipboard-list"></i>
                 <p>View Enrolled Students</p>
               </a>
             </li>
             <li class="nav-item">
-              <a href="../Front Officer/ManageSubjects/AssignedLecturers/List.html" class="nav-link">
+              <a href="../../ManageSubjects/AssignedLecturers/List.html" class="nav-link">
                 <i class="nav-icon fas fa-clipboard-list"></i>
                 <p>View Assigned Lecturers</p>
               </a>
@@ -330,13 +325,13 @@
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item">
-              <a href="../Front Officer/Classes/OnlineClasses/List.html" class="nav-link">
+              <a href="../../Classes/OnlineClasses/List.html" class="nav-link">
                 <i class="nav-icon fas fa-eye"></i>
                 <p>View Online Classes</p>
               </a>
             </li>
             <li class="nav-item">
-              <a href="../Front Officer/Classes/OfflineClasses/List.html" class="nav-link">
+              <a href="../../Classes/OfflineClasses/List.html" class="nav-link">
                 <i class="nav-icon fas fa-eye"></i>
                 <p>View Offline Classes</p>
               </a>
@@ -353,131 +348,166 @@
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
-    <div class="content-header">
+    <section class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Front Officer Dashboard</h1>
-          </div><!-- /.col -->
+            <h1>Online Attendance List</h1>
+          </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Dashboard v1</li>
+              <li class="breadcrumb-item"><a href="../../Dashboard.html">Dashboard</a></li>
+              <li class="breadcrumb-item active">Lectures</li>
+              <li class="breadcrumb-item active">View Online Attendance</li>
             </ol>
-          </div><!-- /.col -->
-        </div><!-- /.row -->
+          </div>
+        </div>
       </div><!-- /.container-fluid -->
-    </div>
-    <!-- /.content-header -->
+    </section>
 
     <!-- Main content -->
     <section class="content">
-      <div class="container-fluid">
-        <!-- Small boxes (Stat box) -->
-        <div class="row">
-          <div class="col-lg-3 col-6">
-            <!-- small box -->
-            <div class="small-box bg-info">
-              <div class="inner">
-                <h3>150</h3>
-
-                <p>Registered Students</p>
-              </div>
-              <div class="icon">
-                <i class="fas fa-user"></i>
-              </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-body">
+              <table id="onlineList" class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                  <th>Class ID</th>
+                  <th>Student ID</th>
+                  <th>Name</th>
+                  <th>Subject</th>
+                  <th>Date</th>
+                  <th>In Time</th>
+                  <th>Out Time</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                  <td>1</td>
+                  <td>ST01</td>
+                  <td>Sandun Perera
+                  </td>
+                  <td>Biology A/L (2023)</td>
+                  <td>07/21/2021</td>
+                  <td>08.00 AM</td>
+                  <td>10.30 AM</td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td>ST01</td>
+                  <td>Sandun Perera
+                  </td>
+                  <td>Biology A/L (2023)</td>
+                  <td>07/21/2021</td>
+                  <td>08.00 AM</td>
+                  <td>10.30 AM</td>
+                </tr>
+                <tr>
+                  <td>3</td>
+                  <td>ST01</td>
+                  <td>Sandun Perera
+                  </td>
+                  <td>Biology A/L (2023)</td>
+                  <td>07/21/2021</td>
+                  <td>08.00 AM</td>
+                  <td>10.30 AM</td>
+                </tr>
+                <tr>
+                  <td>4</td>
+                  <td>ST01</td>
+                  <td>Sandun Perera
+                  </td>
+                  <td>Biology A/L (2023)</td>
+                  <td>07/21/2021</td>
+                  <td>08.00 AM</td>
+                  <td>10.30 AM</td>
+                </tr>
+                <tr>
+                  <td>5</td>
+                  <td>ST01</td>
+                  <td>Sandun Perera
+                  </td>
+                  <td>Biology A/L (2023)</td>
+                  <td>07/21/2021</td>
+                  <td>08.00 AM</td>
+                  <td>10.30 AM</td>
+                </tr>
+                <tr>
+                  <td>6</td>
+                  <td>ST01</td>
+                  <td>Sandun Perera
+                  </td>
+                  <td>Biology A/L (2023)</td>
+                  <td>07/21/2021</td>
+                  <td>08.00 AM</td>
+                  <td>10.30 AM</td>
+                </tr>
+                <tr>
+                  <td>7</td>
+                  <td>ST01</td>
+                  <td>Sandun Perera
+                  </td>
+                  <td>Biology A/L (2023)</td>
+                  <td>07/21/2021</td>
+                  <td>08.00 AM</td>
+                  <td>10.30 AM</td>
+                </tr>
+                <tr>
+                  <td>8</td>
+                  <td>ST01</td>
+                  <td>Sandun Perera
+                  </td>
+                  <td>Biology A/L (2023)</td>
+                  <td>07/21/2021</td>
+                  <td>08.00 AM</td>
+                  <td>10.30 AM</td>
+                </tr>
+                <tr>
+                  <td>9</td>
+                  <td>ST01</td>
+                  <td>Sandun Perera
+                  </td>
+                  <td>Biology A/L (2023)</td>
+                  <td>07/21/2021</td>
+                  <td>08.00 AM</td>
+                  <td>10.30 AM</td>
+                </tr>
+                <tr>
+                  <td>10</td>
+                  <td>ST01</td>
+                  <td>Sandun Perera
+                  </td>
+                  <td>Biology A/L (2023)</td>
+                  <td>07/21/2021</td>
+                  <td>08.00 AM</td>
+                  <td>10.30 AM</td>
+                </tr>
+                </tbody>
+                <tfoot>
+                <tr>
+                  <th>Class ID</th>
+                  <th>Student ID</th>
+                  <th>Name</th>
+                  <th>Subject</th>
+                  <th>Date</th>
+                  <th>In Time</th>
+                  <th>Out Time</th>
+                </tr>
+                </tfoot>
+              </table>
             </div>
+            <!-- /.card-body -->
           </div>
-          <!-- ./col -->
-          <div class="col-lg-3 col-6">
-            <!-- small box -->
-            <div class="small-box bg-success">
-              <div class="inner">
-                <h3>150</h3>
-                <!-- <h3>53<sup style="font-size: 20px">%</sup></h3> -->
-
-                <p>Registered Lectures</p>
-              </div>
-              <div class="icon">
-                <i class="fas fa-user-tie"></i>
-              </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-            </div>
-          </div>
-          <!-- ./col -->
-          <div class="col-lg-3 col-6">
-            <!-- small box -->
-            <div class="small-box bg-warning">
-              <div class="inner">
-                <h3>44</h3>
-
-                <p>Total Subjects</p>
-              </div>
-              <div class="icon">
-                <i class="nav-icon fas fa-folder"></i>
-              </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-            </div>
-          </div>
-          <!-- ./col -->
-          <div class="col-lg-3 col-6">
-            <!-- small box -->
-            <div class="small-box bg-danger">
-              <div class="inner">
-                <h3>Attendance</h3>
-
-                <p>Mark Student Attendance</p>
-              </div>
-              <div class="icon">
-                <i class="nav-icon far fa-check-circle"></i>
-              </div>
-              <a href="#" class="small-box-footer">Click Here <i class="fas fa-arrow-circle-right"></i></a>
-            </div>
-          </div>
-          <!-- ./col -->
+          <!-- /.card -->
         </div>
-        <!-- /.row -->
-        <!-- Main row -->
-        <div class="row">
-          <!-- right col (We are only adding the ID to make the widgets sortable)-->
-          <section class="col-lg-7 connectedSortable">
-            <!-- Calendar -->
-            <div class="card bg-gradient-success">
-              <div class="card-header border-0">
-
-                <h3 class="card-title">
-                  <i class="far fa-calendar-alt"></i>
-                  Calendar
-                </h3>
-                <!-- tools card -->
-                <div class="card-tools">
-                  <button type="button" class="btn btn-success btn-sm" data-card-widget="collapse">
-                    <i class="fas fa-minus"></i>
-                  </button>
-                  <button type="button" class="btn btn-success btn-sm" data-card-widget="remove">
-                    <i class="fas fa-times"></i>
-                  </button>
-                </div>
-                <!-- /. tools -->
-              </div>
-              <!-- /.card-header -->
-              <div class="card-body pt-0">
-                <!--The calendar -->
-                <div id="calendar" style="width: 100%"></div>
-              </div>
-              <!-- /.card-body -->
-            </div>
-            <!-- /.card -->
-          </section>
-          <!-- right col -->
-        </div>
-        <!-- /.row (main row) -->
-      </div><!-- /.container-fluid -->
+      </div>
     </section>
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
+
   <footer class="main-footer">
     <strong>Copyright &copy; 2021-2024 <a href="#">SipsewanaEDU</a>.</strong>
     All rights reserved.
@@ -490,25 +520,24 @@
 <!-- ./wrapper -->
 
 <!-- jQuery -->
-<script src="../../plugins/jquery/jquery.min.js"></script>
-<!-- jQuery UI 1.11.4 -->
-<script src="../../plugins/jquery-ui/jquery-ui.min.js"></script>
-<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
-<script>
-  $.widget.bridge('uibutton', $.ui.button)
-</script>
+<script src="../../../../plugins/jquery/jquery.min.js"></script>
+<!-- DataTables  & Plugins -->
+<script src="../../../../plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="../../../../plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="../../../../plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="../../../../plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script src="../../../../plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+<script src="../../../../plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
 <!-- Bootstrap 4 -->
-<script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- daterangepicker -->
-<script src="../../plugins/moment/moment.min.js"></script>
-<script src="../../plugins/daterangepicker/daterangepicker.js"></script>
-<!-- Tempusdominus Bootstrap 4 -->
-<script src="../../plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
-<!-- overlayScrollbars -->
-<script src="../../plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+<script src="../../../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- AdminLTE App -->
-<script src="../../dist/js/adminlte.js"></script>
-<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-<script src="../../dist/js/pages/Front Officer/dashboard.js"></script>
+<script src="../../../../dist/js/adminlte.min.js"></script>
+<script>
+  $(function () {
+    $("#onlineList").DataTable({
+      "responsive": true, "lengthChange": false, "autoWidth": false
+    }).buttons().container().appendTo('#onlineList_wrapper .col-md-6:eq(0)');
+  });
+</script>
 </body>
 </html>
