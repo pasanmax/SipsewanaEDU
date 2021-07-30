@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Front Officer | Pending Lecturer Registrations</title>
+  <title>Front Officer | Subject List</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -87,8 +87,8 @@
           </a>
         </li>
         <!-- Registrations -->
-        <li class="nav-item menu-open">
-          <a href="#" class="nav-link active">
+        <li class="nav-item">
+          <a href="#" class="nav-link">
               <i class="nav-icon fas fa-address-book"></i>
             <p>
               Manage Registrations
@@ -97,31 +97,31 @@
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item">
-              <a href="../PendingStudentRegistrations/PendingRegistrations.html" class="nav-link">
+              <a href="../../ManageRegistrations/PendingStudentRegistrations/PendingRegistrations.html" class="nav-link">
                 <i class="nav-icon fas fa-user"></i>
                 <p>Pending Student Registrations</p>
               </a>
             </li>
             <li class="nav-item">
-              <a href="#" class="nav-link active">
+              <a href="../../ManageRegistrations/PendingLecturerRegistrations/PendingRegistrations.html" class="nav-link">
                 <i class="nav-icon fas fa-user-tie"></i>
                 <p>Pending Lecturer Registrations</p>
               </a>
             </li>
             <li class="nav-item">
-              <a href="../PendingFrontOfficerRegistrations/PendingRegistrations.html" class="nav-link">
+              <a href="../../ManageRegistrations/PendingFrontOfficerRegistrations/PendingRegistrations.html" class="nav-link">
                 <i class="nav-icon fas fa-user-shield"></i>
                 <p>Pending Front Officer Registrations</p>
               </a>
             </li>
             <li class="nav-item">
-              <a href="../PendingDirectorRegistrations/PendingRegistrations.html" class="nav-link">
+              <a href="../../ManageRegistrations/PendingDirectorRegistrations/PendingRegistrations.html" class="nav-link">
                 <i class="nav-icon fas fa-user-graduate"></i>
                 <p>Pending Director Registrations</p>
               </a>
             </li>
             <li class="nav-item">
-              <a href="../PendingCashierRegistrations/PendingRegistrations.html" class="nav-link">
+              <a href="../../ManageRegistrations/PendingCashierRegistrations/PendingRegistrations.html" class="nav-link">
                 <i class="nav-icon far fa-user"></i>
                 <p>Pending Cashier Registrations</p>
               </a>
@@ -144,7 +144,7 @@
                 <p>Manage Students</p>
               </a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item menu-open">
               <a href="../../Students/Payment/List.html" class="nav-link">
                 <i class="nav-icon fas fa-money-check-alt"></i>
                 <p>View Payments</p>
@@ -291,8 +291,8 @@
           </ul>
         </li>
         <!-- Subject -->
-        <li class="nav-item">
-          <a href="#" class="nav-link">
+        <li class="nav-item menu-open">
+          <a href="#" class="nav-link active">
             <i class="nav-icon fas fa-folder"></i>
             <p>
               Subjects
@@ -301,25 +301,25 @@
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item">
-              <a href="../../Subjects/Manage/List.html" class="nav-link">
+              <a href="#" class="nav-link active">
                 <i class="nav-icon far fa-edit"></i>
                 <p>Manage Subjects</p>
               </a>
             </li>
             <li class="nav-item">
-              <a href="../../Subjects/Add/Add.html" class="nav-link">
+              <a href="../Add/Add.html" class="nav-link">
                 <i class="nav-icon far fa-plus-square"></i>
                 <p>Add Subjects</p>
               </a>
             </li>
             <li class="nav-item">
-              <a href="../../Subjects/EnrolledStudents/List.html" class="nav-link">
+              <a href="../EnrolledStudents/List.html" class="nav-link">
                 <i class="nav-icon fas fa-clipboard-list"></i>
                 <p>View Enrolled Students</p>
               </a>
             </li>
             <li class="nav-item">
-              <a href="../../Subjects/AssignedLecturers/List.html" class="nav-link">
+              <a href="../AssignedLecturers/List.html" class="nav-link">
                 <i class="nav-icon fas fa-clipboard-list"></i>
                 <p>View Assigned Lecturers</p>
               </a>
@@ -364,12 +364,13 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Pending Lecturer Registrations</h1>
+            <h1>Subject List</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="../../Dashboard.html">Dashboard</a></li>
-              <li class="breadcrumb-item active">Pending Lecturer Registrations</li>
+              <li class="breadcrumb-item active">Subjects</li>
+              <li class="breadcrumb-item active">Manage Subjects</li>
             </ol>
           </div>
         </div>
@@ -382,156 +383,154 @@
         <div class="col-12">
           <div class="card">
             <div class="card-body">
-              <table id="pendingLecturer" class="table table-bordered table-striped">
+              <table id="subjectList" class="table table-bordered table-striped">
                 <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Name</th>
-                  <th>Subject</th>
-                  <th>Contact Number</th>
-                  <th>Actions</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                  <td>1</td>
-                  <td>Sandun Perera
-                  </td>
-                  <td>Biology A/L (2023)</td>
-                  <td> 0778974561</td>
-                  <td>
-                    <div class="btn-group btn-group-sm">
-                      <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
-                      <a href="#" class="btn btn-danger"><i class="fas fa-trash"></i></a>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>2</td>
-                  <td>Tharaka Nuwan
-                  </td>
-                  <td>Combined Maths A/L (2023)</td>
-                  <td> 0778977861</td>
-                  <td>
-                    <div class="btn-group btn-group-sm">
-                      <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
-                      <a href="#" class="btn btn-danger"><i class="fas fa-trash"></i></a>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>3</td>
-                  <td>Sandun Perera
-                  </td>
-                  <td>English O/L (2021)</td>
-                  <td> 0728974561</td>
-                  <td>
-                    <div class="btn-group btn-group-sm">
-                      <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
-                      <a href="#" class="btn btn-danger"><i class="fas fa-trash"></i></a>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>4</td>
-                  <td>Sandun Perera
-                  </td>
-                  <td>Biology A/L (2023)</td>
-                  <td> 0778974561</td>
-                  <td>
-                    <div class="btn-group btn-group-sm">
-                      <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
-                      <a href="#" class="btn btn-danger"><i class="fas fa-trash"></i></a>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>5</td>
-                  <td>Sandun Perera
-                  </td>
-                  <td>Biology A/L (2023)</td>
-                  <td> 0778974561</td>
-                  <td>
-                    <div class="btn-group btn-group-sm">
-                      <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
-                      <a href="#" class="btn btn-danger"><i class="fas fa-trash"></i></a>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>6</td>
-                  <td>Sandun Perera
-                  </td>
-                  <td>Biology A/L (2023)</td>
-                  <td> 0778974561</td>
-                  <td>
-                    <div class="btn-group btn-group-sm">
-                      <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
-                      <a href="#" class="btn btn-danger"><i class="fas fa-trash"></i></a>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>7</td>
-                  <td>Sandun Perera
-                  </td>
-                  <td>Biology A/L (2023)</td>
-                  <td> 0778974561</td>
-                  <td>
-                    <div class="btn-group btn-group-sm">
-                      <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
-                      <a href="#" class="btn btn-danger"><i class="fas fa-trash"></i></a>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>8</td>
-                  <td>Sandun Perera
-                  </td>
-                  <td>Biology A/L (2023)</td>
-                  <td> 0778974561</td>
-                  <td>
-                    <div class="btn-group btn-group-sm">
-                      <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
-                      <a href="#" class="btn btn-danger"><i class="fas fa-trash"></i></a>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>9</td>
-                  <td>Sandun Perera
-                  </td>
-                  <td>Biology A/L (2023)</td>
-                  <td> 0778974561</td>
-                  <td>
-                    <div class="btn-group btn-group-sm">
-                      <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
-                      <a href="#" class="btn btn-danger"><i class="fas fa-trash"></i></a>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>10</td>
-                  <td>Sandun Perera
-                  </td>
-                  <td>Biology A/L (2023)</td>
-                  <td> 0778974561</td>
-                  <td>
-                    <div class="btn-group btn-group-sm">
-                      <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
-                      <a href="#" class="btn btn-danger"><i class="fas fa-trash"></i></a>
-                    </div>
-                  </td>
-                </tr>
-                </tbody>
-                <tfoot>
-                <tr>
-                  <th>ID</th>
-                  <th>Name</th>
-                  <th>Subject</th>
-                  <th>Contact Number</th>
-                  <th>Actions</th>
-                </tr>
+                  <tr>
+                    <th>Subject ID</th>
+                    <th>Name</th>
+                    <th>Medium</th>
+                    <th>Actions</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr>
+                    <td>1</td>
+                    <td>Biology A/L (2023)
+                    </td>
+                    <td>English</td>
+                    <td>
+                      <div class="btn-group btn-group-sm">
+                        <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
+                        <a href="#" class="btn btn-success"><i class="far fa-edit"></i></a>
+                        <a href="#" class="btn btn-danger"><i class="fas fa-trash"></i></a>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>2</td>
+                    <td>Biology A/L (2023)
+                    </td>
+                    <td>English</td>
+                    <td>
+                      <div class="btn-group btn-group-sm">
+                        <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
+                        <a href="#" class="btn btn-success"><i class="far fa-edit"></i></a>
+                        <a href="#" class="btn btn-danger"><i class="fas fa-trash"></i></a>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>3</td>
+                    <td>Biology A/L (2023)
+                    </td>
+                    <td>English</td>
+                    <td>
+                      <div class="btn-group btn-group-sm">
+                        <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
+                        <a href="#" class="btn btn-success"><i class="far fa-edit"></i></a>
+                        <a href="#" class="btn btn-danger"><i class="fas fa-trash"></i></a>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>4</td>
+                    <td>Biology A/L (2023)
+                    </td>
+                    <td>English</td>
+                    <td>
+                      <div class="btn-group btn-group-sm">
+                        <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
+                        <a href="#" class="btn btn-success"><i class="far fa-edit"></i></a>
+                        <a href="#" class="btn btn-danger"><i class="fas fa-trash"></i></a>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>5</td>
+                    <td>Biology A/L (2023)
+                    </td>
+                    <td>English</td>
+                    <td>
+                      <div class="btn-group btn-group-sm">
+                        <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
+                        <a href="#" class="btn btn-success"><i class="far fa-edit"></i></a>
+                        <a href="#" class="btn btn-danger"><i class="fas fa-trash"></i></a>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>6</td>
+                    <td>Biology A/L (2023)
+                    </td>
+                    <td>English</td>
+                    <td>
+                      <div class="btn-group btn-group-sm">
+                        <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
+                        <a href="#" class="btn btn-success"><i class="far fa-edit"></i></a>
+                        <a href="#" class="btn btn-danger"><i class="fas fa-trash"></i></a>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>7</td>
+                    <td>Biology A/L (2023)
+                    </td>
+                    <td>English</td>
+                    <td>
+                      <div class="btn-group btn-group-sm">
+                        <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
+                        <a href="#" class="btn btn-success"><i class="far fa-edit"></i></a>
+                        <a href="#" class="btn btn-danger"><i class="fas fa-trash"></i></a>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>8</td>
+                    <td>Biology A/L (2023)
+                    </td>
+                    <td>English</td>
+                    <td>
+                      <div class="btn-group btn-group-sm">
+                        <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
+                        <a href="#" class="btn btn-success"><i class="far fa-edit"></i></a>
+                        <a href="#" class="btn btn-danger"><i class="fas fa-trash"></i></a>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>9</td>
+                    <td>Biology A/L (2023)
+                    </td>
+                    <td>English</td>
+                    <td>
+                      <div class="btn-group btn-group-sm">
+                        <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
+                        <a href="#" class="btn btn-success"><i class="far fa-edit"></i></a>
+                        <a href="#" class="btn btn-danger"><i class="fas fa-trash"></i></a>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>10</td>
+                    <td>Biology A/L (2023)
+                    </td>
+                    <td>English</td>
+                    <td>
+                      <div class="btn-group btn-group-sm">
+                        <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
+                        <a href="#" class="btn btn-success"><i class="far fa-edit"></i></a>
+                        <a href="#" class="btn btn-danger"><i class="fas fa-trash"></i></a>
+                      </div>
+                    </td>
+                  </tr>
+                  </tbody>
+                  <tfoot>
+                  <tr>
+                    <th>Subject ID</th>
+                    <th>Name</th>
+                    <th>Medium</th>
+                    <th>Actions</th>
+                  </tr>
                 </tfoot>
               </table>
             </div>
@@ -571,9 +570,9 @@
 <script src="../../../../dist/js/adminlte.min.js"></script>
 <script>
   $(function () {
-    $("#pendingLecturer").DataTable({
+    $("#subjectList").DataTable({
       "responsive": true, "lengthChange": false, "autoWidth": false
-    }).buttons().container().appendTo('#pendingLecturer_wrapper .col-md-6:eq(0)');
+    }).buttons().container().appendTo('#subjectList_wrapper .col-md-6:eq(0)');
   });
 </script>
 </body>

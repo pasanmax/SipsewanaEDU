@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Front Officer | Pending Lecturer Registrations</title>
+  <title>Front Officer | Student List</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -87,8 +87,8 @@
           </a>
         </li>
         <!-- Registrations -->
-        <li class="nav-item menu-open">
-          <a href="#" class="nav-link active">
+        <li class="nav-item">
+          <a href="#" class="nav-link">
               <i class="nav-icon fas fa-address-book"></i>
             <p>
               Manage Registrations
@@ -97,31 +97,31 @@
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item">
-              <a href="../PendingStudentRegistrations/PendingRegistrations.html" class="nav-link">
+              <a href="../../ManageRegistrations/PendingStudentRegistrations/PendingRegistrations.html" class="nav-link">
                 <i class="nav-icon fas fa-user"></i>
                 <p>Pending Student Registrations</p>
               </a>
             </li>
             <li class="nav-item">
-              <a href="#" class="nav-link active">
+              <a href="../../ManageRegistrations/PendingLecturerRegistrations/PendingRegistrations.html" class="nav-link">
                 <i class="nav-icon fas fa-user-tie"></i>
                 <p>Pending Lecturer Registrations</p>
               </a>
             </li>
             <li class="nav-item">
-              <a href="../PendingFrontOfficerRegistrations/PendingRegistrations.html" class="nav-link">
+              <a href="../../ManageRegistrations/PendingFrontOfficerRegistrations/PendingRegistrations.html" class="nav-link">
                 <i class="nav-icon fas fa-user-shield"></i>
                 <p>Pending Front Officer Registrations</p>
               </a>
             </li>
             <li class="nav-item">
-              <a href="../PendingDirectorRegistrations/PendingRegistrations.html" class="nav-link">
+              <a href="../../ManageRegistrations/PendingDirectorRegistrations/PendingRegistrations.html" class="nav-link">
                 <i class="nav-icon fas fa-user-graduate"></i>
                 <p>Pending Director Registrations</p>
               </a>
             </li>
             <li class="nav-item">
-              <a href="../PendingCashierRegistrations/PendingRegistrations.html" class="nav-link">
+              <a href="../../ManageRegistrations/PendingCashierRegistrations/PendingRegistrations.html" class="nav-link">
                 <i class="nav-icon far fa-user"></i>
                 <p>Pending Cashier Registrations</p>
               </a>
@@ -129,8 +129,8 @@
           </ul>
         </li>
         <!-- Students -->
-        <li class="nav-item">
-          <a href="#" class="nav-link">
+        <li class="nav-item menu-open">
+          <a href="#" class="nav-link active">
             <i class="nav-icon fas fa-user"></i>
             <p>
               Students
@@ -139,31 +139,31 @@
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item">
-              <a href="../../Students/Manage/List.html" class="nav-link">
+              <a href="#" class="nav-link active">
                 <i class="nav-icon far fa-edit"></i>
                 <p>Manage Students</p>
               </a>
             </li>
             <li class="nav-item">
-              <a href="../../Students/Payment/List.html" class="nav-link">
+              <a href="../Payment/List.html" class="nav-link">
                 <i class="nav-icon fas fa-money-check-alt"></i>
                 <p>View Payments</p>
               </a>
             </li>
             <li class="nav-item">
-              <a href="../../Students/Homework/List.html" class="nav-link">
+              <a href="../Homework/List.html" class="nav-link">
                 <i class="nav-icon far fa-file-archive"></i>
                 <p>View Homeworks</p>
               </a>
             </li>
             <li class="nav-item">
-              <a href="../../Students/OnlineAttendance/List.html" class="nav-link">
+              <a href="../OnlineAttendance/List.html" class="nav-link">
                 <i class="nav-icon far fa-address-card"></i>
                 <p>View Online Attendance</p>
               </a>
             </li>
             <li class="nav-item">
-              <a href="../../Students/OfflineAttendance/List.html" class="nav-link">
+              <a href="../OfflineAttendance/List.html" class="nav-link">
                 <i class="nav-icon far fa-address-card"></i>
                 <p>View Offline Attendance</p>
               </a>
@@ -364,12 +364,13 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Pending Lecturer Registrations</h1>
+            <h1>Student List</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="../../Dashboard.html">Dashboard</a></li>
-              <li class="breadcrumb-item active">Pending Lecturer Registrations</li>
+              <li class="breadcrumb-item active">Students</li>
+              <li class="breadcrumb-item active">Manage Students</li>
             </ol>
           </div>
         </div>
@@ -382,13 +383,13 @@
         <div class="col-12">
           <div class="card">
             <div class="card-body">
-              <table id="pendingLecturer" class="table table-bordered table-striped">
+              <table id="studentList" class="table table-bordered table-striped">
                 <thead>
                 <tr>
-                  <th>ID</th>
+                  <th>Student ID</th>
                   <th>Name</th>
                   <th>Subject</th>
-                  <th>Contact Number</th>
+                  <th>Guardian Contact Number</th>
                   <th>Actions</th>
                 </tr>
                 </thead>
@@ -402,6 +403,7 @@
                   <td>
                     <div class="btn-group btn-group-sm">
                       <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
+                      <a href="#" class="btn btn-success"><i class="far fa-edit"></i></a>
                       <a href="#" class="btn btn-danger"><i class="fas fa-trash"></i></a>
                     </div>
                   </td>
@@ -415,6 +417,7 @@
                   <td>
                     <div class="btn-group btn-group-sm">
                       <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
+                      <a href="#" class="btn btn-success"><i class="far fa-edit"></i></a>
                       <a href="#" class="btn btn-danger"><i class="fas fa-trash"></i></a>
                     </div>
                   </td>
@@ -428,6 +431,7 @@
                   <td>
                     <div class="btn-group btn-group-sm">
                       <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
+                      <a href="#" class="btn btn-success"><i class="far fa-edit"></i></a>
                       <a href="#" class="btn btn-danger"><i class="fas fa-trash"></i></a>
                     </div>
                   </td>
@@ -441,6 +445,7 @@
                   <td>
                     <div class="btn-group btn-group-sm">
                       <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
+                      <a href="#" class="btn btn-success"><i class="far fa-edit"></i></a>
                       <a href="#" class="btn btn-danger"><i class="fas fa-trash"></i></a>
                     </div>
                   </td>
@@ -454,6 +459,7 @@
                   <td>
                     <div class="btn-group btn-group-sm">
                       <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
+                      <a href="#" class="btn btn-success"><i class="far fa-edit"></i></a>
                       <a href="#" class="btn btn-danger"><i class="fas fa-trash"></i></a>
                     </div>
                   </td>
@@ -467,6 +473,7 @@
                   <td>
                     <div class="btn-group btn-group-sm">
                       <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
+                      <a href="#" class="btn btn-success"><i class="far fa-edit"></i></a>
                       <a href="#" class="btn btn-danger"><i class="fas fa-trash"></i></a>
                     </div>
                   </td>
@@ -480,6 +487,7 @@
                   <td>
                     <div class="btn-group btn-group-sm">
                       <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
+                      <a href="#" class="btn btn-success"><i class="far fa-edit"></i></a>
                       <a href="#" class="btn btn-danger"><i class="fas fa-trash"></i></a>
                     </div>
                   </td>
@@ -493,6 +501,7 @@
                   <td>
                     <div class="btn-group btn-group-sm">
                       <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
+                      <a href="#" class="btn btn-success"><i class="far fa-edit"></i></a>
                       <a href="#" class="btn btn-danger"><i class="fas fa-trash"></i></a>
                     </div>
                   </td>
@@ -506,6 +515,7 @@
                   <td>
                     <div class="btn-group btn-group-sm">
                       <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
+                      <a href="#" class="btn btn-success"><i class="far fa-edit"></i></a>
                       <a href="#" class="btn btn-danger"><i class="fas fa-trash"></i></a>
                     </div>
                   </td>
@@ -519,6 +529,7 @@
                   <td>
                     <div class="btn-group btn-group-sm">
                       <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
+                      <a href="#" class="btn btn-success"><i class="far fa-edit"></i></a>
                       <a href="#" class="btn btn-danger"><i class="fas fa-trash"></i></a>
                     </div>
                   </td>
@@ -526,10 +537,10 @@
                 </tbody>
                 <tfoot>
                 <tr>
-                  <th>ID</th>
+                  <th>Student ID</th>
                   <th>Name</th>
                   <th>Subject</th>
-                  <th>Contact Number</th>
+                  <th>Guardian Contact Number</th>
                   <th>Actions</th>
                 </tr>
                 </tfoot>
@@ -571,9 +582,9 @@
 <script src="../../../../dist/js/adminlte.min.js"></script>
 <script>
   $(function () {
-    $("#pendingLecturer").DataTable({
+    $("#studentList").DataTable({
       "responsive": true, "lengthChange": false, "autoWidth": false
-    }).buttons().container().appendTo('#pendingLecturer_wrapper .col-md-6:eq(0)');
+    }).buttons().container().appendTo('#studentList_wrapper .col-md-6:eq(0)');
   });
 </script>
 </body>
