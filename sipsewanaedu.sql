@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Jul 13, 2021 at 09:13 PM
+-- Generation Time: Aug 27, 2021 at 07:56 AM
 -- Server version: 5.7.31
 -- PHP Version: 7.3.21
 
@@ -81,6 +81,19 @@ CREATE TABLE IF NOT EXISTS `class` (
   PRIMARY KEY (`class_id`),
   KEY `fk_cls_lec` (`lec_cls_id`),
   KEY `fk_cls_sub` (`sub_cls_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `class_dates`
+--
+
+DROP TABLE IF EXISTS `class_dates`;
+CREATE TABLE IF NOT EXISTS `class_dates` (
+  `cls_dt_id` int(11) NOT NULL AUTO_INCREMENT,
+  `date` date NOT NULL,
+  PRIMARY KEY (`cls_dt_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -449,6 +462,12 @@ ALTER TABLE `cashier`
 ALTER TABLE `class`
   ADD CONSTRAINT `fk_cls_lec` FOREIGN KEY (`lec_cls_id`) REFERENCES `lecturer` (`lecturer_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_cls_sub` FOREIGN KEY (`sub_cls_id`) REFERENCES `subject` (`subject_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `class_dates`
+--
+ALTER TABLE `class_dates`
+  ADD CONSTRAINT `fk_cls_dt` FOREIGN KEY (`cls_dt_id`) REFERENCES `class` (`class_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `director`

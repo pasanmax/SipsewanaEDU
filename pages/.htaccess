@@ -2,4 +2,4 @@ Options -Indexes
 RewriteEngine on
 RewriteCond %{REQUEST_FILENAME} -d
 RewriteRule ^ - [R=404,L]
-ErrorDocument   404 http://localhost/SipsewanaEDU/pages/404Error.html
+ErrorDocument   404 http://localhost/SipsewanaEDU/pages/404Error.php
