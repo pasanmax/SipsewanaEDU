@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Lecturer | Registration Page</title>
+  <title>O/L Student | Registration Page</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -33,11 +33,11 @@
   <div class="card card-primary">
     <div class="card-header">
       <div class="register-logo">
-        <a href="#"><b>Lecturer</b>Registration</a>
+        <a href="#"><b>O/L Student</b>Registration</a>
       </div>
     </div>
     <div class="card-body register-card-body">
-      <p class="login-box-msg">Register as a new Lecturer</p>
+      <p class="login-box-msg">Register as a new O/L Student</p>
 
       <div id="stepper" class="bs-stepper linear">
         <div class="bs-stepper-header" role="tablist">
@@ -55,10 +55,10 @@
             </button>
           </div>
           <div class="bs-stepper-line"></div>
-          <div class="step" data-target="#bank-info">
-            <button type="button" class="step-trigger" role="tab" id="bank-info-trigger" aria-controls="bank-info" aria-selected="false" disabled="disabled">
+          <div class="step" data-target="#guardian-info">
+            <button type="button" class="step-trigger" role="tab" id="guardian-info-trigger" aria-controls="guardian-info" aria-selected="false" disabled="disabled">
               <span class="bs-stepper-circle">3</span>
-              <span class="bs-stepper-label">Bank Info</span>
+              <span class="bs-stepper-label">Guardian Info</span>
             </button>
           </div>
           <div class="bs-stepper-line"></div>
@@ -106,30 +106,18 @@
                 </div>
               </div>
               <div class="form-group">
-                <label for="email">Email
+                <label for="school">School
                   <span class="text-danger font-weight-bold">*</span>
                 </label>
-                <input type="email" class="form-control" id="email" placeholder="Email" required>
-                <div class="invalid-feedback">Email is required</div>
+                <input type="text" class="form-control" id="school" placeholder="School" required>
+                <div class="invalid-feedback">School is required</div>
               </div>
               <div class="form-group">
-                <label for="cno">Contact Number
+                <label for="ttresults">Term test results
                   <span class="text-danger font-weight-bold">*</span>
                 </label>
-                <div class="input-group">
-                  <input id="cno" type="text" class="form-control" data-inputmask='"mask": "(999) 999-9999"' data-mask required>
-                  <div class="input-group-prepend">
-                    <span class="input-group-text"><i class="fas fa-phone"></i></span>
-                  </div>
-                  <div class="invalid-feedback">Contact Number is required</div>
-                </div>
-              </div>
-              <div class="form-group">
-                <label for="certi">Certification
-                  <span class="text-danger font-weight-bold">*</span>
-                </label>
-                <input type="text" class="form-control" id="certi" placeholder="Certification" required>
-                <div class="invalid-feedback">Certification is required</div>
+                <input type="number" class="form-control" id="ttresults" placeholder="Term test results" required>
+                <div class="invalid-feedback">Term test results is required</div>
               </div>
               <button type="button" class="btn btn-primary btn-next-form">Next</button>
             </div>
@@ -177,41 +165,50 @@
               <button type="button" class="btn btn-primary" onclick="stepper.previous()">Previous</button>
               <button type="button" class="btn btn-primary btn-next-form">Next</button>
             </div>
-            <div id="bank-info" role="tabpanel" class="bs-stepper-pane" aria-labelledby="bank-info-trigger">
-              <div class="form-group">
-                <label for="accountno">Account Number
+            <div id="guardian-info" role="tabpanel" class="bs-stepper-pane" aria-labelledby="guardian-info-trigger">
+            <div class="form-group">
+                <label for="gfname">Guardian first name
                   <span class="text-danger font-weight-bold">*</span>
                 </label>
-                <input type="number" class="form-control" id="accountno" placeholder="Account Number" required>
-                <div class="invalid-feedback">Account Number is required</div>
+                <input type="text" class="form-control" id="gfname" placeholder="Guardian first name" required>
+                <div class="invalid-feedback">Guardian first name</div>
               </div>
               <div class="form-group">
-                <label for="accountname">Account Name
+                <label for="glname">Guardian last name
                   <span class="text-danger font-weight-bold">*</span>
                 </label>
-                <input type="text" class="form-control" id="accountname" placeholder="Account Name" required>
-                <div class="invalid-feedback">Account Name is required</div>
+                <input type="text" class="form-control" id="glname" placeholder="Guardian last name" required>
+                <div class="invalid-feedback">Guardian last name is required</div>
               </div>
               <div class="form-group">
-                <label for="bankname">Bank Name
+                <label for="gemail">Guardian email
                   <span class="text-danger font-weight-bold">*</span>
                 </label>
-                <input type="text" class="form-control" id="bankname" placeholder="Bank Name" required>
-                <div class="invalid-feedback">Bank Name is required</div>
+                <input type="text" class="form-control" id="gemail" placeholder="Guardian email" required>
+                <div class="invalid-feedback">Guardian email is required</div>
               </div>
               <div class="form-group">
-                <label for="branchname">Branch Name
+                <label for="gcno">Guardian contact number
                   <span class="text-danger font-weight-bold">*</span>
                 </label>
-                <input type="text" class="form-control" id="branchname" placeholder="Branch Name" required>
-                <div class="invalid-feedback">Branch Name is required</div>
+                <div class="input-group">
+                  <input id="gcno" type="text" class="form-control" data-inputmask='"mask": "(999) 999-9999"' data-mask required>
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                  </div>
+                  <div class="invalid-feedback">Guardian contact number is required</div>
+                </div>
               </div>
               <div class="form-group">
-                <label for="branchcode">Branch Code
+                <label for="relationship">Select relationship
                   <span class="text-danger font-weight-bold">*</span>
                 </label>
-                <input type="number" class="form-control" id="branchcode" placeholder="Branch Code" required>
-                <div class="invalid-feedback">Branch Code is required</div>
+                <select id="relationship" class="form-control select2" style="width: 100%;" required>
+                  <option value="Mother">Mother</option>
+                  <option value="Father">Father</option>
+                  <option value="Other relation">Other relation</option>
+                </select>
+                <div class="invalid-feedback">Relationship is required</div>
               </div>
               <button type="button" class="btn btn-primary" onclick="stepper.previous()">Previous</button>
               <button type="button" class="btn btn-primary btn-next-form">Next</button>
@@ -262,7 +259,6 @@
 <script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- Select2 -->
 <script src="../../plugins/select2/js/select2.full.min.js"></script>
-
 <!-- Bootstrap4 Duallistbox -->
 <script src="../../plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>
 <!-- InputMask -->
@@ -282,10 +278,10 @@
 <script src="../../plugins/dropzone/min/dropzone.min.js"></script>
 <!-- AdminLTE App -->
 <script src="../../dist/js/adminlte.min.js"></script>
-<!-- Register -->
-<script src="../../dist/js/pages/Lecturer/register.js"></script>
 <!-- Bootstrap Validate -->
 <script src="../../plugins/bootstrap-validate/bootstrap-validate.js"></script>
+<!-- Register -->
+<script src="../../dist/js/pages/Student/olregister.js"></script>
 <!-- Page specific script -->
 <script>
   function register() {

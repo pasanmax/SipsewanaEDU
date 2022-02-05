@@ -387,7 +387,7 @@
                 <thead>
                 <tr>
                   <th>Class ID</th>
-                  <th>Student ID</th>
+                  <th>Lecturer ID</th>
                   <th>Name</th>
                   <th>Subject</th>
                   <th>Date</th>
@@ -500,7 +500,7 @@
                 <tfoot>
                 <tr>
                   <th>Class ID</th>
-                  <th>Student ID</th>
+                  <th>Lecturer ID</th>
                   <th>Name</th>
                   <th>Subject</th>
                   <th>Date</th>

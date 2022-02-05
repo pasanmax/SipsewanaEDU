@@ -139,31 +139,31 @@
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item">
-              <a href="../../ManageStudents/Manage/List.php" class="nav-link">
+              <a href="../../Students/Manage/List.php" class="nav-link">
                 <i class="nav-icon far fa-edit"></i>
                 <p>Manage Students</p>
               </a>
             </li>
             <li class="nav-item menu-open">
-              <a href="../../ManageStudents/Payment/List.php" class="nav-link">
+              <a href="../../Students/Payment/List.php" class="nav-link">
                 <i class="nav-icon fas fa-money-check-alt"></i>
                 <p>View Payments</p>
               </a>
             </li>
             <li class="nav-item">
-              <a href="../../ManageStudents/Homework/List.php" class="nav-link">
+              <a href="../../Students/Homework/List.php" class="nav-link">
                 <i class="nav-icon far fa-file-archive"></i>
                 <p>View Homeworks</p>
               </a>
             </li>
             <li class="nav-item">
-              <a href="../../ManageStudents/OnlineAttendance/List.php" class="nav-link">
+              <a href="../../Students/OnlineAttendance/List.php" class="nav-link">
                 <i class="nav-icon far fa-address-card"></i>
                 <p>View Online Attendance</p>
               </a>
             </li>
             <li class="nav-item">
-              <a href="../../ManageStudents/OfflineAttendance/List.php" class="nav-link">
+              <a href="../../Students/OfflineAttendance/List.php" class="nav-link">
                 <i class="nav-icon far fa-address-card"></i>
                 <p>View Offline Attendance</p>
               </a>
@@ -181,31 +181,31 @@
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item">
-              <a href="../../ManageLecturers/Manage/List.php" class="nav-link">
+              <a href="../../Lecturers/Manage/List.php" class="nav-link">
                 <i class="nav-icon far fa-edit"></i>
                 <p>Manage Lecturers</p>
               </a>
             </li>
             <li class="nav-item">
-              <a href="../../ManageLecturers/Payment/List.php" class="nav-link">
+              <a href="../../Lecturers/Payment/List.php" class="nav-link">
                 <i class="nav-icon fas fa-money-check-alt"></i>
                 <p>View Payments</p>
               </a>
             </li>
             <li class="nav-item">
-              <a href="../../ManageLecturers/Homework/List.php" class="nav-link">
+              <a href="../../Lecturers/Homework/List.php" class="nav-link">
                 <i class="nav-icon far fa-file-archive"></i>
                 <p>View Homeworks</p>
               </a>
             </li>
             <li class="nav-item">
-              <a href="../../ManageLecturers/OnlineAttendance/List.php" class="nav-link">
+              <a href=".../../Lecturers/OnlineAttendance/List.php" class="nav-link">
                 <i class="nav-icon far fa-address-card"></i>
                 <p>View Online Attendance</p>
               </a>
             </li>
             <li class="nav-item">
-              <a href="../../ManageLecturers/OfflineAttendance/List.php" class="nav-link">
+              <a href="../../Lecturers/OfflineAttendance/List.php" class="nav-link">
                 <i class="nav-icon far fa-address-card"></i>
                 <p>View Offline Attendance</p>
               </a>
@@ -419,7 +419,6 @@
                 </tr>
                 </tfoot>
               </table>
-            </div>
             </div>
             <!-- /.card-body -->
           </div>

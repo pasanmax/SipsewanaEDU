@@ -1,3 +1,9 @@
+<?php
+include('../../models/student.php');
+if(isset($_SESSION['id']))
+{
+  $student = new Student();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -40,7 +46,7 @@
     <ul class="navbar-nav ml-auto">
       <!-- Navbar log out -->
       <li class="nav-item">
-        <a href="./Login.php" class="nav-link">Log out</a>
+        <a href="../../models/student.php?logout=1" class="nav-link">Log out</a>
       </li>
     </ul>
   </nav>
@@ -62,7 +68,7 @@
           <img src="../../dist/img/dashboardImages/user.png" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">User's name</a>
+          <a href="#" class="d-block"><?=$student->getName($_SESSION['id'])?></a>
         </div>
       </div>
 
@@ -235,7 +241,8 @@
             <!-- small box -->
             <div class="small-box bg-info">
               <div class="inner">
-                <h3>80<sup style="font-size: 20px">%</sup></h3>
+                <?php $count = $student->getOnlineAttendance($_SESSION['id'])?>
+                <h3><?= $count ?><sup style="font-size: 20px">%</sup></h3>
 
                 <p>Online Attendance</p>
               </div>
@@ -250,7 +257,8 @@
             <!-- small box -->
             <div class="small-box bg-success">
               <div class="inner">
-                <h3>53<sup style="font-size: 20px">%</sup></h3>
+                <?php $count = $student->getOfflineAttendance($_SESSION['id'])?>
+                <h3><?= $count ?><sup style="font-size: 20px">%</sup></h3>
 
                 <p>Offline Attendance</p>
               </div>
@@ -265,7 +273,8 @@
             <!-- small box -->
             <div class="small-box bg-warning">
               <div class="inner">
-                <h3>2</h3>
+                <?php $count = $student->getPendingHomeworksCount($_SESSION['id'])?>
+                <h3><?= $count ?></h3>
 
                 <p>Pending Homeworks</p>
               </div>
@@ -280,7 +289,8 @@
             <!-- small box -->
             <div class="small-box bg-danger">
               <div class="inner">
-                <h3>1</h3>
+                <?php $count = $student->getPendingPaymentsCount($_SESSION['id'])?>
+                <h3><?= $count ?></h3>
 
                 <p>Pending Payments</p>
               </div>
@@ -366,3 +376,10 @@
 <script src="../../dist/js/pages/Student/dashboard.js"></script>
 </body>
 </html>
+<?php
+}
+else
+{
+  header('location:./Login.php');
+}
+?>

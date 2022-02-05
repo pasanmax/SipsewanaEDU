@@ -1,3 +1,9 @@
+<?php
+include('../../../../models/student.php');
+if(isset($_SESSION['id']))
+{
+  $student = new Student();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -35,7 +41,7 @@
     <ul class="navbar-nav ml-auto">
       <!-- Navbar log out -->
       <li class="nav-item">
-        <a href="../../Login.php" class="nav-link">Log out</a>
+        <a href="../../../../models/student.php?logout=1" class="nav-link">Log out</a>
       </li>
     </ul>
   </nav>
@@ -57,7 +63,7 @@
           <img src="../../../../dist/img/dashboardImages/user.png" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">User's name</a>
+          <a href="#" class="d-block"><?=$student->getName($_SESSION['id'])?></a>
         </div>
       </div>
 
@@ -227,80 +233,29 @@
         <div class="col-12">
           <div class="card">
             <div class="card-body">
+            <?php $list = $student->viewOfflineAttendance($_SESSION['id'])?>
               <table id="offlineList" class="table table-bordered table-striped">
                 <thead>
                 <tr>
-                  <th>Subject</th>
+                  <th>Class ID</th>
                   <th>Date</th>
                   <th>In Time</th>
                   <th>Out Time</th>
                 </tr>
                 </thead>
                 <tbody>
+                <?php foreach($list as $item) {?>
                 <tr>
-                  <td>Biology A/L (2023)</td>
-                  <td>07/21/2021</td>
-                  <td>08.00 AM</td>
-                  <td>10.30 AM</td>
+                  <td><?= $item['cls_attst_id']?></td>
+                  <td><?= $item['date']?></td>
+                  <td><?= $item['intime']?></td>
+                  <td><?= $item['outtime']?></td>
                 </tr>
-                <tr>
-                  <td>Biology A/L (2023)</td>
-                  <td>07/21/2021</td>
-                  <td>08.00 AM</td>
-                  <td>10.30 AM</td>
-                </tr>
-                <tr>
-                  <td>Biology A/L (2023)</td>
-                  <td>07/21/2021</td>
-                  <td>08.00 AM</td>
-                  <td>10.30 AM</td>
-                </tr>
-                <tr>
-                  <td>Biology A/L (2023)</td>
-                  <td>07/21/2021</td>
-                  <td>08.00 AM</td>
-                  <td>10.30 AM</td>
-                </tr>
-                <tr>
-                  <td>Biology A/L (2023)</td>
-                  <td>07/21/2021</td>
-                  <td>08.00 AM</td>
-                  <td>10.30 AM</td>
-                </tr>
-                <tr>
-                  <td>Biology A/L (2023)</td>
-                  <td>07/21/2021</td>
-                  <td>08.00 AM</td>
-                  <td>10.30 AM</td>
-                </tr>
-                <tr>
-                  <td>Biology A/L (2023)</td>
-                  <td>07/21/2021</td>
-                  <td>08.00 AM</td>
-                  <td>10.30 AM</td>
-                </tr>
-                <tr>
-                  <td>Biology A/L (2023)</td>
-                  <td>07/21/2021</td>
-                  <td>08.00 AM</td>
-                  <td>10.30 AM</td>
-                </tr>
-                <tr>
-                  <td>Biology A/L (2023)</td>
-                  <td>07/21/2021</td>
-                  <td>08.00 AM</td>
-                  <td>10.30 AM</td>
-                </tr>
-                <tr>
-                  <td>Biology A/L (2023)</td>
-                  <td>07/21/2021</td>
-                  <td>08.00 AM</td>
-                  <td>10.30 AM</td>
-                </tr>
+                <?php }?>
                 </tbody>
                 <tfoot>
                 <tr>
-                  <th>Subject</th>
+                  <th>Class ID</th>
                   <th>Date</th>
                   <th>In Time</th>
                   <th>Out Time</th>
@@ -351,3 +306,10 @@
 </script>
 </body>
 </html>
+<?php
+}
+else
+{
+  header('location:./Login.php');
+}
+?>

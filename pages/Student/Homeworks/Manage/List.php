@@ -1,3 +1,10 @@
+<?php
+include('../../../../models/student.php');
+include('../../../../models/homework.php');
+if(isset($_SESSION['id']))
+{
+  $student = new Student();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -37,7 +44,7 @@
     <ul class="navbar-nav ml-auto">
       <!-- Navbar log out -->
       <li class="nav-item">
-        <a href="../../Login.php" class="nav-link">Log out</a>
+        <a href="../../../../models/student.php?logout=1" class="nav-link">Log out</a>
       </li>
     </ul>
   </nav>
@@ -59,7 +66,7 @@
           <img src="../../../../dist/img/dashboardImages/user.png" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">User's name</a>
+          <a href="#" class="d-block"><?=$student->getName($_SESSION['id'])?></a>
         </div>
       </div>
 
@@ -229,10 +236,20 @@
         <div class="col-12">
           <div class="card">
             <div class="card-body">
+              <?php if(isset($_SESSION['response'])){?>
+                <div class="alert alert-<?=$_SESSION['response']?> alert-dismissible fade show" role="alert">
+                  <?=$_SESSION['message']?>
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+              <?php } unset($_SESSION['response']); unset($_SESSION['message']); ?>
+              <?php $list = $student->getHomewrokList($_SESSION['id'])?>
               <table id="homeworkList" class="table table-bordered table-striped">
                 <thead>
                 <tr>
-                  <th>#</th>
+                  <th hidden>HS ID</th>
+                  <th hidden>ID</th>
                   <th>Name</th>
                   <th>Subject</th>
                   <th>Created Date</th>
@@ -242,161 +259,37 @@
                 </tr>
                 </thead>
                 <tbody>
+                <?php if($list==null){}else{ foreach($list as $item) {?>
                 <tr>
-                  <td>1</td>
-                  <td>Lesson1
-                  </td>
-                  <td>Physics A/L (2023)</td>
-                  <td>07/14/2021</td>
-                  <td>07/22/2021</td>
-                  <td>07/16/2021</td>
+                  <td hidden><?= $item['id']?></td>
+                  <td hidden><?= $item['hw_id']?></td>
+                  <td><?= $item['name']?></td>
+                  <td><?= $item['subjectname']?></td>
+                  <td><?= $item['createddate']?></td>
+                  <td><?= $item['deadlinedate']?></td>
+                  <td><?= $item['submitdate']?></td>
                   <td>
                     <div class="btn-group btn-group-sm">
-                      <a href="#" class="btn btn-info"><i class="fas fa-download"></i></a>
+                      <?php
+                        $homework = new Homework();
+                        $fileName = $homework->getFileName($item['hw_id']);
+                        $path = $homework->getPath($item['hw_id']);
+                        if ($fileName == null) {} else {
+                          if ($path == null) {} else {
+                      ?>
+                      <a download="<?= $fileName ?>" href="../../../<?= $path ?><?= $fileName ?>" class="btn btn-info"><i class="fas fa-download"></i></a>
+                      <?php }} ?>
                       <a href="#" class="btn btn-success upload" data-toggle="modal" data-target="#modal-default"><i class="fas fa-upload"></i></a>
                       <!-- data-toggle="modal" data-target="#modal-default"> -->
                     </div>
                   </td>
                 </tr>
-                <tr>
-                  <td>2</td>
-                  <td>Lesson2
-                  </td>
-                  <td>Biology A/L (2023)</td>
-                  <td>07/14/2021</td>
-                  <td>07/16/2021</td>
-                  <td>07/16/2021</td>
-                  <td>
-                    <div class="btn-group btn-group-sm">
-                      <a href="#" class="btn btn-info"><i class="fas fa-download"></i></a>
-                      <a href="#" class="btn btn-success upload" data-toggle="modal" data-target="#modal-default"><i class="fas fa-upload"></i></a>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>3</td>
-                  <td>Lesson3
-                  </td>
-                  <td>Biology A/L (2023)</td>
-                  <td>07/14/2021</td>
-                  <td>07/16/2021</td>
-                  <td>07/16/2021</td>
-                  <td>
-                    <div class="btn-group btn-group-sm">
-                      <a href="#" class="btn btn-info"><i class="fas fa-download"></i></a>
-                      <a href="#" class="btn btn-success upload" data-toggle="modal" data-target="#modal-default"><i class="fas fa-upload"></i></a>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>4</td>
-                  <td>Lesson4
-                  </td>
-                  <td>Biology A/L (2023)</td>
-                  <td>07/14/2021</td>
-                  <td>07/16/2021</td>
-                  <td>07/16/2021</td>
-                  <td>
-                    <div class="btn-group btn-group-sm">
-                      <a href="#" class="btn btn-info"><i class="fas fa-download"></i></a>
-                      <a href="#" class="btn btn-success upload" data-toggle="modal" data-target="#modal-default"><i class="fas fa-upload"></i></a>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>5</td>
-                  <td>Lesson5
-                  </td>
-                  <td>Biology A/L (2023)</td>
-                  <td>07/14/2021</td>
-                  <td>07/16/2021</td>
-                  <td>07/16/2021</td>
-                  <td>
-                    <div class="btn-group btn-group-sm">
-                      <a href="#" class="btn btn-info"><i class="fas fa-download"></i></a>
-                      <a href="#" class="btn btn-success upload" data-toggle="modal" data-target="#modal-default"><i class="fas fa-upload"></i></a>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>6</td>
-                  <td>Lesson6
-                  </td>
-                  <td>Biology A/L (2023)</td>
-                  <td>07/14/2021</td>
-                  <td>07/16/2021</td>
-                  <td>07/16/2021</td>
-                  <td>
-                    <div class="btn-group btn-group-sm">
-                      <a href="#" class="btn btn-info"><i class="fas fa-download"></i></a>
-                      <a href="#" class="btn btn-success upload" data-toggle="modal" data-target="#modal-default"><i class="fas fa-upload"></i></a>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>7</td>
-                  <td>Lesson7
-                  </td>
-                  <td>Biology A/L (2023)</td>
-                  <td>07/14/2021</td>
-                  <td>07/16/2021</td>
-                  <td>07/16/2021</td>
-                  <td>
-                    <div class="btn-group btn-group-sm">
-                      <a href="#" class="btn btn-info"><i class="fas fa-download"></i></a>
-                      <a href="#" class="btn btn-success upload" data-toggle="modal" data-target="#modal-default"><i class="fas fa-upload"></i></a>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>8</td>
-                  <td>Lesson8
-                  </td>
-                  <td>Biology A/L (2023)</td>
-                  <td>07/14/2021</td>
-                  <td>07/16/2021</td>
-                  <td>07/16/2021</td>
-                  <td>
-                    <div class="btn-group btn-group-sm">
-                      <a href="#" class="btn btn-info"><i class="fas fa-download"></i></a>
-                      <a href="#" class="btn btn-success upload" data-toggle="modal" data-target="#modal-default"><i class="fas fa-upload"></i></a>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>9</td>
-                  <td>Lesson9
-                  </td>
-                  <td>Biology A/L (2023)</td>
-                  <td>07/14/2021</td>
-                  <td>07/16/2021</td>
-                  <td>07/16/2021</td>
-                  <td>
-                    <div class="btn-group btn-group-sm">
-                      <a href="#" class="btn btn-info"><i class="fas fa-download"></i></a>
-                      <a href="#" class="btn btn-success upload" data-toggle="modal" data-target="#modal-default"><i class="fas fa-upload"></i></a>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>10</td>
-                  <td>Lesson10
-                  </td>
-                  <td>Biology A/L (2023)</td>
-                  <td>07/14/2021</td>
-                  <td>07/16/2021</td>
-                  <td>07/16/2021</td>
-                  <td>
-                    <div class="btn-group btn-group-sm">
-                      <a href="#" class="btn btn-info"><i class="fas fa-download"></i></a>
-                      <a href="#" class="btn btn-success upload" data-toggle="modal" data-target="#modal-default"><i class="fas fa-upload"></i></a>
-                    </div>
-                  </td>
-                </tr>
+                <?php }}?>
                 </tbody>
                 <tfoot>
                 <tr>
-                  <th>#</th>
+                  <th hidden>HS ID</th>
+                  <th hidden>ID</th>
                   <th>Name</th>
                   <th>Subject</th>
                   <th>Created Date</th>
@@ -422,72 +315,51 @@
               </button>
             </div>
             <div class="modal-body">
-              <form id="hwsubmit" action="">
-                <div class="form-group">
-                  <label for="name">Homework Name : </label>
-                  <p id="name"></p>
-                </div>
-                <div class="form-group">
-                  <label for="subject">Subject : </label>
-                  <p id="subject"></p>
-                </div>
-                <div class="form-group">
-                  <label for="createdate">Created Date : </label>
-                  <p id="createdate"></p>
-                </div>
-                <div class="form-group">
-                  <label for="deadlinedate">Deadline Date : </label>
-                  <p id="deadlinedate"></p>
-                </div>
-                <div class="form-group">
-                  <label for="uploadfile">Upload File : </label>
-                  <div id="actions" class="row">
-                    <div class="col-lg-6">
-                      <div class="btn-group w-100">
-                        <span class="btn btn-success col fileinput-button">
-                          <i class="fas fa-plus"></i>
-                          <span>Add files</span>
-                        </span>
-                      </div>
+              <form id="hwsubmit" action="../../../../models/hw_submission.php" method="POST" enctype="multipart/form-data">
+                <table width="500px" height="300px">
+                  <tr>
+                    <div class="form-group">
+                      <td><input type="text" name="hs_id" value="" id="hs_id" hidden></input></td>
                     </div>
-                    <div class="col-lg-6 d-flex align-items-center">
-                      <div class="fileupload-process w-100">
-                        <div id="total-progress" class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
-                          <div class="progress-bar progress-bar-success" style="width:0%;" data-dz-uploadprogress></div>
-                        </div>
-                      </div>
+                  </tr>
+                  <tr>
+                    <div class="form-group">
+                      <td><input type="text" name="id" value="" id="id" hidden></input></td>
                     </div>
-                  </div>
-                  <div class="table table-striped files" id="previews">
-                    <div id="template" class="row mt-2">
-                      <div class="col-auto">
-                          <span class="preview"><img src="data:," alt="" data-dz-thumbnail /></span>
-                      </div>
-                      <div class="col d-flex align-items-center">
-                          <p class="mb-0">
-                            <span class="lead" data-dz-name></span>
-                            (<span data-dz-size></span>)
-                          </p>
-                          <strong class="error text-danger" data-dz-errormessage></strong>
-                      </div>
-                      <div class="col-4 d-flex align-items-center">
-                          <div class="progress progress-striped active w-100" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
-                            <div class="progress-bar progress-bar-success" style="width:0%;" data-dz-uploadprogress></div>
-                          </div>
-                      </div>
-                      <div class="col-auto d-flex align-items-center">
-                        <div class="btn-group">
-                          <button data-dz-remove class="btn btn-danger delete">
-                            <i class="fas fa-trash"></i>
-                            <span>Delete</span>
-                          </button>
-                        </div>
-                      </div>
+                  </tr>
+                  <tr>
+                    <div class="form-group">
+                      <td><label for="name">Homework Name : </label></td>
+                      <td><input type="text" name="name" value="" id="name"></input></td>
                     </div>
-                  </div>
-                </div>
+                  </tr>
+                  <tr>
+                    <div class="form-group">
+                      <td><label for="subject">Subject : </label></td>
+                      <td><input type="text" name="subject" value="" id="subject"></input></td>
+                    </div>
+                  </tr>
+                  <tr>
+                    <div class="form-group">
+                      <td><label for="createdate">Created Date : </label></td>
+                      <td><input type="text" name="createdate" value="" id="createdate"></input></td>
+                    </div>
+                  </tr>
+                  <tr>
+                    <div class="form-group">
+                      <td><label for="deadlinedate">Deadline Date : </label></td>
+                      <td><input type="text" name="deadlinedate" value="" id="deadlinedate"></input></td>
+                    </div>
+                  </tr>
+                  <tr>
+                    <div class="form-group">
+                      <td><label for="uploadfile">Upload File : </label></td>
+                      <td><input type="file" id="file" name="file" accept="application/pdf" required/></td>
+                    </div>
+                  </tr>
+                </table>
                 <div class="modal-footer justify-content-between">
-                  <button type="submit" id="reset" class="btn btn-info">Submit</button>
+                  <button type="submit" name="hwSubmit" class="btn btn-info">Submit</button>
                   <button type="button" class="btn btn-default float-right" class="close" data-dismiss="modal" aria-label="Close">Cancel</button>
                 </div>
               </form>
@@ -535,41 +407,41 @@
     }).buttons().container().appendTo('#homeworkList_wrapper .col-md-6:eq(0)');
   });
 
-  // DropzoneJS Demo Code Start
-  Dropzone.autoDiscover = false
+  // // DropzoneJS Demo Code Start
+  // Dropzone.autoDiscover = false
 
-  // Get the template HTML and remove it from the doumenthe template HTML and remove it from the doument
-  var previewNode = document.querySelector("#template")
-  previewNode.id = ""
-  var previewTemplate = previewNode.parentNode.innerHTML
-  previewNode.parentNode.removeChild(previewNode)
+  // // Get the template HTML and remove it from the doumenthe template HTML and remove it from the doument
+  // var previewNode = document.querySelector("#template")
+  // previewNode.id = ""
+  // var previewTemplate = previewNode.parentNode.innerHTML
+  // previewNode.parentNode.removeChild(previewNode)
 
-  var myDropzone = new Dropzone(document.body, { // Make the whole body a dropzone
-    url: "/target-url", // Set the url
-    thumbnailWidth: 80,
-    thumbnailHeight: 80,
-    parallelUploads: 20,
-    acceptedFiles: ".pdf,.docx,.doc,",
-    previewTemplate: previewTemplate,
-    autoQueue: false, // Make sure the files aren't queued until manually added
-    previewsContainer: "#previews", // Define the container to display the previews
-    clickable: ".fileinput-button" // Define the element that should be used as click trigger to select files.
-  })
+  // var myDropzone = new Dropzone(document.body, { // Make the whole body a dropzone
+  //   url: "upload.php", // Set the url
+  //   thumbnailWidth: 80,
+  //   thumbnailHeight: 80,
+  //   parallelUploads: 20,
+  //   acceptedFiles: ".pdf,.docx,.doc,",
+  //   previewTemplate: previewTemplate,
+  //   autoQueue: false, // Make sure the files aren't queued until manually added
+  //   previewsContainer: "#previews", // Define the container to display the previews
+  //   clickable: ".fileinput-button" // Define the element that should be used as click trigger to select files.
+  // })
 
-  // Update the total progress bar
-  myDropzone.on("totaluploadprogress", function(progress) {
-    document.querySelector("#total-progress .progress-bar").style.width = progress + "%"
-  })
+  // // Update the total progress bar
+  // myDropzone.on("totaluploadprogress", function(progress) {
+  //   document.querySelector("#total-progress .progress-bar").style.width = progress + "%"
+  // })
 
-  myDropzone.on("sending", function(file) {
-    // Show the total progress bar when upload starts
-    document.querySelector("#total-progress").style.opacity = "1"
-  })
+  // myDropzone.on("sending", function(file) {
+  //   // Show the total progress bar when upload starts
+  //   document.querySelector("#total-progress").style.opacity = "1"
+  // })
 
-  // Hide the total progress bar when nothing's uploading anymore
-  myDropzone.on("queuecomplete", function(progress) {
-    document.querySelector("#total-progress").style.opacity = "0"
-  })
+  // // Hide the total progress bar when nothing's uploading anymore
+  // myDropzone.on("queuecomplete", function(progress) {
+  //   document.querySelector("#total-progress").style.opacity = "0"
+  // })
 
   $('.upload').on('click', function() {
     // $('#modal-default').modal('show');
@@ -579,18 +451,31 @@
       return $(this).text();
     }).get();
 
-    console.log(data);
-    $('#name').html(data[1]);
-    $('#subject').html(data[2]);
-    $('#createdate').html(data[3]);
-    $('#deadlinedate').html(data[4]);
+    //console.log(data);
+    document.getElementById('hs_id').value = data[0];
+    document.getElementById('id').value = data[1];
+    document.getElementById('name').value = data[2];
+    document.getElementById('subject').value = data[3];
+    document.getElementById('createdate').value = data[4];
+    document.getElementById('deadlinedate').value = data[5];
+    //$('#name').html(data[1]);
+    // $('#subject').html(data[2]);
+    // $('#createdate').html(data[3]);
+    // $('#deadlinedate').html(data[4]);
 
     //on modal closing
-    $('#modal-default').on('hidden.bs.modal', function () {
-      myDropzone.removeAllFiles(true)
-      console.clear()
-    })
+    // $('#modal-default').on('hidden.bs.modal', function () {
+    //   myDropzone.removeAllFiles(true)
+    //   console.clear()
+    // })
   });
 </script>
 </body>
 </html>
+<?php
+}
+else
+{
+  header('location:./Login.php');
+}
+?>

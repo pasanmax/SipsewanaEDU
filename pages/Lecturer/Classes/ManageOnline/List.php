@@ -1,3 +1,11 @@
+<?php
+include('../../../../models/lecturer.php');
+include('../../../../models/subject.php');
+if(isset($_SESSION['id']))
+{
+  $lecturer = new Lecturer();
+  $subject = new Subject();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,6 +21,8 @@
   <link rel="stylesheet" href="../../../../plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
   <link rel="stylesheet" href="../../../../plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
   <link rel="stylesheet" href="../../../../plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+  <!-- Tempusdominus Bootstrap 4 -->
+  <link rel="stylesheet" href="../../../../plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="../../../../dist/css/adminlte.min.css">
 </head>
@@ -35,7 +45,7 @@
     <ul class="navbar-nav ml-auto">
       <!-- Navbar log out -->
       <li class="nav-item">
-        <a href="../../Login.php" class="nav-link">Log out</a>
+        <a href="../../../../models/lecturer.php?logout=1" class="nav-link">Log out</a>
       </li>
     </ul>
   </nav>
@@ -57,7 +67,7 @@
           <img src="../../../../dist/img/dashboardImages/user.png" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">User's name</a>
+          <a href="#" class="d-block"><?=$lecturer->getName($_SESSION['id'])?></a>
         </div>
       </div>
 
@@ -226,7 +236,7 @@
             <h1>Online Class List</h1>
             <div class="row mt-4">
               <div class="col-md-4">
-                <button type="button" class="btn btn-block btn-primary text-left"><i class="fas fa-plus"></i> Add Online Class</button>
+                <button type="button" class="btn btn-block btn-primary text-left" data-toggle="modal" data-target="#modal-add"><i class="fas fa-plus"></i> Add Online Class</button>
               </div>
             </div>
           </div>
@@ -247,10 +257,22 @@
         <div class="col-12">
           <div class="card">
             <div class="card-body">
+              <?php if(isset($_SESSION['response'])){?>
+                  <div class="alert alert-<?=$_SESSION['response']?> alert-dismissible fade show" role="alert">
+                    <?=$_SESSION['message']?>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+              <?php } unset($_SESSION['response']); unset($_SESSION['message']); ?>
+              <?php $list = $lecturer->getOnlinelist($_SESSION['id']);?>
               <table id="onlineList" class="table table-bordered table-striped">
                 <thead>
                 <tr>
+                  <th>ID</th>
                   <th>Subject</th>
+                  <th hidden>Class URL</th>
+                  <th hidden>Description</th>
                   <th>Class URL</th>
                   <th>Date</th>
                   <th>Duration</th>
@@ -259,38 +281,31 @@
                 </tr>
                 </thead>
                 <tbody>
+                <?php if($list==null){}else{ foreach($list as $item) {?>
                 <tr>
-                  <td>1</td>
-                  <td><button type="button" class="btn btn-block btn-success">Link</button></td>
-                  <td>07/21/2021</td>
-                  <td>2 hrs</td>
-                  <td>10.30 AM</td>
+                  <td><?= $item['ol_cls_id']?></td>
+                  <td><?= $item['subjectname']?></td>
+                  <td hidden><?= $item['classurl']?></td>
+                  <td hidden><?= $item['description']?></td>
+                  <td><a href="<?= $item['classurl']?>" target="_blank" type="button" class="btn btn-block btn-success">Class Link</a></td>
+                  <td><?= $item['date']?></td>
+                  <td><?= $item['duration']?></td>
+                  <td><?= $item['starttime']?></td>
                   <td>
                     <div class="btn-group btn-group-sm">
-                      <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
-                      <a href="#" class="btn btn-success"><i class="far fa-edit"></i></a>
-                      <a href="#" class="btn btn-danger"><i class="fas fa-trash"></i></a>
+                      <a href="#" class="btn btn-success editClass" data-toggle="modal" data-target="#modal-update"><i class="far fa-edit"></i></a>
+                      <a href="../../../../models/online_class.php?delClass=<?= $item['ol_cls_id']?>" class="btn btn-danger" onclick="return confirm('Are you sure?')"><i class="fas fa-trash"></i></a>
                     </div>
                   </td>
                 </tr>
-                <tr>
-                  <td>2</td>
-                  <td><button type="button" class="btn btn-block btn-success">Link</button></td>
-                  <td>07/21/2021</td>
-                  <td>2 hrs</td>
-                  <td>10.30 AM</td>
-                  <td>
-                    <div class="btn-group btn-group-sm">
-                      <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
-                      <a href="#" class="btn btn-success"><i class="far fa-edit"></i></a>
-                      <a href="#" class="btn btn-danger"><i class="fas fa-trash"></i></a>
-                    </div>
-                  </td>
-                </tr>
+                <?php }}?>
                 </tbody>
                 <tfoot>
                 <tr>
+                  <th>ID</th>
                   <th>Subject</th>
+                  <th hidden>Class URL</th>
+                  <th hidden>Description</th>
                   <th>Class URL</th>
                   <th>Date</th>
                   <th>Duration</th>
@@ -304,6 +319,184 @@
           </div>
           <!-- /.card -->
         </div>
+      </div>
+      <div class="modal fade" id="modal-add">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">Add Online Class</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form id="onlineclass" action="../../../../models/online_class.php" method="POST">
+                <table width="500px" height="300px">
+                  <tr>
+                    <div class="form-group">
+                      <td><label for="subname">Subject Name : </label></td>
+                      <td>
+                        <?php $list = $subject->getRegSubNameL($_SESSION['id'])?>
+                        <select name="subname" class="form-control select2" style="width: 50%;" required>
+                          <?php if($list==null){} else { foreach($list as $item) {?>
+                          <option><?= $item['subjectname']?></option>
+                          <?php }}?>
+                        </select>
+                      </td>
+                    </div>
+                  </tr>
+                  <tr>
+                    <div class="form-group">
+                      <td><label for="classurl">Class URL : </label></td>
+                      <td><textarea name="classurl" cols="30" rows="5" required></textarea></td>
+                    </div>
+                  </tr>
+                  <tr>
+                    <div class="form-group">
+                      <td><label for="description">Description : </label></td>
+                      <td><textarea name="description" cols="30" rows="5" required></textarea></td>
+                    </div>
+                  </tr>
+                  <tr>
+                    <div class="form-group">
+                      <td><label for="date">Date : </label></td>
+                      <td>
+                        <div class="col-6" style="padding-left: 0px; padding-right: 0px;">
+                          <div class="input-group date" data-target-input="nearest">
+                            <input id="date" name="date" type="text" class="form-control datetimepicker-input" data-target="#date" placeholder="Select a Date" required>
+                            <div class="input-group-append" data-target="#date" data-toggle="datetimepicker">
+                              <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                    </div>
+                  </tr>
+                  <tr>
+                    <div class="form-group">
+                      <td><label for="duration">Duration : </label></td>
+                      <td><input type="number" name="duration" value="" id="duration" required></input><label> Hour/s</label></td>
+                    </div>
+                  </tr>
+                  <tr>
+                    <div class="form-group">
+                      <td><label for="starttime">Start time : </label></td>
+                      <td>
+                        <div class="col-6" style="padding-left: 0px; padding-right: 0px;">
+                          <div class="input-group starttime" data-target-input="nearest">
+                            <input id="starttime" name="starttime" type="text" class="form-control datetimepicker-input" data-target="#starttime" placeholder="Select a time" required>
+                            <div class="input-group-append" data-target="#starttime" data-toggle="datetimepicker">
+                              <div class="input-group-text"><i class="fa fa-clock"></i></div>
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                    </div>
+                  </tr>
+                </table>
+                <div class="modal-footer justify-content-between">
+                  <button type="submit" name="onlineclass" class="btn btn-info">Add</button>
+                  <button type="button" class="btn btn-default float-right" class="close" data-dismiss="modal" aria-label="Close">Cancel</button>
+                </div>
+              </form>
+            </div>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+
+
+      <div class="modal fade" id="modal-update">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">Update Online Class</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form id="uonlineclass" action="../../../../models/online_class.php" method="POST">
+                <table width="500px" height="300px">
+                  <tr hidden>
+                    <div class="form-group">
+                      <td><label for="uclassid">Class ID : </label></td>
+                      <td><input type="text" id="uclassid" name="uclassid"></td>
+                    </div>
+                  </tr>
+                  <tr>
+                    <div class="form-group">
+                      <td><label for="usubname">Subject Name : </label></td>
+                      <td>
+                        <?php $list = $subject->getRegSubNameL($_SESSION['id'])?>
+                        <select id="usubname" name="usubname" class="form-control select2" style="width: 50%;" required>
+                          <?php if($list==null){} else { foreach($list as $item) {?>
+                            <option><?= $item['subjectname']?></option>
+                          <?php }}?>
+                        </select>
+                      </td>
+                    </div>
+                  </tr>
+                  <tr>
+                    <div class="form-group">
+                      <td><label for="uclassurl">Class URL : </label></td>
+                      <td><textarea id="uclassurl" name="uclassurl" cols="30" rows="5" required></textarea></td>
+                    </div>
+                  </tr>
+                  <tr>
+                    <div class="form-group">
+                      <td><label for="udescription">Description : </label></td>
+                      <td><textarea id="udescription" name="udescription" cols="30" rows="5" required></textarea></td>
+                    </div>
+                  </tr>
+                  <tr>
+                    <div class="form-group">
+                      <td><label for="udate">Date : </label></td>
+                      <td>
+                        <div class="col-6" style="padding-left: 0px; padding-right: 0px;">
+                          <div class="input-group udate" data-target-input="nearest">
+                            <input id="udate" name="udate" type="text" value="" class="form-control datetimepicker-input" data-target="#udate" placeholder="Select a Date" required>
+                            <div class="input-group-append" data-target="#udate" data-toggle="datetimepicker">
+                              <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                    </div>
+                  </tr>
+                  <tr>
+                    <div class="form-group">
+                      <td><label for="uduration">Duration : </label></td>
+                      <td><input type="number" name="uduration" value="" id="uduration" required></input><label> Hour/s</label></td>
+                    </div>
+                  </tr>
+                  <tr>
+                    <div class="form-group">
+                      <td><label for="ustarttime">Start time : </label></td>
+                      <td>
+                        <div class="col-6" style="padding-left: 0px; padding-right: 0px;">
+                          <div class="input-group ustarttime" data-target-input="nearest">
+                            <input id="ustarttime" name="ustarttime" type="text" value="" class="form-control datetimepicker-input" data-target="#ustarttime" placeholder="Select a time" required>
+                            <div class="input-group-append" data-target="#ustarttime" data-toggle="datetimepicker">
+                              <div class="input-group-text"><i class="fa fa-clock"></i></div>
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                    </div>
+                  </tr>
+                </table>
+                <div class="modal-footer justify-content-between">
+                  <button type="submit" name="updateOnlineclass" class="btn btn-info">Update</button>
+                  <button type="button" class="btn btn-default float-right" class="close" data-dismiss="modal" aria-label="Close">Cancel</button>
+                </div>
+              </form>
+            </div>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
       </div>
     </section>
     <!-- /.content -->
@@ -330,6 +523,9 @@
 <script src="../../../../plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
 <script src="../../../../plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
 <script src="../../../../plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+<script src="../../../../plugins/moment/moment.min.js"></script>
+<!-- Tempusdominus Bootstrap 4 -->
+<script src="../../../../plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
 <!-- Bootstrap 4 -->
 <script src="../../../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- AdminLTE App -->
@@ -340,6 +536,71 @@
       "responsive": true, "lengthChange": false, "autoWidth": false
     }).buttons().container().appendTo('#onlineList_wrapper .col-md-6:eq(0)');
   });
+
+  $('#date').datetimepicker({
+    format: 'Y-MM-DD',
+    minDate: 'now'
+  });
+
+  $('#udate').datetimepicker({
+    format: 'Y-MM-DD',
+    minDate: 'now'
+  });
+
+  $('#starttime').datetimepicker({
+    format: 'hh:mm:ss'
+  });
+
+  $('#ustarttime').datetimepicker({
+    format: 'hh:mm:ss'
+  });
+
+  $('.editClass').on('click', function() {
+    // $('#modal-default').modal('show');
+
+    $tr = $(this).closest('tr');
+    var data = $tr.children("td").map(function () {
+      return $(this).text();
+    }).get();
+
+    document.getElementById('uclassid').value = data[0];
+    document.getElementById('uclassurl').value = data[2];
+    document.getElementById('udescription').value = data[3];
+    document.getElementById('udate').value = data[5];
+    document.getElementById('uduration').value = data[6];
+    document.getElementById('ustarttime').value = data[7];
+
+    //console.log(data);
+    // document.getElementById('classid').value = data[0];
+    // document.getElementById('Fclassid').submit(function() {
+    //   return false;
+    // });
+    // document.getElementById('Fclassid').submit();
+    //$.post('./List.php', {classid: data[0]});
+    //sessionStorage.setItem('classid',data[0]);
+    //document.cookie = 'classid='+data[0]+';'
+    //window.history.replaceState( {} , '', "./List.php?classid="+data[0] );
+    //window.location.href = "./List.php?classid="+data[0];
+    //window.location.href = "./List.php?classid="+data[0];
+  });
+
+  $('#modal-update').on('hidden.bs.modal', function () {
+    //window.history.replaceState( {} , '', "./List.php" );
+    // window.location.href = "./List.php";
+    //location.reload();
+    //document.cookie = "classid= ; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+    // console.log(cookie);
+    //sessionStorage.removeItem('classid'); 
+    // sessionStorage.clear();
+    //alert("Cookie cleared");
+  });
 </script>
 </body>
 </html>
+<?php
+}
+else
+{
+  header('location:../../Login.php');
+}
+?>

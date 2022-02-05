@@ -1,3 +1,9 @@
+<?php
+include('../../../../models/lecturer.php');
+if(isset($_SESSION['id']))
+{
+  $lecturer = new Lecturer();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -52,7 +58,7 @@
     <ul class="navbar-nav ml-auto">
       <!-- Navbar log out -->
       <li class="nav-item">
-        <a href="../../Login.php" class="nav-link">Log out</a>
+        <a href="../../../../models/lecturer.php?logout=1" class="nav-link">Log out</a>
       </li>
     </ul>
   </nav>
@@ -74,7 +80,7 @@
           <img src="../../../../dist/img/dashboardImages/user.png" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">User's name</a>
+          <a href="#" class="d-block"><?=$lecturer->getName($_SESSION['id'])?></a>
         </div>
       </div>
 
@@ -241,21 +247,20 @@
         <div class="row mb-2">
           <div class="col-sm-6">
             <h1>Homework Submission List</h1>
-            <form action="">
+            <form action="../../../../models/lecturer.php" method="POST">
               <div class="row mt-4">
                 <div class="col-md-5">
                   <div class="form-group">
-                    <select class="form-control select2" style="width: 100%;">
-                      <option selected="selected" disabled>Select homework ID</option>
-                      <option>1</option>
-                      <option>2</option>
-                      <option>3</option>
-                      <option>4</option>
+                    <?php $list = $lecturer->getHomewrokIdList($_SESSION['id'])?>
+                    <select name="homeworkid" class="form-control select2" style="width: 100%;" required>
+                    <?php if($list==null){} else { foreach($list as $item) {?>
+                      <option><?= $item['cre_hw_id']?></option>
+                    <?php }}?>
                     </select>
                   </div>
                 </div>
                 <div class="col-md-4">
-                  <button type="submit" class="btn btn-block btn-primary text-left"> Search</button>
+                  <button type="submit" name="searchHomework" class="btn btn-block btn-primary text-left"> Search</button>
                 </div>
               </div>
             </form>
@@ -277,10 +282,26 @@
         <div class="col-12">
           <div class="card">
             <div class="card-body">
+              <?php if(isset($_SESSION['response'])){?>
+                  <div class="alert alert-<?=$_SESSION['response']?> alert-dismissible fade show" role="alert">
+                    <?=$_SESSION['message']?>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+              <?php } unset($_SESSION['response']); unset($_SESSION['message']); ?>
+              <?php
+              if(isset($_SESSION['homeworkid'])) {
+                $list = $lecturer->getHomewrokSubmissionList($_SESSION['id'],$_SESSION['homeworkid']);
+              } else {
+                $list = null;
+              }
+              ?>
               <table id="submissionList" class="table table-bordered table-striped">
                 <thead>
                 <tr>
                   <th>Student ID</th>
+                  <th>Student Name</th>
                   <th>Name</th>
                   <th>Subject</th>
                   <th>Deadline Date</th>
@@ -289,62 +310,26 @@
                 </tr>
                 </thead>
                 <tbody>
+                <?php if($list==null){}else{ foreach($list as $item) {?>
                 <tr>
-                  <td>1</td>
-                  <td>Lesson1
-                  </td>
-                  <td>Physics A/L (2023)</td>
-                  <td>07/14/2021</td>
-                  <td>07/14/2021</td>
+                  <td><?= $item['student_id']?></td>
+                  <td><?= $item['studentname']?></td>
+                  <td><?= $item['name']?></td>
+                  <td><?= $item['subjectname']?></td>
+                  <td><?= $item['deadlinedate']?></td>
+                  <td><?= $item['submitdate']?></td>
                   <td>
                     <div class="btn-group btn-group-sm">
-                      <a href="#" class="btn btn-info"><i class="fas fa-download"></i></a>
-                    </div>
-                </td>
-                </tr>
-                <tr>
-                  <td>2</td>
-                  <td>Lesson2
-                  </td>
-                  <td>Biology A/L (2023)</td>
-                  <td>07/14/2021</td>
-                  <td>07/14/2021</td>
-                  <td>
-                    <div class="btn-group btn-group-sm">
-                      <a href="#" class="btn btn-info"><i class="fas fa-download"></i></a>
+                      <a download="<?= $item['fileName']?>" href="../../../<?= $item['path']?><?= $item['fileName']?>" class="btn btn-info"><i class="fas fa-download"></i></a>
                     </div>
                   </td>
                 </tr>
-                <tr>
-                  <td>3</td>
-                  <td>Lesson3
-                  </td>
-                  <td>Biology A/L (2023)</td>
-                  <td>07/14/2021</td>
-                  <td>07/14/2021</td>
-                  <td>
-                    <div class="btn-group btn-group-sm">
-                      <a href="#" class="btn btn-info"><i class="fas fa-download"></i></a>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>4</td>
-                  <td>Lesson4
-                  </td>
-                  <td>Biology A/L (2023)</td>
-                  <td>07/14/2021</td>
-                  <td>07/14/2021</td>
-                  <td>
-                    <div class="btn-group btn-group-sm">
-                      <a href="#" class="btn btn-info"><i class="fas fa-download"></i></a>
-                    </div>
-                  </td>
-                </tr>
+                <?php }}?>
                 </tbody>
                 <tfoot>
                 <tr>
                   <th>Student ID</th>
+                  <th>Student Name</th>
                   <th>Name</th>
                   <th>Subject</th>
                   <th>Deadline Date</th>
@@ -421,3 +406,10 @@
 </script>
 </body>
 </html>
+<?php
+}
+else
+{
+  header('location:../../Login.php');
+}
+?>

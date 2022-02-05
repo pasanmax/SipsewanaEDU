@@ -1,3 +1,4 @@
+<?php session_start();?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,6 +12,8 @@
   <link rel="stylesheet" href="../../plugins/fontawesome-free/css/all.min.css">
   <!-- icheck bootstrap -->
   <link rel="stylesheet" href="../../plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+  <!-- Toastr -->
+  <link rel="stylesheet" href="../../plugins/toastr/toastr.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="../../dist/css/adminlte.min.css">
 </head>
@@ -28,17 +31,25 @@
     <div class="card-body login-card-body">
       <p class="login-box-msg">Sign in to start your session</p>
 
-      <form action="./Dashboard.php" method="post">
+      <form action="../../models/student.php" method="post">
+      <?php if(isset($_SESSION['response'])){?>
+      <div class="alert alert-<?=$_SESSION['response']?> alert-dismissible fade show" role="alert">
+        <?=$_SESSION['message']?>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <?php } unset($_SESSION['response']); unset($_SESSION['message']); ?>
         <div class="input-group mb-3">
-          <input type="email" class="form-control" placeholder="Email">
+          <input type="text" name="username" class="form-control" placeholder="Username">
           <div class="input-group-append">
             <div class="input-group-text">
-              <span class="fas fa-envelope"></span>
+              <span class="fas fa-user"></span>
             </div>
           </div>
         </div>
         <div class="input-group mb-3">
-          <input type="password" class="form-control" placeholder="Password">
+          <input type="password" name="password" class="form-control" placeholder="Password">
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-lock"></span>
@@ -48,7 +59,7 @@
         <div class="row">
           <!-- /.col -->
           <div class="col-4">
-            <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+            <button name="signin" type="submit" class="btn btn-primary btn-block">Sign In</button>
           </div>
           <!-- /.col -->
         </div>
@@ -61,12 +72,14 @@
         </a>
       </div>
       <!-- Lecturer-login-links -->
-
       <p class="mb-1">
         <a href="./Forgot-password.php">I forgot my password</a>
       </p>
       <p class="mb-0">
-        <a href="register.php" class="text-center">Register a new membership</a>
+        <a href="./alRegister.php" class="text-center">Register as a new A/L Student</a>
+      </p>
+      <p class="mb-0">
+        <a href="./olRegister.php" class="text-center">Register as a new O/L Student</a>
       </p>
       <p class="mb-1">
         <a href="../../index.php">Go to home</a>
@@ -81,7 +94,14 @@
 <script src="../../plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap 4 -->
 <script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- Toastr -->
+<script src="../../plugins/toastr/toastr.min.js"></script>
 <!-- AdminLTE App -->
 <script src="../../dist/js/adminlte.min.js"></script>
+<!-- <script>
+  $(document).ready(function() {
+    toastr.success('Lorem ipsum dolor sit amet, consetetur sadipscing elitr.');
+  });
+</script> -->
 </body>
 </html>

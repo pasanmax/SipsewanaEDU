@@ -1,3 +1,9 @@
+<?php
+include('../../../../models/student.php');
+if(isset($_SESSION['id']))
+{
+  $student = new Student();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -35,7 +41,7 @@
     <ul class="navbar-nav ml-auto">
       <!-- Navbar log out -->
       <li class="nav-item">
-        <a href="../../Login.php" class="nav-link">Log out</a>
+        <a href="../../../../models/student.php?logout=1" class="nav-link">Log out</a>
       </li>
     </ul>
   </nav>
@@ -57,7 +63,7 @@
           <img src="../../../../dist/img/dashboardImages/user.png" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">User's name</a>
+          <a href="#" class="d-block"><?=$student->getName($_SESSION['id'])?></a>
         </div>
       </div>
 
@@ -227,6 +233,18 @@
         <div class="col-12">
           <div class="card">
             <div class="card-body">
+              <?php if(isset($_SESSION['response'])){?>
+                    <div class="alert alert-<?=$_SESSION['response']?> alert-dismissible fade show" role="alert">
+                      <?=$_SESSION['message']?>
+                      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+              <?php } unset($_SESSION['response']); unset($_SESSION['message']); ?>
+              <?php
+              include('../../../../models/payment.php');
+              $payment = new Payment();
+              $list = $payment->getStudentPaidPayments($_SESSION['id'])?>
               <table id="paymentList" class="table table-bordered table-striped">
                 <thead>
                 <tr>
@@ -239,30 +257,20 @@
                 </tr>
                 </thead>
                 <tbody>
+                <?php if($list==null){}else{ foreach($list as $item) {?>
                 <tr>
-                  <td>1</td>
-                  <td>Physics</td>
-                  <td>July</td>
-                  <td>Rs.800</td>
-                  <td>07/21/2021</td>
+                  <td><?= $item['pay_id']?></td>
+                  <td><?= $item['subjectname']?></td>
+                  <td><?= $item['month']?></td>
+                  <td><?= $item['amount']?></td>
+                  <td><?= $item['date']?></td>
                   <td>
                     <div class="btn-group btn-group-sm">
                       <a href="#" class="btn btn-info"><i class="fas fa-download"></i></a>
                     </div>
                   </td>
                 </tr>
-                <tr>
-                  <td>2</td>
-                  <td>Physics</td>
-                  <td>June</td>
-                  <td>Rs.800</td>
-                  <td>07/21/2021</td>
-                  <td>
-                    <div class="btn-group btn-group-sm">
-                      <a href="#" class="btn btn-info"><i class="fas fa-download"></i></a>
-                    </div>
-                  </td>
-                </tr>
+                <?php }}?>
                 </tbody>
                 <tfoot>
                 <tr>
@@ -319,3 +327,10 @@
 </script>
 </body>
 </html>
+<?php
+}
+else
+{
+  header('location:./Login.php');
+}
+?>

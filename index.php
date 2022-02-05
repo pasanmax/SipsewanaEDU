@@ -4,9 +4,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="./dist/css/style.css">
   <link rel="stylesheet" href="./plugins/fontawesome-free/css/all.min.css">
+  <link rel="stylesheet" href="./dist/css/style.css">
   <title>Sipsewana EDU</title>
+  <!-- Theme style -->
+  <link rel="stylesheet" href="./dist/css/adminlte.min.css">
 </head>
 
 <body>
@@ -25,7 +27,7 @@
           </div>
           <ul>
             <li><a href="#home" data-after="Home">Home</a></li>
-            <li><a href="#teachers" data-after="Teachers">Teachers</a></li>
+            <li><a href="#lecturers" data-after="Lecturers">Lecturers</a></li>
             <li><a href="#classes" data-after="Classes">Classes</a></li>
             <li><a href="#about" data-after="About">About</a></li>
             <li><a href="#contact" data-after="Contact">Contact</a></li>
@@ -45,58 +47,59 @@
         <h1>Hello, <span></span></h1>
         <h1>Welcome to <span></span></h1>
         <h1>Sipsewana EDU <span></span></h1>
-        <a href="#classes" type="button" class="cta">Enroll Now!</a>
+        <a data-toggle="modal" data-target="#modal-default" type="button" class="ctas">Enroll as Student!</a>
+        <a href="./pages/Lecturer/Register.php" type="button" class="ctal">Enroll as Lecturer!</a>
       </div>
     </div>
   </section>
   <!-- End Home Section  -->
 
-  <!-- teachers Section -->
-  <section id="teachers">
-    <div class="teachers container">
-      <div class="teachers-top">
+  <!-- lecturers Section -->
+  <section id="lecturers">
+    <div class="lecturers container">
+      <div class="lecturers-top">
         <h1 class="section-title"><span>T</span>eachers</h1>
         <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ipsum deleniti maiores pariatur assumenda quas
           magni et, doloribus quod voluptate quasi molestiae magnam officiis dolorum, dolor provident atque molestias
           voluptatum explicabo!</p>
       </div>
-      <div class="teachers-bottom">
-        <div class="teachers-item">
+      <div class="lecturers-bottom">
+        <div class="lecturers-item">
           <div class="icon"><img src="https://img.icons8.com/bubbles/100/000000/services.png" /></div>
           <h2>Web Design</h2>
           <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis debitis rerum, magni voluptatem sed
             architecto placeat beatae tenetur officia quod</p>
         </div>
-        <div class="teachers-item">
+        <div class="lecturers-item">
           <div class="icon"><img src="https://img.icons8.com/bubbles/100/000000/services.png" /></div>
           <h2>Web Design</h2>
           <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis debitis rerum, magni voluptatem sed
             architecto placeat beatae tenetur officia quod</p>
         </div>
-        <div class="teachers-item">
+        <div class="lecturers-item">
           <div class="icon"><img src="https://img.icons8.com/bubbles/100/000000/services.png" /></div>
           <h2>Web Design</h2>
           <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis debitis rerum, magni voluptatem sed
             architecto placeat beatae tenetur officia quod</p>
         </div>
-        <div class="teachers-item">
+        <div class="lecturers-item">
           <div class="icon"><img src="https://img.icons8.com/bubbles/100/000000/services.png" /></div>
           <h2>Web Design</h2>
           <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis debitis rerum, magni voluptatem sed
             architecto placeat beatae tenetur officia quod</p>
         </div>
 
-        <div class="teachers-item">
+        <div class="lecturers-item">
           <div class="icon"><img src="https://img.icons8.com/bubbles/100/000000/services.png" /></div>
           <h2>Web Design</h2>
           <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis debitis rerum, magni voluptatem sed
             architecto placeat beatae tenetur officia quod</p>
-        </div><div class="teachers-item">
+        </div><div class="lecturers-item">
           <div class="icon"><img src="https://img.icons8.com/bubbles/100/000000/services.png" /></div>
           <h2>Web Design</h2>
           <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis debitis rerum, magni voluptatem sed
             architecto placeat beatae tenetur officia quod</p>
-        </div><div class="teachers-item">
+        </div><div class="lecturers-item">
           <div class="icon"><img src="https://img.icons8.com/bubbles/100/000000/services.png" /></div>
           <h2>Web Design</h2>
           <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis debitis rerum, magni voluptatem sed
@@ -105,7 +108,7 @@
       </div>
     </div>
   </section>
-  <!-- End teachers Section -->
+  <!-- End lecturers Section -->
 
   <!-- classes Section -->
   <section id="classes">
@@ -195,7 +198,7 @@
           exercitationem cumque earum omnis ipsum rem accusantium quis, quas quia, accusamus provident suscipit magni!
           Expedita sint ad dolore, commodi labore nihil velit earum ducimus nulla quae nostrum fugit aut, deserunt
           reprehenderit libero enim!</p>
-        <a href="#" class="cta">Download Resume</a>
+        <a href="#" style="color: black;" class="ctas">Download Resume</a>
       </div>
     </div>
   </section>
@@ -261,8 +264,37 @@
 
     <h1 class="credit">Copyright &copy; 2021-2024 <a href="#">SipsewanaEDU</a>.All rights reserved.</h1>
   </div>
+  <!-- Modal -->
+  <div class="modal fade" id="modal-default">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Select One</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body text-center">
+        <div class="row mt-4">
+          <div class="col-md-5">
+          <button type="button" onclick="location.href='./pages/Student/olRegister.php';" class="btn btn-block btn-primary btn-lg text-center">O/L Student</button>
+          </div>
+          <div class="col-md-5">
+            <button type="button" onclick="location.href='./pages/Student/alRegister.php';" class="btn btn-block btn-primary btn-lg text-center">A/L Student</button>
+          </div>
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+
+
   <!-- End Footer -->
   <script src="./dist/js/app.js"></script>
+  <!-- jQuery -->
+  <script src="./plugins/jquery/jquery.min.js"></script>
+  <!-- Bootstrap 4 -->
+  <script src="./plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 </body>
-
 </html>

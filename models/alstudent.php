@@ -4,9 +4,9 @@ require_once 'student.php';
 class alStudent extends Student
 {
     // properties
-    private string $idno;
-    private string $email;
-    private string $contactno;
+    private $idno;
+    private $email;
+    private $contactno;
 
     // methods
     function __construct($idno,$email,$contactno)
@@ -23,7 +23,7 @@ class alStudent extends Student
 
     function getDetails()
     {
-        return $details;
+        //return $details;
     }
 }
 

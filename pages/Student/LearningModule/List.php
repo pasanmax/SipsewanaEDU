@@ -1,3 +1,11 @@
+<?php
+include('../../../models/student.php');
+include('../../../models/learning_module.php');
+if(isset($_SESSION['id']))
+{
+  $student = new Student();
+  $learning_module = new Learning_Module();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -35,7 +43,7 @@
     <ul class="navbar-nav ml-auto">
       <!-- Navbar log out -->
       <li class="nav-item">
-        <a href="../Login.php" class="nav-link">Log out</a>
+        <a href="../../../models/student.php?logout=1" class="nav-link">Log out</a>
       </li>
     </ul>
   </nav>
@@ -57,7 +65,7 @@
           <img src="../../../dist/img/dashboardImages/user.png" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">User's name</a>
+          <a href="#" class="d-block"><?=$student->getName($_SESSION['id'])?></a>
         </div>
       </div>
 
@@ -226,10 +234,19 @@
         <div class="col-12">
           <div class="card">
             <div class="card-body">
+              <?php if(isset($_SESSION['response'])){?>
+                  <div class="alert alert-<?=$_SESSION['response']?> alert-dismissible fade show" role="alert">
+                    <?=$_SESSION['message']?>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+              <?php } unset($_SESSION['response']); unset($_SESSION['message']); ?>
+              <?php $list = $learning_module->getFiles($_SESSION['id'])?>
               <table id="learningList" class="table table-bordered table-striped">
                 <thead>
                 <tr>
-                  <th>#</th>
+                  <th hidden>LM ID</th>
                   <th>Name</th>
                   <th>Subject</th>
                   <th>Date</th>
@@ -237,39 +254,28 @@
                 </tr>
                 </thead>
                 <tbody>
+                <?php if($list==null){}else{ foreach($list as $item) {?>
                 <tr>
-                  <td>1</td>
-                  <td>Lesson1</td>
-                  <td>Physics</td>
-                  <td>07/21/2021</td>
+                  <td hidden><?= $item['lm_id']?></td>
+                  <td><?= $item['name']?></td>
+                  <td><?= $item['subjectname']?></td>
+                  <td><?= $item['date']?></td>
                   <td>
                     <div class="btn-group btn-group-sm">
-                      <a href="#" class="btn btn-info"><i class="fas fa-download"></i></a>
-                      <a href="#" class="btn btn-secondary"><i class="fas fa-eye"></i></a>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>2</td>
-                  <td>Lesson2</td>
-                  <td>Biology</td>
-                  <td>07/21/2021</td>
-                  <td>
-                    <div class="btn-group btn-group-sm">
-                      <a href="#" class="btn btn-info"><i class="fas fa-download"></i></a>
-                      <a href="#" class="btn btn-secondary"><i class="fas fa-eye"></i></a>
+                      <a download="<?= $item['fileName'] ?>" href="../../<?= $item['path'] ?><?= $item['fileName'] ?>" class="btn btn-info"><i class="fas fa-download"></i></a>
                     </div>
                   </td>
                 </tr>
                 </tbody>
                 <tfoot>
                 <tr>
-                  <th>#</th>
+                  <th hidden>LM ID</th>
                   <th>Name</th>
                   <th>Subject</th>
                   <th>Date</th>
                   <th>Action</th>
                 </tr>
+                <?php }}?>
                 </tfoot>
               </table>
             </div>
@@ -316,3 +322,10 @@
 </script>
 </body>
 </html>
+<?php
+}
+else
+{
+  header('location:../Login.php');
+}
+?>

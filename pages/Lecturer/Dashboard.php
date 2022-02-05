@@ -1,3 +1,9 @@
+<?php
+include('../../models/lecturer.php');
+if(isset($_SESSION['id']))
+{
+  $lecturer = new Lecturer();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -40,7 +46,7 @@
     <ul class="navbar-nav ml-auto">
       <!-- Navbar log out -->
       <li class="nav-item">
-        <a href="./Login.php" class="nav-link">Log out</a>
+        <a href="../../models/lecturer.php?logout=1" class="nav-link">Log out</a>
       </li>
     </ul>
   </nav>
@@ -62,7 +68,7 @@
           <img src="../../dist/img/dashboardImages/user.png" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">User's name</a>
+          <a href="#" class="d-block"><?=$lecturer->getName($_SESSION['id'])?></a>
         </div>
       </div>
 
@@ -287,7 +293,7 @@
               <div class="icon">
                 <i class="nav-icon far fa-check-circle"></i>
               </div>
-              <a href="./Payments/Pay/List.php" class="small-box-footer">Click Here <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="./Attendance/StudentOnlineAttendance/List.php" class="small-box-footer">Click Here <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
@@ -366,3 +372,10 @@
 <script src="../../dist/js/pages/Lecturer/dashboard.js"></script>
 </body>
 </html>
+<?php
+}
+else
+{
+  header('location:./Login.php');
+}
+?>

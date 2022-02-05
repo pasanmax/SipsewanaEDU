@@ -1,3 +1,11 @@
+<?php
+include('../../../models/student.php');
+include('../../../models/subject.php');
+if(isset($_SESSION['id']))
+{
+  $student = new Student();
+  $subject = new Subject();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -48,7 +56,7 @@
     <ul class="navbar-nav ml-auto">
       <!-- Navbar log out -->
       <li class="nav-item">
-        <a href="../Login.php" class="nav-link">Log out</a>
+        <a href="../../../models/student.php?logout=1" class="nav-link">Log out</a>
       </li>
     </ul>
   </nav>
@@ -70,7 +78,7 @@
           <img src="../../../dist/img/dashboardImages/user.png" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">User's name</a>
+          <a href="#" class="d-block"><?=$student->getName($_SESSION['id'])?></a>
         </div>
       </div>
 
@@ -248,23 +256,31 @@
               </div>
             </div>
             <div class="card-body">
-              <form id="registration" action="">
+              <?php if(isset($_SESSION['response'])){?>
+              <div class="alert alert-<?=$_SESSION['response']?> alert-dismissible fade show" role="alert">
+                <?=$_SESSION['message']?>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <?php } unset($_SESSION['response']); unset($_SESSION['message']); ?>
+              <form id="registration" action="../../../models/student.php" method="post">
                 <div class="form-group">
                   <label>Select a Subject</label>
-                  <select class="form-control select2" style="width: 100%;">
-                    <option selected="selected" disabled>Select one</option>
-                    <option>Biology</option>
-                    <option>Physics</option>
-                    <option>Chemistry</option>
-                    <option>ICT</option>
+                  <?php $list = $subject->getRegSubName($_SESSION['id'])?>
+                  <select name="subname" class="form-control select2" style="width: 100%;">
+                    <!-- <option selected="selected" disabled>Select one</option> -->
+                    <?php if($list==null){} else { foreach($list as $item) {?>
+                    <option><?= $item['subjectname']?></option>
+                    <?php }}?>
                   </select>
                 </div>
                 <div class="form-group">
                   <label for="regfee">Registration Fee</label>
-                  <p id="regfee">Rs.800</p>
+                  <input type="number" name="regfee" class="form-control" placeholder="Registration fee" required>
                 </div>
                 <div class="card-footer">
-                  <button type="submit" id="reset" class="btn btn-info">Register</button>
+                  <button type="submit" name="regsub" class="btn btn-info">Register</button>
                   <button id="clear" type="reset" class="btn btn-default float-right">Cancel</button>
                 </div>
               </form>
@@ -272,6 +288,30 @@
             <!-- /.card-body -->
           </div>
           <!-- /.card -->
+        </div>
+        <div class="col-md-6">
+          <!-- Form Element sizes -->
+          <div class="card card-success">
+            <div class="card-header">
+              <h3 class="card-title">Registration Fees</h3>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-3">
+                  <?php if($list==null){} else {foreach($list as $item) {?>
+                  <label><?= $item['subjectname']?></label>
+                  <?php }}?>
+                </div>
+                <div class="col-4">
+                  <?php $list2 = $subject->getRegFee($_SESSION['id'])?>
+                  <?php if($list2==null){} else {foreach($list2 as $item) {?>
+                  <label>Rs.<?= $item['fee']+1000?></label><br>
+                  <?php }}?>
+                </div>
+              </div>
+            </div>
+            <!-- /.card-body -->
+          </div>
         </div>
     </section>
     <!-- /.content -->
@@ -326,3 +366,10 @@
 </script>
 </body>
 </html>
+<?php
+}
+else
+{
+  header('location:./Login.php');
+}
+?>

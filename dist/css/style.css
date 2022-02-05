@@ -45,7 +45,7 @@ p {
 	color: crimson;
 }
 
-.cta {
+.ctas {
 	display: inline-block;
 	padding: 10px 30px;
 	color: white;
@@ -58,9 +58,26 @@ p {
 	transition: 0.3s ease;
 	transition-property: background-color, color;
 }
-.cta:hover {
+.ctas:hover {
 	color: white;
 	background-color: crimson;
+}
+.ctal {
+	display: inline-block;
+	padding: 10px 30px;
+	color: white;
+	background-color: transparent;
+	border: 2px solid blue;
+	font-size: 2rem;
+	text-transform: uppercase;
+	letter-spacing: 0.1rem;
+	margin-top: 30px;
+	transition: 0.3s ease;
+	transition-property: background-color, color;
+}
+.ctal:hover {
+	color: white;
+	background-color: blue;
 }
 .brand h1 {
 	font-size: 3rem;
@@ -264,26 +281,26 @@ p {
 
 /* End Hero Section */
 
-/* Teachers Section */
-#teachers .teachers {
+/* Lecturers Section */
+#lecturers .lecturers {
 	flex-direction: column;
 	text-align: center;
 	max-width: 1500px;
 	margin: 0 auto;
 	padding: 100px 0;
 }
-#teachers .teachers-top {
+#lecturers .lecturers-top {
 	max-width: 500px;
 	margin: 0 auto;
 }
-#teachers .teachers-bottom {
+#lecturers .lecturers-bottom {
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	flex-wrap: wrap;
 	margin-top: 50px;
 }
-#teachers .teachers-item {
+#lecturers .lecturers-item {
 	flex-basis: 80%;
 	display: flex;
 	align-items: flex-start;
@@ -298,7 +315,7 @@ p {
 	z-index: 1;
 	overflow: hidden;
 }
-#teachers .teachers-item::after {
+#lecturers .lecturers-item::after {
 	content: '';
 	position: absolute;
 	left: 0;
@@ -309,22 +326,22 @@ p {
 	opacity: 0.9;
 	z-index: -1;
 }
-#teachers .teachers-bottom .icon {
+#lecturers .lecturers-bottom .icon {
 	height: 80px;
 	width: 80px;
 	margin-bottom: 20px;
 }
-#teachers .teachers-item h2 {
+#lecturers .lecturers-item h2 {
 	font-size: 2rem;
 	color: white;
 	margin-bottom: 10px;
 	text-transform: uppercase;
 }
-#teachers .teachers-item p {
+#lecturers .lecturers-item p {
 	color: white;
 	text-align: left;
 }
-/* End Teachers Section */
+/* End Lecturers Section */
 
 /* Classes section */
 #classes .classes {
@@ -625,7 +642,11 @@ p {
 
 /* Media Query For Tablet */
 @media only screen and (min-width: 768px) {
-	.cta {
+	.ctas {
+		font-size: 2.5rem;
+		padding: 20px 60px;
+	}
+	.ctal {
 		font-size: 2.5rem;
 		padding: 20px 60px;
 	}
@@ -639,12 +660,12 @@ p {
 	}
 	/* End Home */
 
-	/* Teachers Section */
-	#teachers .teachers-bottom .teachers-item {
+	/* Lectures Section */
+	#lecturers .lecturers-bottom .lecturers-item {
 		flex-basis: 45%;
 		margin: 2.5%;
 	}
-	/* End Teachers Section */
+	/* End Lecturers Section */
 
 	/* Classes Section */
 	#classes .classes-item {
@@ -752,7 +773,7 @@ p {
 	}
 	/* End header */
 
-	#teachers .teachers-bottom .teachers-item {
+	#lecturers .lecturers-bottom .lecturers-item {
 		flex-basis: 22%;
 		margin: 1.5%;
 	}

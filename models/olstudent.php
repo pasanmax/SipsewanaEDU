@@ -4,7 +4,7 @@ require_once 'student.php';
 class olStudent extends Student
 {
     // properties
-    private int $ttresults;
+    private $ttresults;
 
     // methods
     function __construct($ttresults)
@@ -19,7 +19,7 @@ class olStudent extends Student
 
     function getResults($studentId)
     {
-        return $results;
+        //return $results;
     }
 }
 

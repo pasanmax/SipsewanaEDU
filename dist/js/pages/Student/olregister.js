@@ -9,25 +9,25 @@ document.addEventListener('DOMContentLoaded', function () {
     $('[data-mask]').inputmask();
     $('.select2').select2();
     $('#subject').val(null).trigger('change');
+    $('#relationship').val(null).trigger('change');
 
     var btnNextList = [].slice.call(document.querySelectorAll('.btn-next-form'));
     var stepperPanList = [].slice.call(stepperFormEl.querySelectorAll('.bs-stepper-pane'));
     var fname = document.getElementById('fname');
     var lname = document.getElementById('lname');
     var dob = document.getElementById('dob');
-    var email = document.getElementById('email');
-    var cno = document.getElementById('cno');
-    var certi = document.getElementById('certi');
+    var ttresult = document.getElementById('ttresults');
+    var school = document.getElementById('school');
     var adrsl1 = document.getElementById('adrsl1');
     var adrsl2 = document.getElementById('adrsl2');
     var city = document.getElementById('city');
     var district = document.getElementById('district');
     var zipcode = document.getElementById('zipcode');
-    var accountno = document.getElementById('accountno');
-    var accountname = document.getElementById('accountname');
-    var bankname = document.getElementById('bankname');
-    var branchname = document.getElementById('branchname');
-    var branchcode = document.getElementById('branchcode');
+    var gfname = document.getElementById('gfname');
+    var glname = document.getElementById('glname');
+    var gemail = document.getElementById('gemail');
+    var gcno = document.getElementById('gcno');
+    var relationship = document.getElementById('relationship');
     var subject = document.getElementById('subject');
     var form = stepperFormEl.querySelector('.bs-stepper-content form');
     var allowLetters = /^[A-Za-z\s]*$/;
@@ -55,35 +55,33 @@ document.addEventListener('DOMContentLoaded', function () {
         if ((stepperPan.getAttribute('id') === 'personal-info' && (!fname.value.length || !fname.value.match(allowLetters)))
         || (stepperPan.getAttribute('id') === 'personal-info' && (!lname.value.length || !lname.value.match(allowLetters)))
         || (stepperPan.getAttribute('id') === 'personal-info' && !dob.value.length)
-        || (stepperPan.getAttribute('id') === 'personal-info' && (!email.value.length || !email.value.match(mailFormat)))
-        || (stepperPan.getAttribute('id') === 'personal-info' && !cno.value.length)
-        || (stepperPan.getAttribute('id') === 'personal-info' && (!certi.value.length || !certi.value.match(numtxt)))
+        || (stepperPan.getAttribute('id') === 'personal-info' && (!ttresult.value.length || !ttresult.value.match(numbers)))
+        || (stepperPan.getAttribute('id') === 'personal-info' && (!school.value.length || !school.value.match(allowLetters)))
         || (stepperPan.getAttribute('id') === 'address' && (!adrsl1.value.length || !adrsl1.value.match(numtxt)))
         || (stepperPan.getAttribute('id') === 'address' && (!adrsl2.value.length || !adrsl2.value.match(numtxt)))
         || (stepperPan.getAttribute('id') === 'address' && (!city.value.length || !city.value.match(allowLetters)))
         || (stepperPan.getAttribute('id') === 'address' && (!district.value.length || !district.value.match(allowLetters)))
         || (stepperPan.getAttribute('id') === 'address' && (!zipcode.value.length || !zipcode.value.match(numbers)))
-        || (stepperPan.getAttribute('id') === 'bank-info' && (!accountno.value.length || !accountno.value.match(numbers)))
-        || (stepperPan.getAttribute('id') === 'bank-info' && (!accountname.value.length || !accountname.value.match(allowLetters)))
-        || (stepperPan.getAttribute('id') === 'bank-info' && (!bankname.value.length || !bankname.value.match(allowLetters)))
-        || (stepperPan.getAttribute('id') === 'bank-info' && (!branchname.value.length || !branchname.value.match(allowLetters)))
-        || (stepperPan.getAttribute('id') === 'bank-info' && (!branchcode.value.length || !branchcode.value.match(numbers)))
+        || (stepperPan.getAttribute('id') === 'guardian-info' && (!gfname.value.length || !gfname.value.match(allowLetters)))
+        || (stepperPan.getAttribute('id') === 'guardian-info' && (!glname.value.length || !glname.value.match(allowLetters)))
+        || (stepperPan.getAttribute('id') === 'guardian-info' && (!gemail.value.length || !gemail.value.match(mailFormat)))
+        || (stepperPan.getAttribute('id') === 'guardian-info' && !gcno.value.length)
+        || (stepperPan.getAttribute('id') === 'guardian-info' && !relationship.value.length)
         || (stepperPan.getAttribute('id') === 'subject-info' && !subject.value.length)) {
-          event.preventDefault();
+          event.preventDefault()
           form.classList.add('was-validated');
         }
     });
     bootstrapValidate('#fname', 'alpha:You can enter characters only');
     bootstrapValidate('#lname', 'alpha:You can enter characters only');
-    bootstrapValidate('#email', 'email:Enter a valid email');
-    bootstrapValidate('#certi', 'alphanumeric:You can enter characters only');
+    bootstrapValidate('#ttresults', 'max:2:Enter a valid result');
+    bootstrapValidate('#school', 'alpha:You can enter characters only');
     bootstrapValidate('#adrsl1', 'alphanumeric:You can enter characters only');
     bootstrapValidate('#adrsl2', 'alphanumeric:You can enter characters only');
     bootstrapValidate('#adrsl3', 'alphanumeric:You can enter characters only');
     bootstrapValidate('#city', 'alpha:You can enter characters only');
     bootstrapValidate('#district', 'alpha:You can enter characters only');
-    bootstrapValidate('#zipcode', 'numeric:You can enter numbers only');
-    bootstrapValidate('#accountname', 'alpha:You can enter characters only');
-    bootstrapValidate('#bankname', 'alpha:You can enter characters only');
-    bootstrapValidate('#branchname', 'alpha:You can enter characters only');
+    bootstrapValidate('#gfname', 'alpha:You can enter characters only');
+    bootstrapValidate('#glname', 'alpha:You can enter characters only');
+    bootstrapValidate('#gemail', 'email:Enter a valid email');
 });

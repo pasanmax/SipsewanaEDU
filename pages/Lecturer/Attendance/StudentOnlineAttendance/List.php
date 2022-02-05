@@ -1,3 +1,9 @@
+<?php
+include('../../../../models/lecturer.php');
+if(isset($_SESSION['id']))
+{
+  $lecturer = new Lecturer();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -37,7 +43,7 @@
     <ul class="navbar-nav ml-auto">
       <!-- Navbar log out -->
       <li class="nav-item">
-        <a href="../../Login.php" class="nav-link">Log out</a>
+        <a href="../../../../models/lecturer.php?logout=1" class="nav-link">Log out</a>
       </li>
     </ul>
   </nav>
@@ -59,7 +65,7 @@
           <img src="../../../../dist/img/dashboardImages/user.png" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">User's name</a>
+          <a href="#" class="d-block"><?=$lecturer->getName($_SESSION['id'])?></a>
         </div>
       </div>
 
@@ -226,19 +232,21 @@
         <div class="row mb-2">
           <div class="col-sm-6">
             <h1>Online Student Attendance List</h1>
-            <div class="row mt-4">
-              <div class="col-md-4">
-                <div class="input-group date" data-target-input="nearest">
-                  <input id="date" type="text" class="form-control datetimepicker-input" data-target="#date" placeholder="Select a Date" required>
-                  <div class="input-group-append" data-target="#date" data-toggle="datetimepicker">
-                      <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+            <form id="searchclass" action="../../../../models/stu_attendance.php" method="POST">
+              <div class="row mt-4">
+                <div class="col-md-4">
+                  <div class="input-group date" data-target-input="nearest">
+                    <input id="date" name="date" type="text" class="form-control datetimepicker-input" data-target="#date" placeholder="Select a Date" required>
+                    <div class="input-group-append" data-target="#date" data-toggle="datetimepicker">
+                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                    </div>
                   </div>
                 </div>
+                <div class="col-md-4">
+                  <button type="submit" name="dateSearch" class="btn btn-block btn-primary text-left">Search</button>
+                </div>
               </div>
-              <div class="col-md-4">
-                <button type="button" class="btn btn-block btn-primary text-left">Search</button>
-              </div>
-            </div>
+            </form>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -257,9 +265,27 @@
         <div class="col-12">
           <div class="card">
             <div class="card-body">
+              <?php if(isset($_SESSION['response'])){?>
+                <div class="alert alert-<?=$_SESSION['response']?> alert-dismissible fade show" role="alert">
+                  <?=$_SESSION['message']?>
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+              <?php } unset($_SESSION['response']); unset($_SESSION['message']); ?>
+              <?php
+              if(isset($_SESSION['classdate'])) {
+                include "$_SERVER[DOCUMENT_ROOT]/SipsewanaEDU/models/stu_attendance.php";
+                $stu_atten = new Stu_Attendance();
+                $list = $stu_atten->getStudentAttendanceList($_SESSION['classdate']);
+              } else {
+                $list = null;
+              }
+              ?>
               <table id="onlineList" class="table table-bordered table-striped">
                 <thead>
                 <tr>
+                  <th hidden>Class ID</th>
                   <th>Sutdent ID</th>
                   <th>Subject</th>
                   <th>Date</th>
@@ -269,21 +295,25 @@
                 </tr>
                 </thead>
                 <tbody>
+                <?php if($list==null){}else{ foreach($list as $item) {?>
                 <tr>
-                  <td>S01</td>
-                  <td>Biology A/L (2023)</td>
-                  <td>07/21/2021</td>
-                  <td>08.00 AM</td>
-                  <td>10.30 AM</td>
+                  <td hidden><?= $item['cls_attst_id']?></td>
+                  <td><?= $item['st_att_id']?></td>
+                  <td><?= $item['subjectname']?></td>
+                  <td><?= $item['date']?></td>
+                  <td><?= $item['intime']?></td>
+                  <td><?= $item['outtime']?></td>
                   <td>
                     <div class="btn-group btn-group-sm">
-                      <a href="#" class="btn btn-success"><i class="far fa-edit"></i></a>
+                      <a href="#" class="btn btn-success editClass" data-toggle="modal" data-target="#modal-update"><i class="far fa-edit"></i></a>
                     </div>
                   </td>
                 </tr>
+                <?php }}?>
                 </tbody>
                 <tfoot>
                 <tr>
+                  <th hidden>Class ID</th>
                   <th>Sutdent ID</th>
                   <th>Subject</th>
                   <th>Date</th>
@@ -297,6 +327,76 @@
             <!-- /.card-body -->
           </div>
           <!-- /.card -->
+
+          <div class="modal fade" id="modal-update">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title">Update Online Class</h4>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <form id="uonlineclass" action="../../../../models/stu_attendance.php" method="POST">
+                    <table width="500px" height="300px">
+                      <tr hidden>
+                        <div class="form-group">
+                          <td><label for="uclassid">Class ID : </label></td>
+                          <td><input type="text" id="uclassid" name="uclassid"></td>
+                        </div>
+                      </tr>
+                      <tr hidden>
+                        <div class="form-group">
+                          <td><label for="ustudentid">Student ID : </label></td>
+                          <td><input type="text" id="ustudentid" name="ustudentid"></td>
+                        </div>
+                      </tr>
+                      <tr hidden>
+                        <div class="form-group">
+                          <td><label for="udate">Date : </label></td>
+                          <td>
+                            <div class="col-6" style="padding-left: 0px; padding-right: 0px;">
+                              <div class="input-group udate" data-target-input="nearest">
+                                <input id="udate" name="udate" type="text" value="" class="form-control datetimepicker-input" data-target="#udate" placeholder="Select a Date" required>
+                                <div class="input-group-append" data-target="#udate" data-toggle="datetimepicker">
+                                  <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                </div>
+                              </div>
+                            </div>
+                          </td>
+                        </div>
+                      </tr>
+                      <tr>
+                        <div class="form-group">
+                          <td><label for="uouttime">Out time : </label></td>
+                          <td>
+                            <div class="col-6" style="padding-left: 0px; padding-right: 0px;">
+                              <div class="input-group uouttime" data-target-input="nearest">
+                                <input id="uouttime" name="uouttime" type="text" value="" class="form-control datetimepicker-input" data-target="#ustarttime" placeholder="Select a time">
+                                <div class="input-group-append" data-target="#uouttime" data-toggle="datetimepicker">
+                                  <div class="input-group-text"><i class="fa fa-clock"></i></div>
+                                </div>
+                              </div>
+                            </div>
+                          </td>
+                        </div>
+                      </tr>
+                    </table>
+                    <div class="modal-footer justify-content-between">
+                      <button type="submit" name="updateOnlineAttendance" class="btn btn-info">Update</button>
+                      <button type="button" class="btn btn-default float-right" class="close" data-dismiss="modal" aria-label="Close">Cancel</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+              <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+          </div>
+
+
+
         </div>
       </div>
     </section>
@@ -338,9 +438,38 @@
     }).buttons().container().appendTo('#onlineList_wrapper .col-md-6:eq(0)');
   });
   //Date picker
+  $('#uouttime').datetimepicker({
+    format: 'hh:mm:ss'
+  });
+
   $('#date').datetimepicker({
-          format: 'L'
+    format: 'Y-MM-DD'
+  });
+
+  $('#udate').datetimepicker({
+    format: 'Y-MM-DD'
+  });
+
+  $('.editClass').on('click', function() {
+    // $('#modal-default').modal('show');
+
+    $tr = $(this).closest('tr');
+    var data = $tr.children("td").map(function () {
+      return $(this).text();
+    }).get();
+
+    document.getElementById('uclassid').value = data[0];
+    document.getElementById('ustudentid').value = data[1];
+    document.getElementById('udate').value = data[3];
+    document.getElementById('uouttime').value = data[5];
   });
 </script>
 </body>
 </html>
+<?php
+}
+else
+{
+  header('location:../../Login.php');
+}
+?>
