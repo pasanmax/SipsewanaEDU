@@ -5,7 +5,10 @@ include_once "$root/SipsewanaEDU/config.php";
 // include_once dirname(__FILE__) . "/subject.php";
 $conn = new Conn();
 $con = $conn->getConn();
-session_start();
+if(!isset($_SESSION)) 
+{ 
+    session_start(); 
+}
 $student = new Student();
 // $online_class = new Online_Class();
 if(isset($_POST['signin']))
@@ -17,7 +20,7 @@ else if(isset($_GET['logout']))
     $student->logout();
 }
 else if (isset($_POST['regsub'])) {
-    if($_POST['subname'] === null && $_POST['regfee'] === null) {
+    if(empty($_POST['subname']) || empty($_POST['regfee'])) {
         header('location:../pages/Student/Register/Register.php');
         $_SESSION['response']="danger";
         $_SESSION['message']="Please enter the details";
@@ -30,12 +33,12 @@ class Student
 {
     // properties
     protected $student_id;
-    private $fname;
-    private $lname;
-    private $usrname;
-    private $passwordHash;
-    private $dob;
-    private $school;
+    protected $fname;
+    protected $lname;
+    protected $usrname;
+    protected $passwordHash;
+    protected $dob;
+    protected $school;
     protected $adrsl1;
     protected $adrsl2;
     protected $adrsl3;
@@ -70,11 +73,6 @@ class Student
         $this->submissiondate = $submissiondate;
     }
 
-    public function getStudent($student_id)
-    {
-        // get student from databse
-    }
-
     public function getName($student_id)
     {
         try {
@@ -96,15 +94,27 @@ class Student
         }
         
     }
-
-    function getStudents()
+    
+    public function getGemail($student_id)
     {
-        // get students from databse
-    }
-
-    function updateInfo()
-    {
-        // update database
+        try {
+            global $con;
+            $result = $con->query("SELECT s.gemail FROM student s WHERE s.student_id='".$student_id."'");
+            if ($result->num_rows == 1) {
+                while ($row = $result->fetch_assoc()) {
+                    $gemail = $row['gemail'];
+                }
+                return $gemail;
+            } elseif ($result === false) {
+                throw new Exception("Database Error!");
+            } else {
+                return null;
+            }
+            $con->close();
+        } catch (Exception $e) {
+            echo 'Message: ' .$e->getMessage();
+        }
+        
     }
 
     public function login($username,$password)
@@ -208,11 +218,6 @@ class Student
         }
     }
 
-    function register()
-    {
-        // enter data to database
-    }
-
     function regSubject($subname,$regfee)
     {
         try {
@@ -244,21 +249,6 @@ class Student
         }
     }
 
-    function payRegisterFees($student_id,$subid,$regfees)
-    {
-        // enter data to Student_Reg table & Payment table
-    }
-
-    function payClassFees($student_id,$method,$status,$type,$amount)
-    {
-        // enter data to Payment table
-    }
-
-    function submitHomework($student_id,$submitfille)
-    {
-        // enter data to Hw_Submission table
-    }
-
     function getHomewrokList($student_id)
     {
         try {
@@ -287,7 +277,7 @@ class Student
         try {
             global $con;
             $data = array();
-            $result = $con->query("SELECT stu_attendance.cls_attst_id,stu_attendance.date,stu_attendance.intime,stu_attendance.outtime FROM stu_attendance,online_class WHERE stu_attendance.st_att_id='".$student_id."' AND stu_attendance.cls_attst_id=online_class.ol_cls_id");
+            $result = $con->query("SELECT sa.cls_attst_id,s.subjectname,sa.date,sa.intime,sa.outtime FROM stu_attendance sa, online_class ol, class c, subject s WHERE sa.st_att_id='".$student_id."' AND sa.cls_attst_id=ol.ol_cls_id AND ol.ol_cls_id=c.class_id AND c.sub_cls_id=s.subject_id");
             if ($result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
                     $row = array_map('stripslashes', $row);
@@ -333,7 +323,7 @@ class Student
         try {
             global $con;
             $data = array();
-            $result = $con->query("SELECT stu_attendance.cls_attst_id,stu_attendance.date,stu_attendance.intime,stu_attendance.outtime FROM stu_attendance,offline_class WHERE stu_attendance.st_att_id='".$student_id."' AND stu_attendance.cls_attst_id=offline_class.of_cls_id");
+            $result = $con->query("SELECT sa.cls_attst_id,s.subjectname,sa.date,sa.intime,sa.outtime FROM stu_attendance sa, offline_class oc, class c, subject s WHERE sa.st_att_id='".$student_id."' AND sa.cls_attst_id=oc.of_cls_id AND oc.of_cls_id=c.class_id AND c.sub_cls_id=s.subject_id");
             if ($result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
                     $row = array_map('stripslashes', $row);
@@ -375,7 +365,7 @@ class Student
     {
         try {
             global $con;
-            $result = $con->query("SELECT COUNT(*) as 'count' FROM hw_submission hs, student_reg sr, subject s WHERE hs.submitdate IS NULL AND hs.fileName IS NULL AND hs.path IS NULL AND sr.st_sub_id = s.subject_id AND sr.st_reg_id = '".$student_id."'");
+            $result = $con->query("SELECT COUNT(*) as 'count' FROM hw_submission hs, homework h, student_reg sr, subject s WHERE hs.submitdate IS NULL AND hs.fileName IS NULL AND hs.path IS NULL AND sr.st_sub_id = s.subject_id AND hs.sub_hw_id=h.hw_id AND h.hw_sub_id=sr.st_sub_id AND sr.st_reg_id = '".$student_id."'");
             if ($result->num_rows == 1) {
                 while ($row = $result->fetch_assoc()) {
                     $count = $row['count'];

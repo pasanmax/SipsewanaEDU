@@ -160,8 +160,8 @@ if(isset($_SESSION['id']))
 
     if(isset($_POST['offlineclass']))
     {
-        if($_POST['subname'] === null && $_POST['hallno'] === null && $_POST['date'] === null && $_POST['duration'] === null 
-        && $_POST['starttime'] === null) {
+        if(empty($_POST['subname']) || empty($_POST['hallno']) || empty($_POST['date']) || empty($_POST['duration']) 
+        || empty($_POST['starttime'])) {
             header('location:../pages/Lecturer/Classes/ManageOffline/List.php');
             $_SESSION['response']="danger";
             $_SESSION['message']="Please fill the details!";
@@ -177,8 +177,8 @@ if(isset($_SESSION['id']))
 
     if(isset($_POST['updateOfflineclass']))
     {
-        if($_POST['usubname'] === null && $_POST['uhallno'] === null && $_POST['udate'] === null && $_POST['uduration'] === null 
-        && $_POST['ustarttime'] === null) {
+        if(empty($_POST['usubname']) || empty($_POST['uhallno']) || empty($_POST['udate']) || empty($_POST['uduration']) 
+        || empty($_POST['ustarttime'])) {
             header('location:../pages/Lecturer/Classes/ManageOffline/List.php');
             $_SESSION['response']="danger";
             $_SESSION['message']="Please fill the details!";

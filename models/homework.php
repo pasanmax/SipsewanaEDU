@@ -1,4 +1,8 @@
 <?php
+if(!isset($_SESSION)) 
+{ 
+    session_start(); 
+}
 if(isset($_SESSION['id']))
 {
     $root = realpath($_SERVER["DOCUMENT_ROOT"]);
@@ -8,6 +12,7 @@ if(isset($_SESSION['id']))
 
     class Homework
     {
+        protected $hw_id;
         protected $name;
         protected $type;
         protected $description;

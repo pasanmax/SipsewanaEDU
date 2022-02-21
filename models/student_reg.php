@@ -8,14 +8,22 @@ if(isset($_SESSION['id']))
 
     class StudentReg
     {
-        private $st_reg_id;
-        private $st_sub_id;
-        private $registrationdate;
-        private $regfee;
+        protected $registrationdate;
+        protected $regfee;
 
         // function __construct() {
 
         // }
+
+        public function setRegistrationdate()
+        {
+            $this->registrationdate = date("Y-m-d");
+        }
+
+        public function getRegistrationdate()
+        {
+            return $this->registrationdate;
+        }
 
         function getSubId($st_reg_id) {
             try {

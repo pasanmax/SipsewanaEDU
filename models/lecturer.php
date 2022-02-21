@@ -17,7 +17,7 @@ else if(isset($_GET['logout']))
     $lecturer->logout();
 }
 else if (isset($_POST['Lregsub'])) {
-    if($_POST['subname'] === null && $_POST['regfee'] === null) {
+    if(empty($_POST['subname']) || empty($_POST['regfee'])) {
         header('location:../pages/Lecturer/Register/Register.php');
         $_SESSION['response']="danger";
         $_SESSION['message']="Please enter the details";
@@ -26,7 +26,7 @@ else if (isset($_POST['Lregsub'])) {
     }
 }
 else if (isset($_POST['searchHomework'])) {
-    if($_POST['homeworkid'] === null) {
+    if(empty($_POST['homeworkid'])) {
         header('location:../pages/Lecturer/Homeworks/Submissions/Submission.php');
         $_SESSION['response']="danger";
         $_SESSION['message']="Please enter the details";
@@ -91,6 +91,28 @@ class Lecturer
                     $lecturer_name = $row['fname']." ".$row['lname'];
                 }
                 return $lecturer_name;
+            } elseif ($result === false) {
+                throw new Exception("Database Error!");
+            } else {
+                return null;
+            }
+            $con->close();
+        } catch (Exception $e) {
+            echo 'Message: ' .$e->getMessage();
+        }
+        
+    }
+
+    public function getEmail($lecturer_id)
+    {
+        try {
+            global $con;
+            $result = $con->query("SELECT l.email FROM lecturer l WHERE l.lecturer_id='".$lecturer_id."'");
+            if ($result->num_rows == 1) {
+                while ($row = $result->fetch_assoc()) {
+                    $email = $row['email'];
+                }
+                return $email;
             } elseif ($result === false) {
                 throw new Exception("Database Error!");
             } else {
@@ -200,7 +222,7 @@ class Lecturer
         try {
             global $con;
             $data = array();
-            $result = $con->query("SELECT la.cls_attlec_id,la.date,la.intime,la.outtime FROM lec_attendance la, offline_class of WHERE la.lec_att_id='".$lecturer_id."' AND la.cls_attlec_id=of.of_cls_id");
+            $result = $con->query("SELECT la.cls_attlec_id,s.subjectname,la.date,la.intime,la.outtime FROM lec_attendance la, offline_class of, class c, subject s WHERE la.lec_att_id='".$lecturer_id."' AND la.cls_attlec_id=of.of_cls_id AND of.of_cls_id=c.class_id AND c.sub_cls_id=s.subject_id");
             if ($result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
                     $row = array_map('stripslashes', $row);
@@ -216,12 +238,34 @@ class Lecturer
         }
     }
 
+    public function getOfflineAttendance($lecturer_id)
+    {
+        try {
+            global $con;
+            $result = $con->query("SELECT ROUND(COUNT(*)/4*100,0) as 'count' FROM lec_attendance la, class c, offline_class oc WHERE (date BETWEEN DATE_FORMAT(NOW() ,'%Y-%m-01') AND LAST_DAY(NOW())) AND la.cls_attlec_id = c.class_id AND c.class_id = oc.of_cls_id AND c.sub_cls_id IN (SELECT lr.lec_sub_id FROM lecturer_reg lr WHERE lr.lec_reg_id = '".$lecturer_id."')");
+            if ($result->num_rows == 1) {
+                while ($row = $result->fetch_assoc()) {
+                    $count = $row['count'];
+                }
+                return $count;
+            } elseif ($result === false) {
+                throw new Exception("Database Error!");
+            } else {
+                return 0;
+            }
+            $con->close();
+        } catch (Exception $e) {
+            echo 'Message: ' .$e->getMessage();
+        }
+        
+    }
+
     public function viewOnlineAttendance($lecturer_id)
     {
         try {
             global $con;
             $data = array();
-            $result = $con->query("SELECT la.cls_attlec_id,la.date,la.intime,la.outtime FROM lec_attendance la, online_class ol WHERE la.lec_att_id='".$lecturer_id."' AND la.cls_attlec_id=ol.ol_cls_id");
+            $result = $con->query("SELECT la.cls_attlec_id,s.subjectname,la.date,la.intime,la.outtime FROM lec_attendance la, online_class ol, class c, subject s WHERE la.lec_att_id='".$lecturer_id."' AND la.cls_attlec_id=ol.ol_cls_id AND ol.ol_cls_id=c.class_id AND c.sub_cls_id=s.subject_id");
             if ($result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
                     $row = array_map('stripslashes', $row);
@@ -232,6 +276,28 @@ class Lecturer
                 throw new Exception("Database Error!");
             } else {
                 return null;
+            }
+            $con->close();
+        } catch (Exception $e) {
+            echo 'Message: ' .$e->getMessage();
+        }
+        
+    }
+
+    public function getOnlineAttendance($lecturer_id)
+    {
+        try {
+            global $con;
+            $result = $con->query("SELECT ROUND(COUNT(*)/4*100,0) as 'count' FROM lec_attendance la, class c, online_class oc WHERE (date BETWEEN DATE_FORMAT(NOW() ,'%Y-%m-01') AND LAST_DAY(NOW())) AND la.cls_attlec_id = c.class_id AND c.class_id = oc.ol_cls_id AND c.sub_cls_id IN (SELECT lr.lec_sub_id FROM lecturer_reg lr WHERE lr.lec_reg_id = '".$lecturer_id."')");
+            if ($result->num_rows == 1) {
+                while ($row = $result->fetch_assoc()) {
+                    $count = $row['count'];
+                }
+                return $count;
+            } elseif ($result === false) {
+                throw new Exception("Database Error!");
+            } else {
+                return 0;
             }
             $con->close();
         } catch (Exception $e) {
@@ -330,6 +396,29 @@ class Lecturer
             global $con;
             $data = array();
             $result = $con->query("SELECT hc.cre_hw_id FROM hw_creation hc WHERE hc.cre_lec_id='".$lecturer_id."'");
+            if ($result->num_rows > 0) {
+                while ($row = $result->fetch_assoc()) {
+                    $row = array_map('stripslashes', $row);
+                    $data[] = $row;
+                }
+                return $data;
+            } elseif ($result === false) {
+                throw new Exception("Database Error!");
+            } else {
+                return null;
+            }
+            $con->close();
+        } catch (Exception $e) {
+            echo 'Message: ' .$e->getMessage();
+        }
+    }
+
+    function getLearningModuleList($lecturer_id)
+    {
+        try {
+            global $con;
+            $data = array();
+            $result = $con->query("SELECT lm.lm_id,lm.name,s.subjectname,lm.fileName,lm.date,lm.path,lm.description FROM learning_module lm, subject s WHERE lm.lm_sub_id=s.subject_id AND lm.lm_lec_id='".$lecturer_id."'");
             if ($result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
                     $row = array_map('stripslashes', $row);

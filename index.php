@@ -268,13 +268,13 @@
   <div class="modal fade" id="modal-default">
     <div class="modal-dialog">
       <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title">Select One</h4>
+        <div class="modal-header d-block">
+          <h4 class="modal-title text-center">Select One</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <div class="modal-body text-center">
+        <div class="modal-body p-5">
         <div class="row mt-4">
           <div class="col-md-5">
           <button type="button" onclick="location.href='./pages/Student/olRegister.php';" class="btn btn-block btn-primary btn-lg text-center">O/L Student</button>

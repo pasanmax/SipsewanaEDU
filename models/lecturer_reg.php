@@ -8,8 +8,6 @@ if(isset($_SESSION['id']))
 
     class LecturerReg
     {
-        private $lec_reg_id;
-        private $st_sub_id;
         private $registrationdate;
         private $regfee;
 
@@ -17,7 +15,14 @@ if(isset($_SESSION['id']))
 
         // }
 
-        function getLec() {
+        public function setRegistrationdate()
+        {
+            $this->registrationdate = date("Y-m-d");
+        }
+
+        public function getRegistrationdate()
+        {
+            return $this->registrationdate;
         }
     }
 }

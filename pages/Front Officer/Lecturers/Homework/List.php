@@ -1,3 +1,9 @@
+<?php
+include('../../../../models/frontofficer.php');
+if(isset($_SESSION['id']))
+{
+  $frontofficer = new FrontOfficer();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -35,7 +41,7 @@
     <ul class="navbar-nav ml-auto">
       <!-- Navbar log out -->
       <li class="nav-item">
-        <a href="../../Login.php" class="nav-link">Log out</a>
+        <a href="../../../../models/frontofficer.php?logout=1" class="nav-link" onclick="return confirm('Are you sure?')">Log out</a>
       </li>
     </ul>
   </nav>
@@ -57,7 +63,7 @@
           <img src="../../../../dist/img/dashboardImages/user.png" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">User's name</a>
+          <a href="#" class="d-block"><?=$frontofficer->getName($_SESSION['id'])?></a>
         </div>
       </div>
 
@@ -365,6 +371,18 @@
         <div class="row mb-2">
           <div class="col-sm-6">
             <h1>Homework List</h1>
+            <form id="searchclass" action="../../../../models/hw_creation.php" method="POST">
+              <div class="row mt-4">
+                <div class="col-md-4">
+                  <div class="form-group">
+                      <input type="text" id="lecturerid" name="lecturerid" placeholder="Lecturer ID" style="width: 100%;">
+                    </div>
+                  </div>
+                <div class="col-md-4">
+                  <button type="submit" name="lechwSearch" class="btn btn-block btn-primary text-left">Search</button>
+                </div>
+              </div>
+            </form>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -384,6 +402,21 @@
           <div class="card">
             <div class="card-body">
               <table id="homeworkList" class="table table-bordered table-striped">
+                <?php if(isset($_SESSION['response'])){?>
+                  <div class="alert alert-<?=$_SESSION['response']?> alert-dismissible fade show" role="alert">
+                    <?=$_SESSION['message']?>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                <?php } unset($_SESSION['response']); unset($_SESSION['message']); ?>
+                <?php
+                if(isset($_SESSION['lechwid'])) {
+                  $list = $frontofficer->getLecHomework($_SESSION['lechwid']);
+                } else {
+                  $list = null;
+                }
+                ?>
                 <thead>
                 <tr>
                   <th>Homework ID</th>
@@ -396,146 +429,21 @@
                 </tr>
                 </thead>
                 <tbody>
+                <?php if($list==null){}else{ foreach($list as $item) {?>
                 <tr>
-                  <td>1</td>
-                  <td>Thisara
-                  </td>
-                  <td>Biology A/L (2023)</td>
-                  <td>07/14/2021</td>
-                  <td>07/16/2021</td>
-                  <td>32</td>
+                  <td><?= $item['hw_id']?></td>
+                  <td><?= $item['lecturername']?></td>
+                  <td><?= $item['subjectname']?></td>
+                  <td><?= $item['createddate']?></td>
+                  <td><?= $item['deadlinedate']?></td>
+                  <td><?= $item['submitcount']?></td>
                   <td>
                     <div class="btn-group btn-group-sm">
-                      <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
+                      <a download="<?= $item['fileName']?>" href="../../../<?= $item['path']?><?= $item['fileName']?>" class="btn btn-info"><i class="fas fa-download"></i></a>
                     </div>
                   </td>
                 </tr>
-                <tr>
-                  <td>2</td>
-                  <td>Malith
-                  </td>
-                  <td>Biology A/L (2023)</td>
-                  <td>07/14/2021</td>
-                  <td>07/16/2021</td>
-                  <td>20</td>
-                  <td>
-                    <div class="btn-group btn-group-sm">
-                      <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>3</td>
-                  <td>Shehan
-                  </td>
-                  <td>Biology A/L (2023)</td>
-                  <td>07/14/2021</td>
-                  <td>07/16/2021</td>
-                  <td>32</td>
-                  <td>
-                    <div class="btn-group btn-group-sm">
-                      <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>4</td>
-                  <td>Thisara
-                  </td>
-                  <td>Biology A/L (2023)</td>
-                  <td>07/14/2021</td>
-                  <td>07/16/2021</td>
-                  <td>28</td>
-                  <td>
-                    <div class="btn-group btn-group-sm">
-                      <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>5</td>
-                  <td>Tharindu
-                  </td>
-                  <td>Biology A/L (2023)</td>
-                  <td>07/14/2021</td>
-                  <td>07/16/2021</td>
-                  <td>45</td>
-                  <td>
-                    <div class="btn-group btn-group-sm">
-                      <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>6</td>
-                  <td>Shehan
-                  </td>
-                  <td>Biology A/L (2023)</td>
-                  <td>07/14/2021</td>
-                  <td>07/16/2021</td>
-                  <td>30</td>
-                  <td>
-                    <div class="btn-group btn-group-sm">
-                      <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>7</td>
-                  <td>Malith
-                  </td>
-                  <td>Biology A/L (2023)</td>
-                  <td>07/14/2021</td>
-                  <td>07/16/2021</td>
-                  <td>36</td>
-                  <td>
-                    <div class="btn-group btn-group-sm">
-                      <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>8</td>
-                  <td>Tharindu
-                  </td>
-                  <td>Biology A/L (2023)</td>
-                  <td>07/14/2021</td>
-                  <td>07/16/2021</td>
-                  <td>15</td>
-                  <td>
-                    <div class="btn-group btn-group-sm">
-                      <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>9</td>
-                  <td>Sandun Perera
-                  </td>
-                  <td>Biology A/L (2023)</td>
-                  <td>07/14/2021</td>
-                  <td>07/16/2021</td>
-                  <td>10</td>
-                  <td>
-                    <div class="btn-group btn-group-sm">
-                      <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>10</td>
-                  <td>Thisara
-                  </td>
-                  <td>Biology A/L (2023)</td>
-                  <td>07/14/2021</td>
-                  <td>07/16/2021</td>
-                  <td>17</td>
-                  <td>
-                    <div class="btn-group btn-group-sm">
-                      <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
-                    </div>
-                  </td>
-                </tr>
+                <?php }}?>
                 </tbody>
                 <tfoot>
                 <tr>
@@ -593,3 +501,10 @@
 </script>
 </body>
 </html>
+<?php
+}
+else
+{
+  header('location:../../Login.php');
+}
+?>

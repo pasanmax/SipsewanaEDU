@@ -1,3 +1,9 @@
+<?php
+include('../../../../models/frontofficer.php');
+if(isset($_SESSION['id']))
+{
+  $frontofficer = new FrontOfficer();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,6 +19,8 @@
   <link rel="stylesheet" href="../../../../plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
   <link rel="stylesheet" href="../../../../plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
   <link rel="stylesheet" href="../../../../plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+  <!-- Tempusdominus Bootstrap 4 -->
+  <link rel="stylesheet" href="../../../../plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="../../../../dist/css/adminlte.min.css">
 </head>
@@ -35,7 +43,7 @@
     <ul class="navbar-nav ml-auto">
       <!-- Navbar log out -->
       <li class="nav-item">
-        <a href="../../Login.php" class="nav-link">Log out</a>
+        <a href="../../../../models/frontofficer.php?logout=1" class="nav-link" onclick="return confirm('Are you sure?')">Log out</a>
       </li>
     </ul>
   </nav>
@@ -57,7 +65,7 @@
           <img src="../../../../dist/img/dashboardImages/user.png" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">User's name</a>
+          <a href="#" class="d-block"><?=$frontofficer->getName($_SESSION['id'])?></a>
         </div>
       </div>
 
@@ -383,38 +391,53 @@
         <div class="col-12">
           <div class="card">
             <div class="card-body">
+              <?php if(isset($_SESSION['response'])){?>
+                <div class="alert alert-<?=$_SESSION['response']?> alert-dismissible fade show" role="alert">
+                  <?=$_SESSION['message']?>
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+              <?php } unset($_SESSION['response']); unset($_SESSION['message']); ?>
+              <?php $list = $frontofficer->getDirectorList();?>
               <table id="directorList" class="table table-bordered table-striped">
                 <thead>
                   <tr>
                     <th>Director ID</th>
-                    <th>Name</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
                     <th>Email</th>
                     <th>Contact Number</th>
+                    <th hidden>DOB</th>
                     <th>Actions</th>
                   </tr>
                   </thead>
                   <tbody>
+                  <?php if($list==null){}else{ foreach($list as $item) {?>
                   <tr>
-                    <td>1</td>
-                    <td>Denis
-                    </td>
-                    <td>abc@email.com</td>
-                    <td>0113245699</td>
+                    <td><?= $item['dir_id']?></td>
+                    <td><?= $item['fname']?></td>
+                    <td><?= $item['lname']?></td>
+                    <td hidden><?= $item['dob']?></td>
+                    <td><?= $item['email']?></td>
+                    <td><?= $item['contactno']?></td>
                     <td>
                       <div class="btn-group btn-group-sm">
-                        <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
-                        <a href="#" class="btn btn-success"><i class="far fa-edit"></i></a>
-                        <a href="#" class="btn btn-danger"><i class="fas fa-trash"></i></a>
+                        <a href="#" class="btn btn-success editClass" data-toggle="modal" data-target="#modal-update"><i class="far fa-edit"></i></a>
+                        <a href="../../../../models/frontofficer.php?delDir=<?= $item['dir_id']?>" class="btn btn-danger" onclick="return confirm('Are you sure?')"><i class="fas fa-trash"></i></a>
                       </div>
                     </td>
                   </tr>
+                  <?php }}?>
                   </tbody>
                   <tfoot>
                   <tr>
                     <th>Director ID</th>
-                    <th>Name</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
                     <th>Email</th>
                     <th>Contact Number</th>
+                    <th hidden>DOB</th>
                     <th>Actions</th>
                   </tr>
                 </tfoot>
@@ -423,6 +446,82 @@
             <!-- /.card-body -->
           </div>
           <!-- /.card -->
+
+          <div class="modal fade" id="modal-update">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title">Update Director</h4>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <form id="updateFOfficer" action="../../../../models/frontofficer.php" method="POST">
+                    <table width="500px" height="300px">
+                      <tr hidden>
+                        <div class="form-group">
+                          <td><label for="directorid">Director ID : </label></td>
+                          <td><input type="text" id="directorid" name="directorid" required></td>
+                        </div>
+                      </tr>
+                      <tr>
+                        <div class="form-group">
+                          <td><label for="fname">First Name : </label></td>
+                          <td>
+                            <input id="fname" name="fname" required>
+                          </td>
+                        </div>
+                      </tr>
+                      <tr>
+                        <div class="form-group">
+                          <td><label for="lname">Last Name : </label></td>
+                          <td>
+                            <input id="lname" name="lname" required>
+                          </td>
+                        </div>
+                      </tr>
+                      <tr>
+                        <div class="form-group">
+                          <td><label for="contactno">Contact No : </label></td>
+                          <td><input name="contactno" id="contactno" required></td>
+                        </div>
+                      </tr>
+                      <tr>
+                        <div class="form-group">
+                          <td><label for="dob">Date of Date : </label></td>
+                          <td>
+                            <div class="col-6" style="padding-left: 0px; padding-right: 0px;">
+                              <div class="input-group dob" data-target-input="nearest">
+                                <input id="dob" name="dob" type="text" class="form-control datetimepicker-input" data-target="#dob" placeholder="Select a Date" required>
+                                <div class="input-group-append" data-target="#dob" data-toggle="datetimepicker">
+                                  <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                </div>
+                              </div>
+                            </div>
+                          </td>
+                        </div>
+                      </tr>
+                      <tr>
+                        <div class="form-group">
+                          <td><label for="email">Email : </label></td>
+                          <td><input type="email" name="email" id="email" required></td>
+                        </div>
+                      </tr>
+                    </table>
+                    <div class="modal-footer justify-content-between">
+                      <button type="submit" name="updateDirector" class="btn btn-info">Update</button>
+                      <button type="button" class="btn btn-default float-right" class="close" data-dismiss="modal" aria-label="Close">Cancel</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+              <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+          </div>
+
+
         </div>
       </div>
     </section>
@@ -450,6 +549,9 @@
 <script src="../../../../plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
 <script src="../../../../plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
 <script src="../../../../plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+<script src="../../../../plugins/moment/moment.min.js"></script>
+<!-- Tempusdominus Bootstrap 4 -->
+<script src="../../../../plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
 <!-- Bootstrap 4 -->
 <script src="../../../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- AdminLTE App -->
@@ -460,6 +562,33 @@
       "responsive": true, "lengthChange": false, "autoWidth": false
     }).buttons().container().appendTo('#directorList_wrapper .col-md-6:eq(0)');
   });
+
+  $('#dob').datetimepicker({
+    format: 'Y-MM-DD'
+  });
+
+  $('.editClass').on('click', function() {
+    // $('#modal-default').modal('show');
+
+    $tr = $(this).closest('tr');
+    var data = $tr.children("td").map(function () {
+      return $(this).text();
+    }).get();
+
+    document.getElementById('directorid').value = data[0];
+    document.getElementById('fname').value = data[1];
+    document.getElementById('lname').value = data[2];
+    document.getElementById('dob').value = data[3];
+    document.getElementById('email').value = data[4];
+    document.getElementById('contactno').value = data[5];
+  });
 </script>
 </body>
 </html>
+<?php
+}
+else
+{
+  header('location:../../Login.php');
+}
+?>

@@ -1,3 +1,11 @@
+<?php
+include('../../../../models/lecturer.php');
+include('../../../../models/subject.php');
+if(isset($_SESSION['id']))
+{
+  $lecturer = new Lecturer();
+  $subject = new Subject();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -37,7 +45,7 @@
     <ul class="navbar-nav ml-auto">
       <!-- Navbar log out -->
       <li class="nav-item">
-        <a href="../../Login.php" class="nav-link">Log out</a>
+        <a href="../../../../models/lecturer.php?logout=1" class="nav-link" onclick="return confirm('Are you sure?')">Log out</a>
       </li>
     </ul>
   </nav>
@@ -59,7 +67,7 @@
           <img src="../../../../dist/img/dashboardImages/user.png" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">User's name</a>
+          <a href="#" class="d-block"><?=$lecturer->getName($_SESSION['id'])?></a>
         </div>
       </div>
 
@@ -228,7 +236,7 @@
             <h1>Learning Module List</h1>
             <div class="row mt-4">
               <div class="col-md-4">
-                <button type="button" class="btn btn-block btn-primary text-left"><i class="fas fa-plus"></i> Add Module</button>
+                <button type="button" class="btn btn-block btn-primary text-left" data-toggle="modal" data-target="#modal-add"><i class="fas fa-plus"></i> Add Module</button>
               </div>
             </div>
           </div>
@@ -249,6 +257,15 @@
         <div class="col-12">
           <div class="card">
             <div class="card-body">
+              <?php if(isset($_SESSION['response'])){?>
+                  <div class="alert alert-<?=$_SESSION['response']?> alert-dismissible fade show" role="alert">
+                    <?=$_SESSION['message']?>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+              <?php } unset($_SESSION['response']); unset($_SESSION['message']); ?>
+              <?php $list = $lecturer->getLearningModuleList($_SESSION['id'])?>
               <table id="homeworkList" class="table table-bordered table-striped">
                 <thead>
                 <tr>
@@ -256,70 +273,27 @@
                   <th>Name</th>
                   <th>Subject</th>
                   <th>Created Date</th>
+                  <th hidden>Description</th>
                   <th>Actions</th>
                 </tr>
                 </thead>
                 <tbody>
+                <?php if($list==null){}else{ foreach($list as $item) {?>
                 <tr>
-                  <td>1</td>
-                  <td>Lesson1
-                  </td>
-                  <td>Physics A/L (2023)</td>
-                  <td>07/14/2021</td>
+                  <td><?= $item['lm_id']?></td>
+                  <td><?= $item['name']?></td>
+                  <td><?= $item['subjectname']?></td>
+                  <td><?= $item['date']?></td>
+                  <td hidden><?= $item['description']?></td>
                   <td>
                     <div class="btn-group btn-group-sm">
-                      <a href="#" class="btn btn-info"><i class="fas fa-download"></i></a>
-                      <a href="#" class="btn btn-secondary"><i class="fas fa-eye"></i></a>
-                      <a href="#" class="btn btn-success"><i class="far fa-edit"></i></a>
-                      <a href="#" class="btn btn-danger"><i class="fas fa-trash"></i></a>
+                      <a download="<?= $item['fileName']?>" href="../../../<?= $item['path']?><?= $item['fileName']?>" class="btn btn-info"><i class="fas fa-download"></i></a>
+                      <a href="#" class="btn btn-success editClass" data-toggle="modal" data-target="#modal-update"><i class="far fa-edit"></i></a>
+                      <a href="../../../../models/learning_module.php?dellearningModule=<?= $item['lm_id']?>" class="btn btn-danger" onclick="return confirm('Are you sure?')"><i class="fas fa-trash"></i></a>
                     </div>
                 </td>
                 </tr>
-                <tr>
-                  <td>2</td>
-                  <td>Lesson2
-                  </td>
-                  <td>Biology A/L (2023)</td>
-                  <td>07/14/2021</td>
-                  <td>
-                    <div class="btn-group btn-group-sm">
-                      <a href="#" class="btn btn-info"><i class="fas fa-download"></i></a>
-                      <a href="#" class="btn btn-secondary"><i class="fas fa-eye"></i></a>
-                      <a href="#" class="btn btn-success"><i class="far fa-edit"></i></a>
-                      <a href="#" class="btn btn-danger"><i class="fas fa-trash"></i></a>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>3</td>
-                  <td>Lesson3
-                  </td>
-                  <td>Biology A/L (2023)</td>
-                  <td>07/14/2021</td>
-                  <td>
-                    <div class="btn-group btn-group-sm">
-                      <a href="#" class="btn btn-info"><i class="fas fa-download"></i></a>
-                      <a href="#" class="btn btn-secondary"><i class="fas fa-eye"></i></a>
-                      <a href="#" class="btn btn-success"><i class="far fa-edit"></i></a>
-                      <a href="#" class="btn btn-danger"><i class="fas fa-trash"></i></a>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>4</td>
-                  <td>Lesson4
-                  </td>
-                  <td>Biology A/L (2023)</td>
-                  <td>07/14/2021</td>
-                  <td>
-                    <div class="btn-group btn-group-sm">
-                      <a href="#" class="btn btn-info"><i class="fas fa-download"></i></a>
-                      <a href="#" class="btn btn-secondary"><i class="fas fa-eye"></i></a>
-                      <a href="#" class="btn btn-success"><i class="far fa-edit"></i></a>
-                      <a href="#" class="btn btn-danger"><i class="fas fa-trash"></i></a>
-                    </div>
-                  </td>
-                </tr>
+                <?php }}?>
                 </tbody>
                 <tfoot>
                 <tr>
@@ -327,6 +301,7 @@
                   <th>Name</th>
                   <th>Subject</th>
                   <th>Created Date</th>
+                  <th hidden>Description</th>
                   <th>Actions</th>
                 </tr>
                 </tfoot>
@@ -335,92 +310,147 @@
             <!-- /.card-body -->
           </div>
           <!-- /.card -->
-        </div>
-      </div>
-      <div class="modal fade" id="modal-default">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h4 class="modal-title">Upload Homework</h4>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <form id="hwsubmit" action="">
-                <div class="form-group">
-                  <label for="name">Homework Name : </label>
-                  <p id="name"></p>
+
+
+          <div class="modal fade" id="modal-add">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title">Add Learning Module</h4>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
                 </div>
-                <div class="form-group">
-                  <label for="subject">Subject : </label>
-                  <p id="subject"></p>
-                </div>
-                <div class="form-group">
-                  <label for="createdate">Created Date : </label>
-                  <p id="createdate"></p>
-                </div>
-                <div class="form-group">
-                  <label for="deadlinedate">Deadline Date : </label>
-                  <p id="deadlinedate"></p>
-                </div>
-                <div class="form-group">
-                  <label for="uploadfile">Upload File : </label>
-                  <div id="actions" class="row">
-                    <div class="col-lg-6">
-                      <div class="btn-group w-100">
-                        <span class="btn btn-success col fileinput-button">
-                          <i class="fas fa-plus"></i>
-                          <span>Add files</span>
-                        </span>
-                      </div>
-                    </div>
-                    <div class="col-lg-6 d-flex align-items-center">
-                      <div class="fileupload-process w-100">
-                        <div id="total-progress" class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
-                          <div class="progress-bar progress-bar-success" style="width:0%;" data-dz-uploadprogress></div>
+                <div class="modal-body">
+                  <form id="addlearningmodule" action="../../../../models/learning_module.php" method="POST"  enctype="multipart/form-data">
+                    <table width="500px" height="300px">
+                      <tr>
+                        <div class="form-group">
+                          <td><label for="subname">Subject Name : </label></td>
+                          <td>
+                            <?php $list = $subject->getRegSubNameL($_SESSION['id'])?>
+                            <select name="subname" class="form-control select2" style="width: 50%;" required>
+                              <?php if($list==null){} else { foreach($list as $item) {?>
+                              <option><?= $item['subjectname']?></option>
+                              <?php }}?>
+                            </select>
+                          </td>
                         </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="table table-striped files" id="previews">
-                    <div id="template" class="row mt-2">
-                      <div class="col-auto">
-                          <span class="preview"><img src="data:," alt="" data-dz-thumbnail /></span>
-                      </div>
-                      <div class="col d-flex align-items-center">
-                          <p class="mb-0">
-                            <span class="lead" data-dz-name></span>
-                            (<span data-dz-size></span>)
-                          </p>
-                          <strong class="error text-danger" data-dz-errormessage></strong>
-                      </div>
-                      <div class="col-4 d-flex align-items-center">
-                          <div class="progress progress-striped active w-100" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
-                            <div class="progress-bar progress-bar-success" style="width:0%;" data-dz-uploadprogress></div>
-                          </div>
-                      </div>
-                      <div class="col-auto d-flex align-items-center">
-                        <div class="btn-group">
-                          <button data-dz-remove class="btn btn-danger delete">
-                            <i class="fas fa-trash"></i>
-                            <span>Delete</span>
-                          </button>
+                      </tr>
+                      <tr>
+                        <div class="form-group">
+                          <td><label for="lmname">Learning Module Name : </label></td>
+                          <td><input type="text" name="lmname" required></td>
                         </div>
-                      </div>
+                      </tr>
+                      <tr>
+                        <div class="form-group">
+                          <td><label for="type">Type : </label></td>
+                          <td>
+                            <select id="type" name="type" class="form-control select2" style="width: 50%;" required>
+                              <option value="PDF">PDF</option>
+                            </select>
+                          </td>
+                        </div>
+                      </tr>
+                      <tr>
+                        <div class="form-group">
+                          <td><label for="description">Description : </label></td>
+                          <td><textarea id="description" name="description" cols="30" rows="5" required></textarea></td>
+                        </div>
+                      </tr>
+                      <tr>
+                        <div class="form-group">
+                          <td><label for="lmfile">Learning Module File : </label></td>
+                          <td><input type="file" id="lmfile" name="lmfile" accept="application/pdf" required/></td>
+                        </div>
+                      </tr>
+                    </table>
+                    <div class="modal-footer justify-content-between">
+                      <button type="submit" name="addlearningmodule" class="btn btn-info">Add</button>
+                      <button type="button" class="btn btn-default float-right" class="close" data-dismiss="modal" aria-label="Close">Cancel</button>
                     </div>
-                  </div>
+                  </form>
                 </div>
-                <div class="modal-footer justify-content-between">
-                  <button type="submit" id="reset" class="btn btn-info">Submit</button>
-                  <button type="button" class="btn btn-default float-right" class="close" data-dismiss="modal" aria-label="Close">Cancel</button>
-                </div>
-              </form>
+              </div>
+              <!-- /.modal-content -->
             </div>
+            <!-- /.modal-dialog -->
           </div>
-          <!-- /.modal-content -->
+
+          <div class="modal fade" id="modal-update">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title">Update Learning Module</h4>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <form id="updatelearningmodule" action="../../../../models/learning_module.php" method="POST" enctype="multipart/form-data">
+                    <table width="500px" height="300px">
+                      <tr hidden>
+                        <div class="form-group">
+                          <td><label for="ulmid">Learning Module ID : </label></td>
+                          <td><input type="text" id="ulmid" name="ulmid"></td>
+                        </div>
+                      </tr>
+                      <tr>
+                          <div class="form-group">
+                            <td><label for="usubname">Subject Name : </label></td>
+                            <td>
+                              <?php $list = $subject->getRegSubNameL($_SESSION['id'])?>
+                              <select name="usubname" id="usubname" class="form-control select2" style="width: 50%;" required>
+                                <?php if($list==null){} else { foreach($list as $item) {?>
+                                <option><?= $item['subjectname']?></option>
+                                <?php }}?>
+                              </select>
+                            </td>
+                          </div>
+                      </tr>
+                      <tr>
+                        <div class="form-group">
+                          <td><label for="ulmname">Learning Module Name : </label></td>
+                          <td><input type="text" name="ulmname" id="ulmname" required></td>
+                        </div>
+                      </tr>
+                      <tr>
+                        <div class="form-group">
+                          <td><label for="utype">Type : </label></td>
+                          <td>
+                            <select id="utype" name="utype" class="form-control select2" style="width: 50%;" required>
+                              <option value="PDF">PDF</option>
+                            </select>
+                          </td>
+                        </div>
+                      </tr>
+                      <tr>
+                        <div class="form-group">
+                          <td><label for="udescription">Description : </label></td>
+                          <td><textarea id="udescription" name="udescription" cols="30" rows="5" required></textarea></td>
+                        </div>
+                      </tr>
+                      <tr>
+                        <div class="form-group">
+                          <td><label for="ulmfile">Learning Module File : </label></td>
+                          <td><input type="file" id="ulmfile" name="ulmfile" accept="application/pdf"/></td>
+                        </div>
+                      </tr>
+                    </table>
+                    <div class="modal-footer justify-content-between">
+                      <button type="submit" name="updateLearningModule" class="btn btn-info">Update</button>
+                      <button type="button" class="btn btn-default float-right" class="close" data-dismiss="modal" aria-label="Close">Cancel</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+              <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+          </div>
+
         </div>
-        <!-- /.modal-dialog -->
       </div>
     </section>
     <!-- /.content -->
@@ -460,43 +490,7 @@
     }).buttons().container().appendTo('#homeworkList_wrapper .col-md-6:eq(0)');
   });
 
-  // DropzoneJS Demo Code Start
-  Dropzone.autoDiscover = false
-
-  // Get the template HTML and remove it from the doumenthe template HTML and remove it from the doument
-  var previewNode = document.querySelector("#template")
-  previewNode.id = ""
-  var previewTemplate = previewNode.parentNode.innerHTML
-  previewNode.parentNode.removeChild(previewNode)
-
-  var myDropzone = new Dropzone(document.body, { // Make the whole body a dropzone
-    url: "/target-url", // Set the url
-    thumbnailWidth: 80,
-    thumbnailHeight: 80,
-    parallelUploads: 20,
-    acceptedFiles: ".pdf,.docx,.doc,",
-    previewTemplate: previewTemplate,
-    autoQueue: false, // Make sure the files aren't queued until manually added
-    previewsContainer: "#previews", // Define the container to display the previews
-    clickable: ".fileinput-button" // Define the element that should be used as click trigger to select files.
-  })
-
-  // Update the total progress bar
-  myDropzone.on("totaluploadprogress", function(progress) {
-    document.querySelector("#total-progress .progress-bar").style.width = progress + "%"
-  })
-
-  myDropzone.on("sending", function(file) {
-    // Show the total progress bar when upload starts
-    document.querySelector("#total-progress").style.opacity = "1"
-  })
-
-  // Hide the total progress bar when nothing's uploading anymore
-  myDropzone.on("queuecomplete", function(progress) {
-    document.querySelector("#total-progress").style.opacity = "0"
-  })
-
-  $('.upload').on('click', function() {
+  $('.editClass').on('click', function() {
     // $('#modal-default').modal('show');
 
     $tr = $(this).closest('tr');
@@ -504,18 +498,17 @@
       return $(this).text();
     }).get();
 
-    console.log(data);
-    $('#name').html(data[1]);
-    $('#subject').html(data[2]);
-    $('#createdate').html(data[3]);
-    $('#deadlinedate').html(data[4]);
-
-    //on modal closing
-    $('#modal-default').on('hidden.bs.modal', function () {
-      myDropzone.removeAllFiles(true)
-      console.clear()
-    })
+    document.getElementById('ulmid').value = data[0];
+    document.getElementById('ulmname').value = data[1];
+    document.getElementById('udescription').value = data[4];
   });
 </script>
 </body>
 </html>
+<?php
+}
+else
+{
+  header('location:../../Login.php');
+}
+?>

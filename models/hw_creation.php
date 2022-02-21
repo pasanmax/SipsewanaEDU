@@ -13,14 +13,20 @@ if(isset($_SESSION['id']))
 
     class Hw_creation extends Homework
     {
-        private $cre_lec_id;
-        private $createddate;
-        private $deadlinedate;
+        protected $cre_lec_id;
+        protected $createddate;
+        protected $deadlinedate;
 
         function setLecturerId($lecturer_id)
         {
             $this->cre_lec_id = $lecturer_id;
 
+        }
+
+        function setLecHwSession()
+        {
+            header('location:../pages/Front Officer/Lecturers/Homework/List.php');
+            $_SESSION['lechwid']=$this->cre_lec_id;
         }
 
         function setcreatedDate()
@@ -142,15 +148,24 @@ if(isset($_SESSION['id']))
                 $deadlinedate = date("Y-m-d", strtotime($this->deadlinedate));
                 // $createddate = $this->createddate;
                 // $deadlinedate = $this->deadlinedate;
+                $pfileName = $this->getFileName($homework_id);
                 $status = null;
-                
-                if($con->query("UPDATE homework SET name='".$homeworkName."',type='".$type."',description='".$description."',fileName='".$fileName."',path='".$path."',hw_sub_id='".$subject_id."' WHERE hw_id='".$homework_id."'") === TRUE) {
+
+                if(unlink('../hw_creations/'.$pfileName)) {
+                    if($con->query("UPDATE homework SET name='".$homeworkName."',type='".$type."',description='".$description."',fileName='".$fileName."',path='".$path."',hw_sub_id='".$subject_id."' WHERE hw_id='".$homework_id."'") === TRUE) {
                     
-                    if($con->query("UPDATE hw_creation SET deadlinedate='".$deadlinedate."' WHERE cre_hw_id='".$homework_id."' AND cre_lec_id='".$lecturer_id."'") === TRUE) {
-                        $status = true;
-                        // header('location:../pages/Lecturer/Homeworks/Manage/List.php');
-                        // $_SESSION['response']="success";
-                        // $_SESSION['message']="Updated Successfully!";
+                        if($con->query("UPDATE hw_creation SET deadlinedate='".$deadlinedate."' WHERE cre_hw_id='".$homework_id."' AND cre_lec_id='".$lecturer_id."'") === TRUE) {
+                            $status = true;
+                            // header('location:../pages/Lecturer/Homeworks/Manage/List.php');
+                            // $_SESSION['response']="success";
+                            // $_SESSION['message']="Updated Successfully!";
+                        } else {
+                            $status = false;
+                            // header('location:../pages/Lecturer/Homeworks/Manage/List.php');
+                            // $_SESSION['response']="danger";
+                            // $_SESSION['message']="Database error occured!";
+                            //echo "Error: ".$con->error;
+                        }
                     } else {
                         $status = false;
                         // header('location:../pages/Lecturer/Homeworks/Manage/List.php');
@@ -160,11 +175,8 @@ if(isset($_SESSION['id']))
                     }
                 } else {
                     $status = false;
-                    // header('location:../pages/Lecturer/Homeworks/Manage/List.php');
-                    // $_SESSION['response']="danger";
-                    // $_SESSION['message']="Database error occured!";
-                    //echo "Error: ".$con->error;
                 }
+                
                 return $status;
                 $con->close();
             } catch (Exception $e) {
@@ -231,7 +243,7 @@ if(isset($_SESSION['id']))
                         } else {
                             header('location:../pages/Lecturer/Homeworks/Manage/List.php');
                             $_SESSION['response']="danger";
-                            $_SESSION['message']="Database error occured1!";
+                            $_SESSION['message']="Database error occured!";
                             //echo "Error: ".$con->error;
                         }
                     } else {
@@ -252,12 +264,16 @@ if(isset($_SESSION['id']))
                             } else {
                                 header('location:../pages/Lecturer/Homeworks/Manage/List.php');
                                 $_SESSION['response']="danger";
-                                $_SESSION['message']="Database error occured2!";
+                                $_SESSION['message']="Database error occured!";
                                 //echo "Error: ".$con->error;
                             }
                         }
                     }
                     
+                } else {
+                    header('location:../pages/Lecturer/Homeworks/Manage/List.php');
+                    $_SESSION['response']="danger";
+                    $_SESSION['message']="No File found!";
                 }
                 
                 $con->close();
@@ -269,8 +285,8 @@ if(isset($_SESSION['id']))
 
     if(isset($_POST['addhomework'])) {
 
-        if($_POST['subname'] === null && $_POST['name'] === null && $_POST['type'] === null && $_POST['description'] === null && $_POST['homeworkfile'] === null 
-        && $_POST['deadlinedate'] === null)
+        if(empty($_POST['subname']) || empty($_POST['name']) || empty($_POST['type']) || empty($_POST['description']) || empty($_POST['homeworkfile'])
+        || empty($_POST['deadlinedate']))
         {
             header('location:../pages/Lecturer/Homeworks/Manage/List.php');
             $_SESSION['response']="danger";
@@ -307,10 +323,10 @@ if(isset($_SESSION['id']))
                         $_SESSION['message']="Created Successfully!";
                         //echo "Error: ".$con->error;
                     } else {
-                        // header('location:../pages/Lecturer/Homeworks/Manage/List.php');
-                        // $_SESSION['response']="danger";
-                        // $_SESSION['message']="Database error occured!";
-                        echo "Error: ".$con->error;
+                        header('location:../pages/Lecturer/Homeworks/Manage/List.php');
+                        $_SESSION['response']="danger";
+                        $_SESSION['message']="Database error occured!";
+                        // echo "Error: ".$con->error;
                     }
                 }
             }
@@ -319,8 +335,8 @@ if(isset($_SESSION['id']))
 
     if(isset($_POST['updateHomework'])) {
 
-        if($_POST['usubname'] === null && $_POST['uname'] === null && $_POST['utype'] === null && $_POST['udescription'] === null && $_POST['udeadlinedate'] === null
-        && $_POST['uhomeworkid' === null])
+        if(empty($_POST['usubname']) || empty($_POST['uname']) || empty($_POST['utype']) || empty($_POST['udescription']) || empty($_POST['udeadlinedate'])
+        || empty($_POST['uhomeworkid']))
         {
             header('location:../pages/Lecturer/Homeworks/Manage/List.php');
             $_SESSION['response']="danger";
@@ -364,6 +380,11 @@ if(isset($_SESSION['id']))
                             header('location:../pages/Lecturer/Homeworks/Manage/List.php');
                             $_SESSION['response']="success";
                             $_SESSION['message']="Updated Successfully!";
+                        } else {
+                            header('location:../pages/Lecturer/Homeworks/Manage/List.php');
+                            $_SESSION['response']="danger";
+                            $_SESSION['message']="Database error occured!";
+                            // echo "Error: ".$con->error;
                         }
                     }
                 }
@@ -376,6 +397,18 @@ if(isset($_SESSION['id']))
     {
         $hw_creation = new Hw_creation();
         $hw_creation->deleteHomework($_GET['delHomework']);
+    }
+
+    if (isset($_POST['lechwSearch'])) {
+        if (empty($_POST['lecturerid'])) {
+            header('location:../pages/Front Officer/Lecturers/Homework/List.php');
+            $_SESSION['response']="danger";
+            $_SESSION['message']="Invalid lecturer ID!";
+        } else {
+            $hw_creation = new Hw_creation();
+            $hw_creation->setLecturerId($_POST['lecturerid']);
+            $hw_creation->setLecHwSession();
+        }
     }
 
 

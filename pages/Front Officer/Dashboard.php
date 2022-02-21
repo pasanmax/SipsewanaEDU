@@ -1,3 +1,9 @@
+<?php
+include('../../models/frontofficer.php');
+if(isset($_SESSION['id']))
+{
+  $frontofficer = new FrontOfficer();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -40,7 +46,7 @@
     <ul class="navbar-nav ml-auto">
       <!-- Navbar log out -->
       <li class="nav-item">
-        <a href="./Login.php" class="nav-link">Log out</a>
+        <a href="../../models/frontofficer.php?logout=1" class="nav-link" onclick="return confirm('Are you sure?')">Log out</a>
       </li>
     </ul>
   </nav>
@@ -62,7 +68,7 @@
           <img src="../../dist/img/dashboardImages/user.png" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">User's name</a>
+          <a href="#" class="d-block"><?=$frontofficer->getName($_SESSION['id'])?></a>
         </div>
       </div>
 
@@ -391,7 +397,8 @@
             <!-- small box -->
             <div class="small-box bg-info">
               <div class="inner">
-                <h3>150</h3>
+                <?php $count = $frontofficer->getRegisteredStudentCount()?>
+                <h3><?= $count ?></h3>
 
                 <p>Registered Students</p>
               </div>
@@ -406,7 +413,8 @@
             <!-- small box -->
             <div class="small-box bg-success">
               <div class="inner">
-                <h3>150</h3>
+              <?php $count = $frontofficer->getRegisteredLecturerCount()?>
+                <h3><?= $count ?></h3>
                 <!-- <h3>53<sup style="font-size: 20px">%</sup></h3> -->
 
                 <p>Registered Lectures</p>
@@ -422,7 +430,8 @@
             <!-- small box -->
             <div class="small-box bg-warning">
               <div class="inner">
-                <h3>44</h3>
+              <?php $count = $frontofficer->getSubjectCount()?>
+                <h3><?= $count ?></h3>
 
                 <p>Total Subjects</p>
               </div>
@@ -435,19 +444,37 @@
           <!-- ./col -->
           <div class="col-lg-3 col-6">
             <!-- small box -->
-            <div class="small-box bg-danger">
+            <div class="small-box bg-primary">
               <div class="inner">
-                <h3>Attendance</h3>
+              <?php $count = $frontofficer->getPendingStudentsCount()?>
+                <h3><?= $count ?></h3>
 
-                <p>Mark Student Attendance</p>
+                <p>Pending Student Registrations</p>
               </div>
               <div class="icon">
-                <i class="nav-icon far fa-check-circle"></i>
+                <i class="fas fa-user"></i>
               </div>
-              <a href="#" class="small-box-footer">Click Here <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="./ManageRegistrations/PendingStudentRegistrations/PendingRegistrations.php" class="small-box-footer">Click Here <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
+          <div class="col-lg-3 col-6">
+            <!-- small box -->
+            <div class="small-box bg-primary">
+              <div class="inner">
+              <?php $count = $frontofficer->getPendingLecturersCount()?>
+                <h3><?= $count ?></h3>
+
+                <p>Pending Lecturer Registrations</p>
+              </div>
+              <div class="icon">
+                <i class="fas fa-user-tie"></i>
+              </div>
+              <a href="./ManageRegistrations/PendingLecturerRegistrations/PendingRegistrations.php" class="small-box-footer">Click Here <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+          </div>
+          <!-- ./col -->
+          
         </div>
         <!-- /.row -->
         <!-- Main row -->
@@ -524,3 +551,10 @@
 <script src="../../dist/js/pages/Front Officer/dashboard.js"></script>
 </body>
 </html>
+<?php
+}
+else
+{
+  header('location:./Login.php');
+}
+?>

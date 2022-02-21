@@ -1,3 +1,9 @@
+<?php
+include('../../../../models/frontofficer.php');
+if(isset($_SESSION['id']))
+{
+  $frontofficer = new FrontOfficer();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -35,7 +41,7 @@
     <ul class="navbar-nav ml-auto">
       <!-- Navbar log out -->
       <li class="nav-item">
-        <a href="../../Login.php" class="nav-link">Log out</a>
+        <a href="../../../../models/frontofficer.php?logout=1" class="nav-link" onclick="return confirm('Are you sure?')">Log out</a>
       </li>
     </ul>
   </nav>
@@ -57,7 +63,7 @@
           <img src="../../../../dist/img/dashboardImages/user.png" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">User's name</a>
+          <a href="#" class="d-block"><?=$frontofficer->getName($_SESSION['id'])?></a>
         </div>
       </div>
 
@@ -365,6 +371,18 @@
         <div class="row mb-2">
           <div class="col-sm-6">
             <h1>Online Attendance List</h1>
+            <form id="searchStudent" action="../../../../models/lec_attendance.php" method="POST">
+              <div class="row mt-4">
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <input type="text" id="lecturerid" name="lecturerid" placeholder="Lecturer ID" style="width: 100%;">
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <button type="submit" name="lecOnAttenSearch" class="btn btn-block btn-primary text-left">Search</button>
+                </div>
+              </div>
+            </form>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -383,6 +401,23 @@
         <div class="col-12">
           <div class="card">
             <div class="card-body">
+              <?php if(isset($_SESSION['response'])){?>
+                <div class="alert alert-<?=$_SESSION['response']?> alert-dismissible fade show" role="alert">
+                  <?=$_SESSION['message']?>
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+              <?php } unset($_SESSION['response']); unset($_SESSION['message']); ?>
+              <?php
+              if(isset($_SESSION['lec_On_att_id'])) {
+                include "$_SERVER[DOCUMENT_ROOT]/SipsewanaEDU/models/lec_attendance.php";
+                $lecAttendance = new Lec_Attendance();
+                $list = $lecAttendance->getLecturerOnlineAttendance($_SESSION['lec_On_att_id']);
+              } else {
+                $list = null;
+              }
+              ?>
               <table id="onlineList" class="table table-bordered table-striped">
                 <thead>
                 <tr>
@@ -396,106 +431,17 @@
                 </tr>
                 </thead>
                 <tbody>
+                <?php if($list==null){}else{ foreach($list as $item) {?>
                 <tr>
-                  <td>1</td>
-                  <td>ST01</td>
-                  <td>Sandun Perera
-                  </td>
-                  <td>Biology A/L (2023)</td>
-                  <td>07/21/2021</td>
-                  <td>08.00 AM</td>
-                  <td>10.30 AM</td>
+                  <td><?= $item['class_id']?></td>
+                  <td><?= $item['lecturer_id']?></td>
+                  <td><?= $item['lecturername']?></td>
+                  <td><?= $item['subjectname']?></td>
+                  <td><?= $item['date']?></td>
+                  <td><?= $item['intime']?></td>
+                  <td><?= $item['outtime']?></td>
                 </tr>
-                <tr>
-                  <td>2</td>
-                  <td>ST01</td>
-                  <td>Sandun Perera
-                  </td>
-                  <td>Biology A/L (2023)</td>
-                  <td>07/21/2021</td>
-                  <td>08.00 AM</td>
-                  <td>10.30 AM</td>
-                </tr>
-                <tr>
-                  <td>3</td>
-                  <td>ST01</td>
-                  <td>Sandun Perera
-                  </td>
-                  <td>Biology A/L (2023)</td>
-                  <td>07/21/2021</td>
-                  <td>08.00 AM</td>
-                  <td>10.30 AM</td>
-                </tr>
-                <tr>
-                  <td>4</td>
-                  <td>ST01</td>
-                  <td>Sandun Perera
-                  </td>
-                  <td>Biology A/L (2023)</td>
-                  <td>07/21/2021</td>
-                  <td>08.00 AM</td>
-                  <td>10.30 AM</td>
-                </tr>
-                <tr>
-                  <td>5</td>
-                  <td>ST01</td>
-                  <td>Sandun Perera
-                  </td>
-                  <td>Biology A/L (2023)</td>
-                  <td>07/21/2021</td>
-                  <td>08.00 AM</td>
-                  <td>10.30 AM</td>
-                </tr>
-                <tr>
-                  <td>6</td>
-                  <td>ST01</td>
-                  <td>Sandun Perera
-                  </td>
-                  <td>Biology A/L (2023)</td>
-                  <td>07/21/2021</td>
-                  <td>08.00 AM</td>
-                  <td>10.30 AM</td>
-                </tr>
-                <tr>
-                  <td>7</td>
-                  <td>ST01</td>
-                  <td>Sandun Perera
-                  </td>
-                  <td>Biology A/L (2023)</td>
-                  <td>07/21/2021</td>
-                  <td>08.00 AM</td>
-                  <td>10.30 AM</td>
-                </tr>
-                <tr>
-                  <td>8</td>
-                  <td>ST01</td>
-                  <td>Sandun Perera
-                  </td>
-                  <td>Biology A/L (2023)</td>
-                  <td>07/21/2021</td>
-                  <td>08.00 AM</td>
-                  <td>10.30 AM</td>
-                </tr>
-                <tr>
-                  <td>9</td>
-                  <td>ST01</td>
-                  <td>Sandun Perera
-                  </td>
-                  <td>Biology A/L (2023)</td>
-                  <td>07/21/2021</td>
-                  <td>08.00 AM</td>
-                  <td>10.30 AM</td>
-                </tr>
-                <tr>
-                  <td>10</td>
-                  <td>ST01</td>
-                  <td>Sandun Perera
-                  </td>
-                  <td>Biology A/L (2023)</td>
-                  <td>07/21/2021</td>
-                  <td>08.00 AM</td>
-                  <td>10.30 AM</td>
-                </tr>
+                <?php }}?>
                 </tbody>
                 <tfoot>
                 <tr>
@@ -553,3 +499,10 @@
 </script>
 </body>
 </html>
+<?php
+}
+else
+{
+  header('location:../../Login.php');
+}
+?>

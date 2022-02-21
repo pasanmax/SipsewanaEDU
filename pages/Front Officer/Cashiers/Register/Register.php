@@ -1,3 +1,9 @@
+<?php
+include('../../../../models/frontofficer.php');
+if(isset($_SESSION['id']))
+{
+  $frontofficer = new FrontOfficer();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,23 +15,12 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="../../../../plugins/fontawesome-free/css/all.min.css">
-  <!-- daterange picker -->
-  <link rel="stylesheet" href="../../../../plugins/daterangepicker/daterangepicker.css">
-  <!-- iCheck for checkboxes and radio inputs -->
-  <link rel="stylesheet" href="../../../../plugins/icheck-bootstrap/icheck-bootstrap.min.css">
-  <!-- Bootstrap Color Picker -->
-  <link rel="stylesheet" href="../../../../plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css">
+  <!-- DataTables -->
+  <link rel="stylesheet" href="../../../../plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+  <link rel="stylesheet" href="../../../../plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+  <link rel="stylesheet" href="../../../../plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
   <!-- Tempusdominus Bootstrap 4 -->
   <link rel="stylesheet" href="../../../../plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
-  <!-- Select2 -->
-  <link rel="stylesheet" href="../../../../plugins/select2/css/select2.min.css">
-  <link rel="stylesheet" href="../../../../plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
-  <!-- Bootstrap4 Duallistbox -->
-  <link rel="stylesheet" href="../../../../plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css">
-  <!-- BS Stepper -->
-  <link rel="stylesheet" href="../../../../plugins/bs-stepper/css/bs-stepper.min.css">
-  <!-- dropzonejs -->
-  <link rel="stylesheet" href="../../../../plugins/dropzone/min/dropzone.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="../../../../dist/css/adminlte.min.css">
 </head>
@@ -48,7 +43,7 @@
     <ul class="navbar-nav ml-auto">
       <!-- Navbar log out -->
       <li class="nav-item">
-        <a href="../../Login.php" class="nav-link">Log out</a>
+        <a href="../../../../models/frontofficer.php?logout=1" class="nav-link" onclick="return confirm('Are you sure?')">Log out</a>
       </li>
     </ul>
   </nav>
@@ -70,7 +65,7 @@
           <img src="../../../../dist/img/dashboardImages/user.png" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">User's name</a>
+          <a href="#" class="d-block"><?=$frontofficer->getName($_SESSION['id'])?></a>
         </div>
       </div>
 
@@ -395,6 +390,14 @@
       <div class="row">
         <div class="col-md-6">
           <div class="card card-primary">
+            <?php if(isset($_SESSION['response'])){?>
+              <div class="alert alert-<?=$_SESSION['response']?> alert-dismissible fade show" role="alert">
+                <?=$_SESSION['message']?>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+            <?php } unset($_SESSION['response']); unset($_SESSION['message']); ?>
             <div class="card-header">
               <h3 class="card-title">Registration Form</h3>
 
@@ -405,21 +408,21 @@
               </div>
             </div>
             <div class="card-body">
-              <form id="registration" action="">
+              <form id="registrationCas" action="../../../../models/cashier.php" method="POST">
                 <div class="form-group">
                   <label for="fname">First Name</label>
-                  <input type="text" id="fname" class="form-control"/>
+                  <input type="text" id="fname" name="fname" class="form-control" required>
                 </div>
                 <div class="form-group">
                   <label for="lname">Last Name</label>
-                  <input type="text" id="lname" class="form-control"/>
+                  <input type="text" id="lname" name="lname" class="form-control" required>
                 </div>
                 <div class="form-group">
                   <label for="dob">Date of Birth
                     <!-- <span class="text-danger font-weight-bold">*</span> -->
                   </label>
                   <div class="input-group date" data-target-input="nearest">
-                      <input id="dob" type="text" class="form-control datetimepicker-input" data-target="#dob" required>
+                      <input id="dob" name="dob" type="text" class="form-control datetimepicker-input" data-target="#dob" required>
                       <div class="input-group-append" data-target="#dob" data-toggle="datetimepicker">
                           <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                       </div>
@@ -428,38 +431,38 @@
                 </div>
                 <div class="form-group">
                   <label for="adrsl1">Address Line 1</label>
-                  <input type="text" id="adrsl1" class="form-control"/>
+                  <input type="text" id="adrsl1" name="adrsl1" class="form-control" required>
                 </div>
                 <div class="form-group">
                   <label for="adrsl2">Address Line 2</label>
-                  <input type="text" id="adrsl1" class="form-control"/>
+                  <input type="text" id="adrsl2" name="adrsl2" class="form-control" required>
                 </div>
                 <div class="form-group">
                   <label for="adrsl3">Address Line 3</label>
-                  <input type="text" id="adrsl1" class="form-control"/>
+                  <input type="text" id="adrsl3" name="adrsl3" class="form-control">
                 </div>
                 <div class="form-group">
                   <label for="city">City</label>
-                  <input type="text" id="city" class="form-control"/>
+                  <input type="text" id="city" name="city" class="form-control" required>
                 </div>
                 <div class="form-group">
                   <label for="district">District</label>
-                  <input type="text" id="district" class="form-control"/>
+                  <input type="text" id="district" name="district" class="form-control" required>
                 </div>
                 <div class="form-group">
                   <label for="zipcode">Zipcode</label>
-                  <input type="text" id="zipcode" class="form-control"/>
+                  <input type="text" id="zipcode" name="zipcode" class="form-control" required>
                 </div>
                 <div class="form-group">
                   <label for="email">Email</label>
-                  <input type="text" id="email" class="form-control"/>
+                  <input type="email" id="email" name="email" class="form-control" required>
                 </div>
                 <div class="form-group">
                   <label for="cno">Contact Number</label>
-                  <input type="text" id="cno" class="form-control"/>
+                  <input type="text" id="cno" name="cno" class="form-control" required>
                 </div>
                 <div class="card-footer">
-                  <button type="submit" id="reset" class="btn btn-info">Register</button>
+                  <button type="submit" id="reset" name="registerCashier" class="btn btn-info">Register</button>
                   <button type="reset" class="btn btn-default float-right">Cancel</button>
                 </div>
               </form>
@@ -485,27 +488,18 @@
 
 <!-- jQuery -->
 <script src="../../../../plugins/jquery/jquery.min.js"></script>
-<!-- Bootstrap 4 -->
-<script src="../../../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- Select2 -->
-<script src="../../../../plugins/select2/js/select2.full.min.js"></script>
-<!-- Bootstrap4 Duallistbox -->
-<script src="../../../../plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>
-<!-- InputMask -->
+<!-- DataTables  & Plugins -->
+<script src="../../../../plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="../../../../plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="../../../../plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="../../../../plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script src="../../../../plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+<script src="../../../../plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
 <script src="../../../../plugins/moment/moment.min.js"></script>
-<script src="../../../../plugins/inputmask/jquery.inputmask.min.js"></script>
-<!-- date-range-picker -->
-<script src="../../../../plugins/daterangepicker/daterangepicker.js"></script>
-<!-- bootstrap color picker -->
-<script src="../../../../plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js"></script>
 <!-- Tempusdominus Bootstrap 4 -->
 <script src="../../../../plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
-<!-- Bootstrap Switch -->
-<script src="../../../../plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
-<!-- BS-Stepper -->
-<script src="../../../../plugins/bs-stepper/js/bs-stepper.min.js"></script>
-<!-- dropzonejs -->
-<script src="../../../../plugins/dropzone/min/dropzone.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="../../../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- AdminLTE App -->
 <script src="../../../../dist/js/adminlte.min.js"></script>
 <!-- Page Specific Script -->
@@ -513,9 +507,16 @@
   $(function () {
     //Date picker
     $('#dob').datetimepicker({
-          format: 'L'
+      format: 'Y-MM-DD'
     });
   });
 </script>
 </body>
 </html>
+<?php
+}
+else
+{
+  header('location:../../Login.php');
+}
+?>

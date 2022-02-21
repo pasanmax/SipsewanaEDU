@@ -41,7 +41,7 @@ if(isset($_SESSION['id']))
     <ul class="navbar-nav ml-auto">
       <!-- Navbar log out -->
       <li class="nav-item">
-        <a href="../../../../models/student.php?logout=1" class="nav-link">Log out</a>
+        <a href="../../../../models/student.php?logout=1" class="nav-link" onclick="return confirm('Are you sure?')">Log out</a>
       </li>
     </ul>
   </nav>
@@ -238,6 +238,7 @@ if(isset($_SESSION['id']))
                 <thead>
                 <tr>
                   <th>Class ID</th>
+                  <th>Subject Name</th>
                   <th>Date</th>
                   <th>In Time</th>
                   <th>Out Time</th>
@@ -247,6 +248,7 @@ if(isset($_SESSION['id']))
                 <?php foreach($list as $item) {?>
                 <tr>
                   <td><?= $item['cls_attst_id']?></td>
+                  <td><?= $item['subjectname']?></td>
                   <td><?= $item['date']?></td>
                   <td><?= $item['intime']?></td>
                   <td><?= $item['outtime']?></td>
@@ -256,6 +258,7 @@ if(isset($_SESSION['id']))
                 <tfoot>
                 <tr>
                   <th>Class ID</th>
+                  <th>Subject Name</th>
                   <th>Date</th>
                   <th>In Time</th>
                   <th>Out Time</th>

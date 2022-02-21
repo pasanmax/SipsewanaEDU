@@ -1,3 +1,9 @@
+<?php
+include('../../../../models/frontofficer.php');
+if(isset($_SESSION['id']))
+{
+  $frontofficer = new FrontOfficer();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -35,7 +41,7 @@
     <ul class="navbar-nav ml-auto">
       <!-- Navbar log out -->
       <li class="nav-item">
-        <a href="../../Login.php" class="nav-link">Log out</a>
+        <a href="../../../../models/frontofficer.php?logout=1" class="nav-link" onclick="return confirm('Are you sure?')">Log out</a>
       </li>
     </ul>
   </nav>
@@ -57,7 +63,7 @@
           <img src="../../../../dist/img/dashboardImages/user.png" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">User's name</a>
+          <a href="#" class="d-block"><?=$frontofficer->getName($_SESSION['id'])?></a>
         </div>
       </div>
 
@@ -365,6 +371,18 @@
         <div class="row mb-2">
           <div class="col-sm-6">
             <h1>Payment List</h1>
+            <form id="searchclass" action="../../../../models/payment.php" method="POST">
+              <div class="row mt-4">
+                <div class="col-md-4">
+                  <div class="form-group">
+                      <input type="text" id="lecturerid" name="lecturerid" placeholder="Lecturer ID" style="width: 100%;">
+                    </div>
+                  </div>
+                <div class="col-md-4">
+                  <button type="submit" name="lecpaymentSearch" class="btn btn-block btn-primary text-left">Search</button>
+                </div>
+              </div>
+            </form>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -383,6 +401,21 @@
         <div class="col-12">
           <div class="card">
             <div class="card-body">
+              <?php if(isset($_SESSION['response'])){?>
+                <div class="alert alert-<?=$_SESSION['response']?> alert-dismissible fade show" role="alert">
+                  <?=$_SESSION['message']?>
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+              <?php } unset($_SESSION['response']); unset($_SESSION['message']); ?>
+              <?php
+              if(isset($_SESSION['lecpayid'])) {
+                $list = $frontofficer->getLecPayment($_SESSION['lecpayid']);
+              } else {
+                $list = null;
+              }
+              ?>
               <table id="paymentList" class="table table-bordered table-striped">
                 <thead>
                 <tr>
@@ -391,140 +424,18 @@
                   <th>Subject</th>
                   <th>Amount</th>
                   <th>Date</th>
-                  <th>Action</th>
                 </tr>
                 </thead>
                 <tbody>
+                <?php if($list==null){}else{ foreach($list as $item) {?>
                 <tr>
-                  <td>1</td>
-                  <td>Sandun Perera
-                  </td>
-                  <td>Biology A/L (2023)</td>
-                  <td>Rs.700</td>
-                  <td>07/16/2021</td>
-                  <td>
-                    <div class="btn-group btn-group-sm">
-                      <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
-                    </div>
-                  </td>
+                  <td><?= $item['pay_id']?></td>
+                  <td><?= $item['lecturername']?></td>
+                  <td><?= $item['subjectname']?></td>
+                  <td><?= $item['amount']?></td>
+                  <td><?= $item['date']?></td>
                 </tr>
-                <tr>
-                  <td>2</td>
-                  <td>Sandun Perera
-                  </td>
-                  <td>Physics A/L (2023)</td>
-                  <td>Rs.750</td>
-                  <td>07/16/2021</td>
-                  <td>
-                    <div class="btn-group btn-group-sm">
-                      <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>3</td>
-                  <td>Sandun Perera
-                  </td>
-                  <td>Physics A/L (2023)</td>
-                  <td>Rs.750</td>
-                  <td>07/16/2021</td>
-                  <td>
-                    <div class="btn-group btn-group-sm">
-                      <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>4</td>
-                  <td>Sandun Perera
-                  </td>
-                  <td>Physics A/L (2023)</td>
-                  <td>Rs.750</td>
-                  <td>07/16/2021</td>
-                  <td>
-                    <div class="btn-group btn-group-sm">
-                      <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>5</td>
-                  <td>Sandun Perera
-                  </td>
-                  <td>Physics A/L (2023)</td>
-                  <td>Rs.750</td>
-                  <td>07/16/2021</td>
-                  <td>
-                    <div class="btn-group btn-group-sm">
-                      <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>6</td>
-                  <td>Sandun Perera
-                  </td>
-                  <td>Physics A/L (2023)</td>
-                  <td>Rs.750</td>
-                  <td>07/16/2021</td>
-                  <td>
-                    <div class="btn-group btn-group-sm">
-                      <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>7</td>
-                  <td>Sandun Perera
-                  </td>
-                  <td>Physics A/L (2023)</td>
-                  <td>Rs.750</td>
-                  <td>07/16/2021</td>
-                  <td>
-                    <div class="btn-group btn-group-sm">
-                      <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>8</td>
-                  <td>Sandun Perera
-                  </td>
-                  <td>Physics A/L (2023)</td>
-                  <td>Rs.750</td>
-                  <td>07/16/2021</td>
-                  <td>
-                    <div class="btn-group btn-group-sm">
-                      <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>9</td>
-                  <td>Sandun Perera
-                  </td>
-                  <td>Physics A/L (2023)</td>
-                  <td>Rs.750</td>
-                  <td>07/16/2021</td>
-                  <td>
-                    <div class="btn-group btn-group-sm">
-                      <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>10</td>
-                  <td>Sandun Perera
-                  </td>
-                  <td>Physics A/L (2023)</td>
-                  <td>Rs.750</td>
-                  <td>07/16/2021</td>
-                  <td>
-                    <div class="btn-group btn-group-sm">
-                      <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
-                    </div>
-                  </td>
-                </tr>
+                <?php }}?>
                 </tbody>
                 <tfoot>
                 <tr>
@@ -533,7 +444,6 @@
                   <th>Subject</th>
                   <th>Amount</th>
                   <th>Date</th>
-                  <th>Action</th>
                 </tr>
                 </tfoot>
               </table>
@@ -581,3 +491,10 @@
 </script>
 </body>
 </html>
+<?php
+}
+else
+{
+  header('location:../../Login.php');
+}
+?>

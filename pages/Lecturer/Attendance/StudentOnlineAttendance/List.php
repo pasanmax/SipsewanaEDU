@@ -43,7 +43,7 @@ if(isset($_SESSION['id']))
     <ul class="navbar-nav ml-auto">
       <!-- Navbar log out -->
       <li class="nav-item">
-        <a href="../../../../models/lecturer.php?logout=1" class="nav-link">Log out</a>
+        <a href="../../../../models/lecturer.php?logout=1" class="nav-link" onclick="return confirm('Are you sure?')">Log out</a>
       </li>
     </ul>
   </nav>

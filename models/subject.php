@@ -1,4 +1,8 @@
 <?php
+if(!isset($_SESSION)) 
+{ 
+    session_start(); 
+}
 if(isset($_SESSION['id']))
 {
     $root = realpath($_SERVER["DOCUMENT_ROOT"]);
@@ -9,11 +13,64 @@ if(isset($_SESSION['id']))
     class Subject
     {
         protected $subject_id;
-        private $subjectname;
-        private $description;
-        private $fee;
-        private $type;
-        private $medium;
+        protected $subjectname;
+        protected $description;
+        protected $fee;
+        protected $type;
+        protected $medium;
+
+        function setSubject($subjectname,$description,$fee,$type,$medium)
+        {
+            $this->subjectname = $subjectname;
+            $this->description = $description;
+            $this->fee = $fee;
+            $this->type = $type;
+            $this->medium = $medium;
+        }
+
+        function setSubjectId($subject_id)
+        {
+            $this->subject_id = $subject_id;
+        }
+
+        function setStSubjectIdSession()
+        {
+            header('location:../pages/Front Officer/Subjects/EnrolledStudents/List.php');
+            $_SESSION['stsub']=$this->subject_id;
+        }
+
+        function setLecSubjectIdSession()
+        {
+            header('location:../pages/Front Officer/Subjects/AssignedLecturers/List.php');
+            $_SESSION['lecsub']=$this->subject_id;
+        }
+
+        function add()
+        {
+            try {
+                global $con;
+                $subjectname = $this->subjectname;
+                $description = $this->description;
+                $fee = $this->fee;
+                $medium = $this->medium;
+                $type = $this->type;
+                $frt_sub_id = $_SESSION['id'];
+                
+                if($con->query("INSERT INTO subject (subjectname,description,fee,medium,type,frt_sub_id) VALUES ('$subjectname','$description','$fee','$medium','$type','$frt_sub_id')") === TRUE) {
+                    header('location:../pages/Front Officer/Subjects/Add/Add.php');
+                    $_SESSION['response']="success";
+                    $_SESSION['message']="Entered Successfully!";
+                } else {
+                    header('location:../pages/Front Officer/Subjects/Add/Add.php');
+                    $_SESSION['response']="danger";
+                    $_SESSION['message']="Database error occured!";
+                    //echo "Error: ".$con->error;
+                }
+                $con->close();
+            } catch (Exception $e) {
+                echo 'Message: ' .$e->getMessage();
+            }
+        }
 
         function getId($subject_name)
         {
@@ -64,7 +121,7 @@ if(isset($_SESSION['id']))
             try {
                 global $con;
                 $data = array();
-                $result = $con->query("SELECT subject.subjectname FROM student_reg,subject WHERE subject.subject_id!=(SELECT subject.subject_id FROM student_reg,subject WHERE student_reg.st_sub_id=subject.subject_id AND student_reg.st_reg_id='".$student_id."') AND subject.type='".$type."'");
+                $result = $con->query("SELECT DISTINCT subject.subjectname FROM student_reg,subject WHERE subject.subject_id!=(SELECT subject.subject_id FROM student_reg,subject WHERE student_reg.st_sub_id=subject.subject_id AND student_reg.st_reg_id='".$student_id."') AND subject.type='".$type."'");
                 if ($result) {
                     if ($result->num_rows > 0) {
                         while ($row = $result->fetch_assoc()) {
@@ -155,9 +212,10 @@ if(isset($_SESSION['id']))
         function getRegFee($student_id)
         {
             try {
+                $type = $this->getSType($student_id);
                 global $con;
                 $data = array();
-                $result = $con->query("SELECT subject.fee FROM student_reg,subject WHERE subject.subject_id NOT IN (SELECT subject.subject_id FROM student_reg,subject WHERE student_reg.st_sub_id=subject.subject_id AND student_reg.st_reg_id='".$student_id."') AND subject.type='O/L'");
+                $result = $con->query("SELECT DISTINCT subject.fee FROM student_reg,subject WHERE subject.subject_id NOT IN (SELECT subject.subject_id FROM student_reg,subject WHERE student_reg.st_sub_id=subject.subject_id AND student_reg.st_reg_id='".$student_id."') AND subject.type='".$type."'");
                 if ($result) {
                     if ($result->num_rows > 0) {
                         while ($row = $result->fetch_assoc()) {
@@ -196,6 +254,41 @@ if(isset($_SESSION['id']))
             } catch (Exception $e) {
                 echo 'Message: ' .$e->getMessage();
             }
+        }
+    }
+
+    if(isset($_POST['addSubject']))
+    {
+        if(empty($_POST['subjectname']) || empty($_POST['fee']) || empty($_POST['medium']) || empty($_POST['type'])) {
+            header('location:../pages/Front Officer/Subjects/Add/Add.php');
+            $_SESSION['response']="danger";
+            $_SESSION['message']="Please fill the relevant details!";
+        } else {
+            $subject = new Subject();
+            $subject->setSubject($_POST['subjectname'],$_POST['description'],$_POST['fee'],$_POST['type'],$_POST['medium']);
+            $subject->add();
+        }
+    }
+    else if (isset($_POST['stsubSearch'])) {
+        if(empty($_POST['subjectid'])) {
+            header('location:../pages/Front Officer/Subjects/EnrolledStudents/List.php');
+            $_SESSION['response']="danger";
+            $_SESSION['message']="Please enter Subject ID";
+        } else {
+            $subject = new Subject();
+            $subject->setSubjectId($_POST['subjectid']);
+            $subject->setStSubjectIdSession();
+        }
+    }
+    else if (isset($_POST['lecsubSearch'])) {
+        if(empty($_POST['subjectid'])) {
+            header('location:../pages/Front Officer/Subjects/AssignedLecturers/List.php');
+            $_SESSION['response']="danger";
+            $_SESSION['message']="Please enter Subject ID";
+        } else {
+            $subject = new Subject();
+            $subject->setSubjectId($_POST['subjectid']);
+            $subject->setLecSubjectIdSession();
         }
     }
 }

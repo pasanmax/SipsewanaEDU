@@ -1,3 +1,9 @@
+<?php
+include('../../../../models/frontofficer.php');
+if(isset($_SESSION['id']))
+{
+  $frontofficer = new FrontOfficer();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -35,7 +41,7 @@
     <ul class="navbar-nav ml-auto">
       <!-- Navbar log out -->
       <li class="nav-item">
-        <a href="../../Login.php" class="nav-link">Log out</a>
+        <a href="../../../../models/frontofficer.php?logout=1" class="nav-link" onclick="return confirm('Are you sure?')">Log out</a>
       </li>
     </ul>
   </nav>
@@ -57,7 +63,7 @@
           <img src="../../../../dist/img/dashboardImages/user.png" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">User's name</a>
+          <a href="#" class="d-block"><?=$frontofficer->getName($_SESSION['id'])?></a>
         </div>
       </div>
 
@@ -384,9 +390,11 @@
           <div class="card">
             <div class="card-body">
               <table id="offlineList" class="table table-bordered table-striped">
+              <?php $list = $frontofficer->getOfflineClassList();?>
                 <thead>
                 <tr>
                   <th>Class ID</th>
+                  <th>Subject</th>
                   <th>Hall Number</th>
                   <th>Date</th>
                   <th>Duration</th>
@@ -394,24 +402,21 @@
                 </tr>
                 </thead>
                 <tbody>
+                <?php if($list==null){}else{ foreach($list as $item) {?>
                 <tr>
-                  <td>1</td>
-                  <td>H01</td>
-                  <td>07/21/2021</td>
-                  <td>2 hrs</td>
-                  <td>10.30 AM</td>
+                  <td><?= $item['class_id']?></td>
+                  <td><?= $item['subjectname']?></td>
+                  <td><?= $item['hallno']?></td>
+                  <td><?= $item['date']?></td>
+                  <td><?= $item['duration']?></td>
+                  <td><?= $item['starttime']?></td>
                 </tr>
-                <tr>
-                  <td>2</td>
-                  <td>H01</td>
-                  <td>07/21/2021</td>
-                  <td>2 hrs</td>
-                  <td>10.30 AM</td>
-                </tr>
+                <?php }}?>
                 </tbody>
                 <tfoot>
                 <tr>
                   <th>Class ID</th>
+                  <th>Subject</th>
                   <th>Hall Number</th>
                   <th>Date</th>
                   <th>Duration</th>
@@ -463,3 +468,10 @@
 </script>
 </body>
 </html>
+<?php
+}
+else
+{
+  header('location:../../Login.php');
+}
+?>

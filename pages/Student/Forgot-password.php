@@ -49,7 +49,10 @@
         <a href="./Login.php">Login</a>
       </p>
       <p class="mb-0">
-        <a href="register.php" class="text-center">Register a new membership</a>
+        <a href="./alRegister.php" class="text-center">Register as a new A/L Student</a>
+      </p>
+      <p class="mb-0">
+        <a href="./olRegister.php" class="text-center">Register as a new O/L Student</a>
       </p>
     </div>
     <!-- /.login-card-body -->

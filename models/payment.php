@@ -13,30 +13,33 @@ if(isset($_SESSION['id']))
     class Payment
     {
         protected $pay_id;
-        private $method;
-        private $status;
-        private $type;
-        private $amount;
-        private $date;
+        protected $pay_st_id;
+        protected $pay_lec_id;
+        protected $method;
+        protected $status;
+        protected $type;
+        protected $amount;
+        protected $date;
 
-        // function getId($subject_name)
-        // {
-        //     try {
-        //         global $con;
-        //         $result = $con->query("SELECT subject.subject_id FROM subject WHERE subjectname='".$subject_name."'");
-        //         if ($result->num_rows > 0) {
-        //             while ($row = $result->fetch_assoc()) {
-        //                 $id = $row['subject_id'];
-        //             }
-        //             return $id;
-        //         } else {
-        //             return null;
-        //         }
-        //         $con->close();
-        //     } catch (Exception $e) {
-        //         echo 'Message: ' .$e->getMessage();
-        //     }
-        // }
+        function setStPaymentID($student_id) {
+            $this->pay_st_id = $student_id;
+        }
+
+        function setLecPaymentID($lecturer_id) {
+            $this->pay_lec_id = $lecturer_id;
+        }
+
+        function setStPaymentSession()
+        {
+            header('location:../pages/Front Officer/Students/Payment/List.php');
+            $_SESSION['stpayid']=$this->pay_st_id;
+        }
+
+        function setLecPaymentSession()
+        {
+            header('location:../pages/Front Officer/Lecturers/Payment/List.php');
+            $_SESSION['lecpayid']=$this->pay_lec_id;
+        }
 
         function getStudentPayments($student_id)
         {
@@ -67,6 +70,29 @@ if(isset($_SESSION['id']))
                 global $con;
                 $data = array();
                 $result = $con->query("SELECT p.pay_id,s.subjectname,MONTHNAME(p.date) as 'month',p.amount,p.date FROM payment p, subject s, student_reg sr WHERE p.pay_sub_id = sr.st_sub_id AND p.pay_st_id = sr.st_reg_id AND sr.st_sub_id = s.subject_id AND p.status = 'Paid' AND sr.st_reg_id = '".$student_id."'");
+                if ($result) {
+                    if ($result->num_rows > 0) {
+                        while ($row = $result->fetch_assoc()) {
+                            $data[] = $row;
+                        }
+                        return $data;
+                    } else {
+                        return null;
+                    }
+                }
+                $con->close();
+            } catch (Exception $e) {
+                echo 'Message: ' .$e->getMessage();
+            }
+            
+        }
+
+        function getLecturerPaidPayments($lecturer_id)
+        {
+            try {
+                global $con;
+                $data = array();
+                $result = $con->query("SELECT p.pay_id,s.subjectname,MONTHNAME(p.date) as 'month',p.amount,p.date FROM payment p, subject s, lecturer_reg lr WHERE p.pay_sub_id = lr.lec_sub_id AND p.pay_lec_id = lr.lec_reg_id AND lr.lec_sub_id = s.subject_id AND p.status = 'Paid' AND lr.lec_reg_id = '".$lecturer_id."'");
                 if ($result) {
                     if ($result->num_rows > 0) {
                         while ($row = $result->fetch_assoc()) {
@@ -130,32 +156,11 @@ if(isset($_SESSION['id']))
                 echo 'Message: ' .$e->getMessage();
             }
         }
-
-        // function getFee($subject_name)
-        // {
-        //     try {
-        //         global $con;
-        //         $result = $con->query("SELECT subject.fee FROM subject WHERE subject.subjectname='".$subject_name."'");
-        //         if ($result) {
-        //             if ($result->num_rows > 0) {
-        //                 while ($row = $result->fetch_assoc()) {
-        //                     $fee = $row['fee'];
-        //                 }
-        //                 return $fee;
-        //             } else {
-        //                 return null;
-        //             }
-        //         }
-        //         $con->close();
-        //     } catch (Exception $e) {
-        //         echo 'Message: ' .$e->getMessage();
-        //     }
-        // }
     }
 
     if (isset($_POST['pay'])) {
-        if($_POST['pay_id'] === null && $_POST['subject'] === null && $_POST['month'] === null && $_POST['amount'] === null && $_POST['date'] === null 
-        && $_POST['reamount']) {
+        if(empty($_POST['pay_id']) || empty($_POST['subject']) || empty($_POST['month']) || empty($_POST['amount']) || empty($_POST['date']) 
+        || empty($_POST['reamount'])) {
             header('location:../pages/Student/Payments/Pay/List.php');
             $_SESSION['response']="danger";
             $_SESSION['message']="Please check the details before submit";
@@ -170,8 +175,30 @@ if(isset($_SESSION['id']))
             }
     
         }
-    } else {
-        //header('location:../pages/Student/Payments/Pay/List.php');
+    }
+
+    if (isset($_POST['stpaymentSearch'])) {
+        if (empty($_POST['studentid'])) {
+            header('location:../pages/Front Officer/Students/Payment/List.php');
+            $_SESSION['response']="danger";
+            $_SESSION['message']="Invalid student ID!";
+        } else {
+            $payment = new Payment();
+            $payment->setStPaymentID($_POST['studentid']);
+            $payment->setStPaymentSession();
+        }
+    }
+
+    if (isset($_POST['lecpaymentSearch'])) {
+        if (empty($_POST['lecturerid'])) {
+            header('location:../pages/Front Officer/Lecturers/Payment/List.php');
+            $_SESSION['response']="danger";
+            $_SESSION['message']="Invalid lecturer ID!";
+        } else {
+            $payment = new Payment();
+            $payment->setLecPaymentID($_POST['lecturerid']);
+            $payment->setLecPaymentSession();
+        }
     }
 }
 else

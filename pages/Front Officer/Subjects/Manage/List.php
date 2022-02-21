@@ -1,3 +1,9 @@
+<?php
+include('../../../../models/frontofficer.php');
+if(isset($_SESSION['id']))
+{
+  $frontofficer = new FrontOfficer();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -35,7 +41,7 @@
     <ul class="navbar-nav ml-auto">
       <!-- Navbar log out -->
       <li class="nav-item">
-        <a href="../../Login.php" class="nav-link">Log out</a>
+        <a href="../../../../models/frontofficer.php?logout=1" class="nav-link" onclick="return confirm('Are you sure?')">Log out</a>
       </li>
     </ul>
   </nav>
@@ -57,7 +63,7 @@
           <img src="../../../../dist/img/dashboardImages/user.png" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">User's name</a>
+          <a href="#" class="d-block"><?=$frontofficer->getName($_SESSION['id'])?></a>
         </div>
       </div>
 
@@ -383,152 +389,53 @@
         <div class="col-12">
           <div class="card">
             <div class="card-body">
+              <?php if(isset($_SESSION['response'])){?>
+                <div class="alert alert-<?=$_SESSION['response']?> alert-dismissible fade show" role="alert">
+                  <?=$_SESSION['message']?>
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+              <?php } unset($_SESSION['response']); unset($_SESSION['message']); ?>
+              <?php $list = $frontofficer->getSubjectList();?>
               <table id="subjectList" class="table table-bordered table-striped">
                 <thead>
                   <tr>
                     <th>Subject ID</th>
                     <th>Name</th>
                     <th>Medium</th>
+                    <th>Fee</th>
+                    <th>Type</th>
+                    <th hidden>Description</th>
                     <th>Actions</th>
                   </tr>
                   </thead>
                   <tbody>
+                  <?php if($list==null){}else{ foreach($list as $item) {?>
                   <tr>
-                    <td>1</td>
-                    <td>Biology A/L (2023)
-                    </td>
-                    <td>English</td>
+                    <td><?= $item['subject_id']?></td>
+                    <td><?= $item['subjectname']?></td>
+                    <td><?= $item['medium']?></td>
+                    <td><?= $item['fee']?></td>
+                    <td><?= $item['type']?></td>
+                    <td hidden><?= $item['description']?></td>
                     <td>
                       <div class="btn-group btn-group-sm">
-                        <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
-                        <a href="#" class="btn btn-success"><i class="far fa-edit"></i></a>
-                        <a href="#" class="btn btn-danger"><i class="fas fa-trash"></i></a>
+                        <a href="#" class="btn btn-success editClass" data-toggle="modal" data-target="#modal-update"><i class="far fa-edit"></i></a>
+                        <a href="../../../../models/frontofficer.php?delSub=<?= $item['subject_id']?>" class="btn btn-danger" onclick="return confirm('Are you sure?')"><i class="fas fa-trash"></i></a>
                       </div>
                     </td>
                   </tr>
-                  <tr>
-                    <td>2</td>
-                    <td>Biology A/L (2023)
-                    </td>
-                    <td>English</td>
-                    <td>
-                      <div class="btn-group btn-group-sm">
-                        <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
-                        <a href="#" class="btn btn-success"><i class="far fa-edit"></i></a>
-                        <a href="#" class="btn btn-danger"><i class="fas fa-trash"></i></a>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>3</td>
-                    <td>Biology A/L (2023)
-                    </td>
-                    <td>English</td>
-                    <td>
-                      <div class="btn-group btn-group-sm">
-                        <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
-                        <a href="#" class="btn btn-success"><i class="far fa-edit"></i></a>
-                        <a href="#" class="btn btn-danger"><i class="fas fa-trash"></i></a>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>4</td>
-                    <td>Biology A/L (2023)
-                    </td>
-                    <td>English</td>
-                    <td>
-                      <div class="btn-group btn-group-sm">
-                        <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
-                        <a href="#" class="btn btn-success"><i class="far fa-edit"></i></a>
-                        <a href="#" class="btn btn-danger"><i class="fas fa-trash"></i></a>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>5</td>
-                    <td>Biology A/L (2023)
-                    </td>
-                    <td>English</td>
-                    <td>
-                      <div class="btn-group btn-group-sm">
-                        <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
-                        <a href="#" class="btn btn-success"><i class="far fa-edit"></i></a>
-                        <a href="#" class="btn btn-danger"><i class="fas fa-trash"></i></a>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>6</td>
-                    <td>Biology A/L (2023)
-                    </td>
-                    <td>English</td>
-                    <td>
-                      <div class="btn-group btn-group-sm">
-                        <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
-                        <a href="#" class="btn btn-success"><i class="far fa-edit"></i></a>
-                        <a href="#" class="btn btn-danger"><i class="fas fa-trash"></i></a>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>7</td>
-                    <td>Biology A/L (2023)
-                    </td>
-                    <td>English</td>
-                    <td>
-                      <div class="btn-group btn-group-sm">
-                        <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
-                        <a href="#" class="btn btn-success"><i class="far fa-edit"></i></a>
-                        <a href="#" class="btn btn-danger"><i class="fas fa-trash"></i></a>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>8</td>
-                    <td>Biology A/L (2023)
-                    </td>
-                    <td>English</td>
-                    <td>
-                      <div class="btn-group btn-group-sm">
-                        <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
-                        <a href="#" class="btn btn-success"><i class="far fa-edit"></i></a>
-                        <a href="#" class="btn btn-danger"><i class="fas fa-trash"></i></a>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>9</td>
-                    <td>Biology A/L (2023)
-                    </td>
-                    <td>English</td>
-                    <td>
-                      <div class="btn-group btn-group-sm">
-                        <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
-                        <a href="#" class="btn btn-success"><i class="far fa-edit"></i></a>
-                        <a href="#" class="btn btn-danger"><i class="fas fa-trash"></i></a>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>10</td>
-                    <td>Biology A/L (2023)
-                    </td>
-                    <td>English</td>
-                    <td>
-                      <div class="btn-group btn-group-sm">
-                        <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
-                        <a href="#" class="btn btn-success"><i class="far fa-edit"></i></a>
-                        <a href="#" class="btn btn-danger"><i class="fas fa-trash"></i></a>
-                      </div>
-                    </td>
-                  </tr>
+                  <?php }}?>
                   </tbody>
                   <tfoot>
                   <tr>
                     <th>Subject ID</th>
                     <th>Name</th>
                     <th>Medium</th>
+                    <th>Fee</th>
+                    <th>Type</th>
+                    <th hidden>Description</th>
                     <th>Actions</th>
                   </tr>
                 </tfoot>
@@ -537,6 +444,86 @@
             <!-- /.card-body -->
           </div>
           <!-- /.card -->
+
+          <div class="modal fade" id="modal-update">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title">Update Subject</h4>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <form id="updateSubject" action="../../../../models/frontofficer.php" method="POST">
+                    <table width="500px" height="300px">
+                      <tr hidden>
+                        <div class="form-group">
+                          <td><label for="subjectid">Subject ID : </label></td>
+                          <td><input type="text" id="subjectid" name="subjectid" required></td>
+                        </div>
+                      </tr>
+                      <tr>
+                        <div class="form-group">
+                          <td><label for="subname">Subject Name : </label></td>
+                          <td>
+                            <input id="subname" name="subname" required>
+                          </td>
+                        </div>
+                      </tr>
+                      <tr>
+                        <div class="form-group">
+                          <td><label for="medium">Medium : </label></td>
+                          <td>
+                            <select name="medium" id="medium" class="select2" required>
+                              <option value="English">English</option>
+                              <option value="Sinhala">Sinhala</option>
+                              <option value="Tamil">Tamil</option>
+                            </select>
+                          </td>
+                        </div>
+                      </tr>
+                      <tr>
+                        <div class="form-group">
+                          <td><label for="fee">Fee : </label></td>
+                          <td>
+                            <input id="fee" name="fee" required>
+                          </td>
+                        </div>
+                      </tr>
+                      <tr>
+                        <div class="form-group">
+                          <td><label for="type">Type : </label></td>
+                          <td>
+                            <select name="type" id="type" class="select2" required>
+                              <option value="O/L">O/L</option>
+                              <option value="A/L">A/L</option>
+                            </select>
+                          </td>
+                        </div>
+                      </tr>
+                      <tr>
+                        <div class="form-group">
+                          <td><label for="description">Description : </label></td>
+                          <td>
+                            <input id="description" name="description" required>
+                          </td>
+                        </div>
+                      </tr>
+                    </table>
+                    <div class="modal-footer justify-content-between">
+                      <button type="submit" name="updateSubject" class="btn btn-info">Update</button>
+                      <button type="button" class="btn btn-default float-right" class="close" data-dismiss="modal" aria-label="Close">Cancel</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+              <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+          </div>
+
+
         </div>
       </div>
     </section>
@@ -574,6 +561,29 @@
       "responsive": true, "lengthChange": false, "autoWidth": false
     }).buttons().container().appendTo('#subjectList_wrapper .col-md-6:eq(0)');
   });
+
+  $('.editClass').on('click', function() {
+    // $('#modal-default').modal('show');
+
+    $tr = $(this).closest('tr');
+    var data = $tr.children("td").map(function () {
+      return $(this).text();
+    }).get();
+
+    document.getElementById('subjectid').value = data[0];
+    document.getElementById('subname').value = data[1];
+    document.getElementById('medium').value = data[2];
+    document.getElementById('fee').value = data[3];
+    document.getElementById('type').value = data[4];
+    document.getElementById('description').value = data[5];
+  });
 </script>
 </body>
 </html>
+<?php
+}
+else
+{
+  header('location:../../Login.php');
+}
+?>

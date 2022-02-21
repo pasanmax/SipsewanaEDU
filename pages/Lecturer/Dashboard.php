@@ -46,7 +46,7 @@ if(isset($_SESSION['id']))
     <ul class="navbar-nav ml-auto">
       <!-- Navbar log out -->
       <li class="nav-item">
-        <a href="../../models/lecturer.php?logout=1" class="nav-link">Log out</a>
+        <a href="../../models/lecturer.php?logout=1" class="nav-link" onclick="return confirm('Are you sure?')">Log out</a>
       </li>
     </ul>
   </nav>
@@ -256,7 +256,8 @@ if(isset($_SESSION['id']))
             <!-- small box -->
             <div class="small-box bg-info">
               <div class="inner">
-                <h3>80<sup style="font-size: 20px">%</sup></h3>
+                <?php $count = $lecturer->getOnlineAttendance($_SESSION['id'])?>
+                <h3><?= $count ?><sup style="font-size: 20px">%</sup></h3>
 
                 <p>Online Attendance</p>
               </div>
@@ -271,7 +272,8 @@ if(isset($_SESSION['id']))
             <!-- small box -->
             <div class="small-box bg-success">
               <div class="inner">
-                <h3>53<sup style="font-size: 20px">%</sup></h3>
+                <?php $count = $lecturer->getOfflineAttendance($_SESSION['id'])?>
+                <h3><?= $count ?><sup style="font-size: 20px">%</sup></h3>
 
                 <p>Offline Attendance</p>
               </div>

@@ -19,10 +19,23 @@ if(isset($_SESSION['id']))
     $con = $conn->getConn();
 
     class HwSubmission extends Homework {
+        protected $sub_st_id;
         protected $submitdate;
         protected $fileName;
         protected $path = '../hw_submissions/';
     
+
+        function setStudentId($student_id)
+        {
+            $this->sub_st_id = $student_id;
+        }
+
+        function setStHwSession()
+        {
+            header('location:../pages/Front Officer/Students/Homework/List.php');
+            $_SESSION['sthwid']=$this->sub_st_id;
+        }
+
         public function setSubmitDate() {
             $this->submitdate = date('Y-m-d');
         }
@@ -103,8 +116,8 @@ if(isset($_SESSION['id']))
     }
 
     if (isset($_POST['hwSubmit'])) {
-        if($_POST['hs_id'] === null && $_POST['id'] === null && $_POST['name'] === null && $_POST['subject'] === null && $_POST['createdate'] === null 
-        && $_POST['deadlinedate'] === null && $_POST['file'] === null && $_FILES['file'] === null) {
+        if(empty($_POST['hs_id']) || empty($_POST['id']) || empty($_POST['name']) || empty($_POST['subject']) || empty($_POST['createdate']) 
+        || empty($_POST['deadlinedate']) || empty($_POST['file']) || empty($_FILES['file'])) {
             header('location:../pages/Student/Homeworks/Manage/List.php');
             $_SESSION['response']="danger";
             $_SESSION['message']="Please enter the details before submit";
@@ -151,6 +164,18 @@ if(isset($_SESSION['id']))
                     }
                 }
             }
+        }
+    }
+
+    if (isset($_POST['sthwSearch'])) {
+        if (empty($_POST['studentid'])) {
+            header('location:../pages/Front Officer/Students/Homework/List.php');
+            $_SESSION['response']="danger";
+            $_SESSION['message']="Invalid student ID!";
+        } else {
+            $hw_submission = new HwSubmission();
+            $hw_submission->setStudentId($_POST['studentid']);
+            $hw_submission->setStHwSession();
         }
     }
 

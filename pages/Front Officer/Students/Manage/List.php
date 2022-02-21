@@ -1,3 +1,9 @@
+<?php
+include('../../../../models/frontofficer.php');
+if(isset($_SESSION['id']))
+{
+  $frontofficer = new FrontOfficer();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,6 +19,8 @@
   <link rel="stylesheet" href="../../../../plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
   <link rel="stylesheet" href="../../../../plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
   <link rel="stylesheet" href="../../../../plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+  <!-- Tempusdominus Bootstrap 4 -->
+  <link rel="stylesheet" href="../../../../plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="../../../../dist/css/adminlte.min.css">
 </head>
@@ -35,7 +43,7 @@
     <ul class="navbar-nav ml-auto">
       <!-- Navbar log out -->
       <li class="nav-item">
-        <a href="../../Login.php" class="nav-link">Log out</a>
+        <a href="../../../../models/frontofficer.php?logout=1" class="nav-link" onclick="return confirm('Are you sure?')">Log out</a>
       </li>
     </ul>
   </nav>
@@ -57,7 +65,7 @@
           <img src="../../../../dist/img/dashboardImages/user.png" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">User's name</a>
+          <a href="#" class="d-block"><?=$frontofficer->getName($_SESSION['id'])?></a>
         </div>
       </div>
 
@@ -383,164 +391,98 @@
         <div class="col-12">
           <div class="card">
             <div class="card-body">
+              <?php if(isset($_SESSION['response'])){?>
+                <div class="alert alert-<?=$_SESSION['response']?> alert-dismissible fade show" role="alert">
+                  <?=$_SESSION['message']?>
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+              <?php } unset($_SESSION['response']); unset($_SESSION['message']); ?>
+              <?php $list = $frontofficer->getStudentList();?>
               <table id="studentList" class="table table-bordered table-striped">
                 <thead>
                 <tr>
                   <th>Student ID</th>
-                  <th>Name</th>
+                  <th>First Name</th>
+                  <th>Last Name</th>
                   <th>Subject</th>
                   <th>Guardian Contact Number</th>
-                  <th>Actions</th>
+                  <th hidden>Date of Birth</th>
+                  <th hidden>School</th>
+                  <th hidden>Address1</th>
+                  <th hidden>Address2</th>
+                  <th hidden>Address3</th>
+                  <th hidden>City</th>
+                  <th hidden>District</th>
+                  <th hidden>Zipcode</th>
+                  <th hidden>Guardian First Name</th>
+                  <th hidden>Guardian Last Name</th>
+                  <th hidden>Guardian Email</th>
+                  <th hidden>Relationship</th>
+                  <th hidden>ttresults</th>
+                  <th hidden>Nic No</th>
+                  <th hidden>Email</th>
+                  <th hidden>Contact No</th>
+                  <th >Actions</th>
                 </tr>
                 </thead>
                 <tbody>
+                <?php if($list==null){}else{ foreach($list as $item) {?>
                 <tr>
-                  <td>1</td>
-                  <td>Sandun Perera
-                  </td>
-                  <td>Biology A/L (2023)</td>
-                  <td> 0778974561</td>
+                  <td><?= $item['student_id']?></td>
+                  <td><?= $item['fname']?></td>
+                  <td><?= $item['lname']?></td>
+                  <td><?= $item['subjectname']?></td>
+                  <td><?= $item['gcontactno']?></td>
+                  <td hidden><?= $item['dob']?></td>
+                  <td hidden><?= $item['school']?></td>
+                  <td hidden><?= $item['adrsl1']?></td>
+                  <td hidden><?= $item['adrsl2']?></td>
+                  <td hidden><?= $item['adrsl3']?></td>
+                  <td hidden><?= $item['city']?></td>
+                  <td hidden><?= $item['district']?></td>
+                  <td hidden><?= $item['zipcode']?></td>
+                  <td hidden><?= $item['gfname']?></td>
+                  <td hidden><?= $item['glname']?></td>
+                  <td hidden><?= $item['gemail']?></td>
+                  <td hidden><?= $item['relationship']?></td>
+                  <td hidden><?= $item['ttresults']?></td>
+                  <td hidden><?= $item['idno']?></td>
+                  <td hidden><?= $item['email']?></td>
+                  <td hidden><?= $item['contactno']?></td>
                   <td>
                     <div class="btn-group btn-group-sm">
-                      <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
-                      <a href="#" class="btn btn-success"><i class="far fa-edit"></i></a>
-                      <a href="#" class="btn btn-danger"><i class="fas fa-trash"></i></a>
+                      <a href="#" class="btn btn-success editClass" data-toggle="modal" data-target="#modal-update"><i class="far fa-edit"></i></a>
+                      <a href="../../../../models/frontofficer.php?delStu=<?= $item['student_id']?>" class="btn btn-danger" onclick="return confirm('Are you sure?')"><i class="fas fa-trash"></i></a>
                     </div>
                   </td>
                 </tr>
-                <tr>
-                  <td>2</td>
-                  <td>Tharaka Nuwan
-                  </td>
-                  <td>Combined Maths A/L (2023)</td>
-                  <td> 0778977861</td>
-                  <td>
-                    <div class="btn-group btn-group-sm">
-                      <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
-                      <a href="#" class="btn btn-success"><i class="far fa-edit"></i></a>
-                      <a href="#" class="btn btn-danger"><i class="fas fa-trash"></i></a>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>3</td>
-                  <td>Sandun Perera
-                  </td>
-                  <td>English O/L (2021)</td>
-                  <td> 0728974561</td>
-                  <td>
-                    <div class="btn-group btn-group-sm">
-                      <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
-                      <a href="#" class="btn btn-success"><i class="far fa-edit"></i></a>
-                      <a href="#" class="btn btn-danger"><i class="fas fa-trash"></i></a>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>4</td>
-                  <td>Sandun Perera
-                  </td>
-                  <td>Biology A/L (2023)</td>
-                  <td> 0778974561</td>
-                  <td>
-                    <div class="btn-group btn-group-sm">
-                      <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
-                      <a href="#" class="btn btn-success"><i class="far fa-edit"></i></a>
-                      <a href="#" class="btn btn-danger"><i class="fas fa-trash"></i></a>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>5</td>
-                  <td>Sandun Perera
-                  </td>
-                  <td>Biology A/L (2023)</td>
-                  <td> 0778974561</td>
-                  <td>
-                    <div class="btn-group btn-group-sm">
-                      <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
-                      <a href="#" class="btn btn-success"><i class="far fa-edit"></i></a>
-                      <a href="#" class="btn btn-danger"><i class="fas fa-trash"></i></a>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>6</td>
-                  <td>Sandun Perera
-                  </td>
-                  <td>Biology A/L (2023)</td>
-                  <td> 0778974561</td>
-                  <td>
-                    <div class="btn-group btn-group-sm">
-                      <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
-                      <a href="#" class="btn btn-success"><i class="far fa-edit"></i></a>
-                      <a href="#" class="btn btn-danger"><i class="fas fa-trash"></i></a>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>7</td>
-                  <td>Sandun Perera
-                  </td>
-                  <td>Biology A/L (2023)</td>
-                  <td> 0778974561</td>
-                  <td>
-                    <div class="btn-group btn-group-sm">
-                      <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
-                      <a href="#" class="btn btn-success"><i class="far fa-edit"></i></a>
-                      <a href="#" class="btn btn-danger"><i class="fas fa-trash"></i></a>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>8</td>
-                  <td>Sandun Perera
-                  </td>
-                  <td>Biology A/L (2023)</td>
-                  <td> 0778974561</td>
-                  <td>
-                    <div class="btn-group btn-group-sm">
-                      <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
-                      <a href="#" class="btn btn-success"><i class="far fa-edit"></i></a>
-                      <a href="#" class="btn btn-danger"><i class="fas fa-trash"></i></a>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>9</td>
-                  <td>Sandun Perera
-                  </td>
-                  <td>Biology A/L (2023)</td>
-                  <td> 0778974561</td>
-                  <td>
-                    <div class="btn-group btn-group-sm">
-                      <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
-                      <a href="#" class="btn btn-success"><i class="far fa-edit"></i></a>
-                      <a href="#" class="btn btn-danger"><i class="fas fa-trash"></i></a>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>10</td>
-                  <td>Sandun Perera
-                  </td>
-                  <td>Biology A/L (2023)</td>
-                  <td> 0778974561</td>
-                  <td>
-                    <div class="btn-group btn-group-sm">
-                      <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
-                      <a href="#" class="btn btn-success"><i class="far fa-edit"></i></a>
-                      <a href="#" class="btn btn-danger"><i class="fas fa-trash"></i></a>
-                    </div>
-                  </td>
-                </tr>
+                <?php }}?>
                 </tbody>
                 <tfoot>
                 <tr>
                   <th>Student ID</th>
-                  <th>Name</th>
+                  <th>First Name</th>
+                  <th>Last Name</th>
                   <th>Subject</th>
                   <th>Guardian Contact Number</th>
+                  <th hidden>Date of Birth</th>
+                  <th hidden>School</th>
+                  <th hidden>Address1</th>
+                  <th hidden>Address2</th>
+                  <th hidden>Address3</th>
+                  <th hidden>City</th>
+                  <th hidden>District</th>
+                  <th hidden>Zipcode</th>
+                  <th hidden>Guardian First Name</th>
+                  <th hidden>Guardian Last Name</th>
+                  <th hidden>Guardian Email</th>
+                  <th hidden>Relationship</th>
+                  <th hidden>ttresults</th>
+                  <th hidden>Nic No</th>
+                  <th hidden>Email</th>
+                  <th hidden>Contact No</th>
                   <th>Actions</th>
                 </tr>
                 </tfoot>
@@ -549,6 +491,175 @@
             <!-- /.card-body -->
           </div>
           <!-- /.card -->
+
+          <div class="modal fade" id="modal-update">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title">Update Student</h4>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <form id="updateStudent" action="../../../../models/frontofficer.php" method="POST">
+                    <table width="500px" height="300px">
+                      <tr hidden>
+                        <div class="form-group">
+                          <td><label for="studentid">Student ID : </label></td>
+                          <td><input type="text" id="studentid" name="studentid" required></td>
+                        </div>
+                      </tr>
+                      <tr>
+                        <div class="form-group">
+                          <td><label for="stfname">First Name : </label></td>
+                          <td>
+                            <input id="stfname" name="stfname" required>
+                          </td>
+                        </div>
+                      </tr>
+                      <tr>
+                        <div class="form-group">
+                          <td><label for="stlname">Last Name : </label></td>
+                          <td>
+                            <input id="stlname" name="stlname" required>
+                          </td>
+                        </div>
+                      </tr>
+                      <tr>
+                        <div class="form-group">
+                          <td><label for="subname">Subject Name : </label></td>
+                          <td>
+                            <input id="subname" name="subname" readonly>
+                          </td>
+                        </div>
+                      </tr>
+                      <tr>
+                        <div class="form-group">
+                          <td><label for="gcontactno">Guardian Contact No : </label></td>
+                          <td><input name="gcontactno" id="gcontactno" required></td>
+                        </div>
+                      </tr>
+                      <tr>
+                        <div class="form-group">
+                          <td><label for="dob">Date of Date : </label></td>
+                          <td>
+                            <div class="col-6" style="padding-left: 0px; padding-right: 0px;">
+                              <div class="input-group dob" data-target-input="nearest">
+                                <input id="dob" name="dob" type="text" class="form-control datetimepicker-input" data-target="#dob" placeholder="Select a Date" required>
+                                <div class="input-group-append" data-target="#dob" data-toggle="datetimepicker">
+                                  <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                </div>
+                              </div>
+                            </div>
+                          </td>
+                        </div>
+                      </tr>
+                      <tr>
+                        <div class="form-group">
+                          <td><label for="school">School : </label></td>
+                          <td><input name="school" id="school" required></td>
+                        </div>
+                      </tr>
+                      <tr>
+                        <div class="form-group">
+                          <td><label for="adrsl1">Address Line 1 : </label></td>
+                          <td><input name="adrsl1" id="adrsl1" required></td>
+                        </div>
+                      </tr>
+                      <tr>
+                        <div class="form-group">
+                          <td><label for="adrsl2">Address Line 2 : </label></td>
+                          <td><input name="adrsl2" id="adrsl2" required></td>
+                        </div>
+                      </tr>
+                      <tr>
+                        <div class="form-group">
+                          <td><label for="adrsl3">Address Line 3 : </label></td>
+                          <td><input name="adrsl3" id="adrsl3"></td>
+                        </div>
+                      </tr>
+                      <tr>
+                        <div class="form-group">
+                          <td><label for="city">City : </label></td>
+                          <td><input name="city" id="city" required></td>
+                        </div>
+                      </tr>
+                      <tr>
+                        <div class="form-group">
+                          <td><label for="district">District : </label></td>
+                          <td><input name="district" id="district" required></td>
+                        </div>
+                      </tr>
+                      <tr>
+                        <div class="form-group">
+                          <td><label for="zipcode">Zipcode : </label></td>
+                          <td><input type="number" name="zipcode" id="zipcode" required></td>
+                        </div>
+                      </tr>
+                      <tr>
+                        <div class="form-group">
+                          <td><label for="gfname">Guardian First Name : </label></td>
+                          <td><input name="gfname" id="gfname" required></td>
+                        </div>
+                      </tr>
+                      <tr>
+                        <div class="form-group">
+                          <td><label for="glname">Guardian Last Name : </label></td>
+                          <td><input name="glname" id="glname" required></td>
+                        </div>
+                      </tr>
+                      <tr>
+                        <div class="form-group">
+                          <td><label for="gemail">Guardian Email : </label></td>
+                          <td><input type="email" id="gemail" name="gemail" required></td>
+                        </div>
+                      </tr>
+                      <tr>
+                        <div class="form-group">
+                          <td><label for="relationship">Relationship : </label></td>
+                          <td><input name="relationship" id="relationship" required></td>
+                        </div>
+                      </tr>
+                      <tr>
+                        <div class="form-group">
+                          <td><label id="lblttresults" for="ttresults">Term Test Results : </label></td>
+                          <td><input name="ttresults" id="ttresults"></td>
+                        </div>
+                      </tr>
+                      <tr>
+                        <div class="form-group">
+                          <td><label id="lblidno" for="idno">Nic No : </label></td>
+                          <td><input name="idno" id="idno" ></td>
+                        </div>
+                      </tr>
+                      <tr>
+                        <div class="form-group">
+                          <td><label id="lblemail" for="email">Email : </label></td>
+                          <td><input type="email" id="email" name="email" readonly></td>
+                        </div>
+                      </tr>
+                      <tr>
+                        <div class="form-group">
+                          <td><label id="lblcontactno" for="contactno">Contact No : </label></td>
+                          <td><input name="contactno" id="contactno"></td>
+                        </div>
+                      </tr>
+                    </table>
+                    <div class="modal-footer justify-content-between">
+                      <button type="submit" name="updateStudent" class="btn btn-info">Update</button>
+                      <button type="button" class="btn btn-default float-right" class="close" data-dismiss="modal" aria-label="Close">Cancel</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+              <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+          </div>
+
+
+
         </div>
       </div>
     </section>
@@ -576,6 +687,9 @@
 <script src="../../../../plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
 <script src="../../../../plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
 <script src="../../../../plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+<script src="../../../../plugins/moment/moment.min.js"></script>
+<!-- Tempusdominus Bootstrap 4 -->
+<script src="../../../../plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
 <!-- Bootstrap 4 -->
 <script src="../../../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- AdminLTE App -->
@@ -586,6 +700,50 @@
       "responsive": true, "lengthChange": false, "autoWidth": false
     }).buttons().container().appendTo('#studentList_wrapper .col-md-6:eq(0)');
   });
+
+  $('#dob').datetimepicker({
+    format: 'Y-MM-DD'
+  });
+
+  $('.editClass').on('click', function() {
+    // $('#modal-default').modal('show');
+
+    $tr = $(this).closest('tr');
+    var data = $tr.children("td").map(function () {
+      return $(this).text();
+    }).get();
+
+    document.getElementById('studentid').value = data[0];
+    document.getElementById('stfname').value = data[1];
+    document.getElementById('stlname').value = data[2];
+    document.getElementById('subname').value = data[3];
+    document.getElementById('gcontactno').value = data[4];
+    document.getElementById('dob').value = data[5];
+    document.getElementById('school').value = data[6];
+    document.getElementById('adrsl1').value = data[7];
+    document.getElementById('adrsl2').value = data[8];
+    document.getElementById('adrsl3').value = data[9];
+    document.getElementById('city').value = data[10];
+    document.getElementById('district').value = data[11];
+    document.getElementById('zipcode').value = data[12];
+    document.getElementById('gfname').value = data[13];
+    document.getElementById('glname').value = data[14];
+    document.getElementById('gemail').value = data[15];
+    document.getElementById('relationship').value = data[16];
+    document.getElementById('ttresults').value = data[17];
+    document.getElementById('idno').value = data[18];
+    document.getElementById('email').value = data[19];
+    document.getElementById('contactno').value = data[20];
+  });
+
+
 </script>
 </body>
 </html>
+<?php
+}
+else
+{
+  header('location:../../Login.php');
+}
+?>
