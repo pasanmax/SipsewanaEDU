@@ -1,3 +1,9 @@
+<?php
+include('../../models/director.php');
+if(isset($_SESSION['id']))
+{
+  $director = new Director();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -40,7 +46,7 @@
     <ul class="navbar-nav ml-auto">
       <!-- Navbar log out -->
       <li class="nav-item">
-        <a href="./Login.php" class="nav-link">Log out</a>
+        <a href="../../models/director.php?logout=1" class="nav-link" onclick="return confirm('Are you sure?')">Log out</a>
       </li>
     </ul>
   </nav>
@@ -62,7 +68,7 @@
           <img src="../../dist/img/dashboardImages/user.png" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">User's name</a>
+          <a href="#" class="d-block"><?=$director->getName($_SESSION['id'])?></a>
         </div>
       </div>
 
@@ -91,103 +97,49 @@
               </p>
             </a>
           </li>
-          
-          <!-- Attendance -->
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-clipboard-check"></i>
-              <p>
-               Student Attendance
-                <i class="fas fa-angle-left right"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="#" class="nav-link">
-                  <i class="nav-icon fas fa-eye"></i>
-                  <p>View Online Attendance Report</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="#" class="nav-link">
-                  <i class="nav-icon fas fa-eye"></i>
-                  <p>View Offline Attendance Report</p>
-                </a>
-              </li>
-            </ul>
-          </li>
 
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-clipboard-check"></i>
-              <p>
-              Lecturer Attendance
-                <i class="fas fa-angle-left right"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="#" class="nav-link">
-                  <i class="nav-icon fas fa-eye"></i>
-                  <p>View Online Attendance Report</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="#" class="nav-link">
-                  <i class="nav-icon fas fa-eye"></i>
-                  <p>View Offline Attendance Report</p>
-                </a>
-              </li>
-            </ul>
-          </li>
           <!-- Register -->
           
           <li class="nav-item">
             <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-clipboard-check"></i>
+              <i class="nav-icon fas fa-user"></i>
               <p>
-              Registration
+              Student
                 <i class="fas fa-angle-left right"></i>
               </p>
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="./Student/Registration/Report.php" class="nav-link">
                   <i class="nav-icon fas fa-eye"></i>
                   <p>View Student Registration Report</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="#" class="nav-link">
-                  <i class="nav-icon fas fa-eye"></i>
-                  <p>View Lecturer Registration Report</p>
-                </a>
-              </li>
+                  <a href="./Student/Payment/Report.php" class="nav-link">
+                    <i class="nav-icon fas fa-eye"></i>
+                    <p>View Student Payment Report</p>
+                  </a>
+                </li>
             </ul>
           </li>
 
-          <!-- Payments -->
+          <!-- Class -->
           <li class="nav-item">
             <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-money-check-alt"></i>
+              <i class="nav-icon fas fa-user-tie"></i>
               <p>
-              Payments
+              Lecturer
                 <i class="fas fa-angle-left right"></i>
               </p>
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="./Lecturer/Registration/Report.php" class="nav-link">
                   <i class="nav-icon fas fa-eye"></i>
-                  <p>View Student Payments Report</p>
+                  <p>View Lecturer Registration Report</p>
                 </a>
               </li>
-                <li class="nav-item">
-                  <a href="#" class="nav-link">
-                    <i class="nav-icon fas fa-eye"></i>
-                    <p>View Lecturer Payments Report</p>
-                  </a>
-                </li>
             </ul>
           </li>
         </ul>
@@ -226,14 +178,15 @@
             <!-- small box -->
             <div class="small-box bg-info">
               <div class="inner">
-                <h3>150</h3>
+              <?php $count = $director->getRegisteredStudentCount()?>
+                <h3><?= $count ?></h3>
 
                 <p>Registered Students</p>
               </div>
               <div class="icon">
                 <i class="fas fa-user"></i>
               </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <!-- <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a> -->
             </div>
           </div>
           <!-- ./col -->
@@ -241,14 +194,15 @@
             <!-- small box -->
             <div class="small-box bg-success">
               <div class="inner">
-                <h3>40</h3>
+              <?php $count = $director->getRegisteredLecturerCount()?>
+                <h3><?= $count ?></h3>
                 <!-- <h3>53<sup style="font-size: 20px">%</sup></h3> -->
                 <p>Registered Lectures</p>
               </div>
               <div class="icon">
                 <i class="fas fa-user-tie"></i>
               </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <!-- <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a> -->
             </div>
           </div>
           <!-- ./col -->
@@ -328,3 +282,10 @@
 <script src="../../dist/js/pages/Director/dashboard.js"></script>
 </body>
 </html>
+<?php
+}
+else
+{
+  header('location:../Login.php');
+}
+?>

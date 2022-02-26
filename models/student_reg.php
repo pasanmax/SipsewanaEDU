@@ -44,6 +44,46 @@ if(isset($_SESSION['id']))
                 echo 'Message: ' .$e->getMessage();
             }
         }
+
+        function getStudentRegId($subject_id)
+        {
+            try {
+                global $con;
+                $data = array();
+                $result = $con->query("SELECT sr.st_reg_id FROM student_reg sr WHERE sr.st_sub_id='".$subject_id."'");
+                if ($result->num_rows > 0) {
+                    while ($row = $result->fetch_assoc()) {
+                        $data[] = $row;
+                    }
+                    return $data;
+                } else {
+                    return null;
+                }
+                $con->close();
+            } catch (Exception $e) {
+                echo 'Message: ' .$e->getMessage();
+            }
+        }
+
+        function getStuRegID($st_reg_id) {
+            try {
+                global $con;
+                $result = $con->query("SELECT sr.st_reg_id FROM student_reg sr WHERE sr.st_reg_id='".$st_reg_id."'");
+                if ($result->num_rows == 1) {
+                    while ($row = $result->fetch_assoc()) {
+                        $st_reg_id = $row['st_reg_id'];
+                    }
+                    return $st_reg_id;
+                } elseif ($result === false) {
+                    throw new Exception("Database Error!");
+                } else {
+                    return null;
+                }
+                $con->close();
+            } catch (Exception $e) {
+                echo 'Message: ' .$e->getMessage();
+            }
+        }
     }
 }
 else

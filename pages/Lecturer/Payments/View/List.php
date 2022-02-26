@@ -268,7 +268,6 @@ if(isset($_SESSION['id']))
                   <th>Month</th>
                   <th>Amount</th>
                   <th>Date</th>
-                  <th>Action</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -279,11 +278,6 @@ if(isset($_SESSION['id']))
                   <td><?= $item['month']?></td>
                   <td><?= $item['amount']?></td>
                   <td><?= $item['date']?></td>
-                  <td>
-                    <div class="btn-group btn-group-sm">
-                      <a href="#" class="btn btn-info"><i class="fas fa-download"></i></a>
-                    </div>
-                  </td>
                 </tr>
                 <?php }}?>
                 </tbody>
@@ -294,7 +288,6 @@ if(isset($_SESSION['id']))
                   <th>Month</th>
                   <th>Amount</th>
                   <th>Date</th>
-                  <th>Action</th>
                 </tr>
                 </tfoot>
               </table>

@@ -1,3 +1,9 @@
+<?php
+include('../../../../models/cashier.php');
+if(isset($_SESSION['id']))
+{
+  $cashier = new Cashier();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -35,7 +41,7 @@
     <ul class="navbar-nav ml-auto">
       <!-- Navbar log out -->
       <li class="nav-item">
-        <a href="../../Login.php" class="nav-link">Log out</a>
+        <a href="../../../../models/cashier.php?logout=1" class="nav-link" onclick="return confirm('Are you sure?')">Log out</a>
       </li>
     </ul>
   </nav>
@@ -57,7 +63,7 @@
           <img src="../../../../dist/img/dashboardImages/user.png" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">User's name</a>
+          <a href="#" class="d-block"><?=$cashier->getName($_SESSION['id'])?></a>
         </div>
       </div>
 
@@ -86,37 +92,52 @@
             </p>
           </a>
         </li>
-        
-        <!-- Students -->
+        <!-- Payments -->
         <li class="nav-item menu-open">
           <a href="#" class="nav-link active">
-            <i class="nav-icon fas fa-user"></i>
+            <i class="nav-icon fas fa-edit"></i>
             <p>
-             Payments
+              Manage Payments
               <i class="fas fa-angle-left right"></i>
             </p>
           </a>
           <ul class="nav nav-treeview">
-            <li class="nav-item menu-open">
-                <a href="../../Payments/StudentPayments/List.php" class="nav-link">
-                <i class="nav-icon fas fa-money-check-alt"></i>
-                <p>View Students Payments</p>
+            <li class="nav-item">
+              <a href="#" class="nav-link active">
+                <i class="nav-icon fas fa-eye"></i>
+                <p>View All Payments</p>
               </a>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link active">
-                  <i class="nav-icon fas fa-money-check-alt"></i>
-                  <p>View Lectures Payments</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="#" class="nav-link">
-                  <i class="nav-icon far fa-credit-card"></i>
-                  <p>Pay Fees</p>
-                </a>
-              </li>
+              <a href="../PendingPayments/List.php" class="nav-link">
+                <i class="nav-icon fas fa-edit"></i>
+                <p>Manage Pending Payments</p>
+              </a>
+            </li>
           </ul>
         </li>
+        <li class="nav-item">
+          <a href="#" class="nav-link">
+            <i class="nav-icon fas fa-money-check-alt"></i>
+            <p>
+              Make Payments
+              <i class="fas fa-angle-left right"></i>
+            </p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="../../MakePayments/ClassPayments/Make.php" class="nav-link">
+                <i class="nav-icon fas fa-user"></i>
+                <p>Make Class Payment</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="../../MakePayments/LecturerPayments/Make.php" class="nav-link">
+                <i class="nav-icon fas fa-user-tie"></i>
+                <p>Make Lecturer Payment</p>
+              </a>
+            </li>
+          </ul>
         </li>
       </ul>
     </nav>
@@ -137,8 +158,8 @@
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="../../Dashboard.php">Dashboard</a></li>
-              <li class="breadcrumb-item active">Students</li>
-              <li class="breadcrumb-item active">View Lectures Payments</li>
+              <li class="breadcrumb-item active">Manage Payments</li>
+              <li class="breadcrumb-item active">View All Payments</li>
             </ol>
           </div>
         </div>
@@ -152,153 +173,51 @@
           <div class="card">
             <div class="card-body">
               <table id="paymentList" class="table table-bordered table-striped">
+                <?php if(isset($_SESSION['response'])){?>
+                  <div class="alert alert-<?=$_SESSION['response']?> alert-dismissible fade show" role="alert">
+                    <?=$_SESSION['message']?>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                <?php } unset($_SESSION['response']); unset($_SESSION['message']); ?>
+                <?php
+                  $list = $cashier->getPayments($_SESSION['id']);
+                ?>
                 <thead>
                 <tr>
                   <th>Payment ID</th>
-                  <th> Lecturer Name</th>
+                  <th>Name</th>
                   <th>Subject</th>
+                  <th>Type</th>
                   <th>Amount</th>
                   <th>Date</th>
                   <th>Action</th>
                 </tr>
                 </thead>
                 <tbody>
+                <?php if($list==null){}else{ foreach($list as $item) {?>
                 <tr>
-                  <td>1</td>
-                  <td>Sandun Perera
-                  </td>
-                  <td>Biology A/L (2023)</td>
-                  <td>Rs.700</td>
-                  <td>07/16/2021</td>
+                  <td><?= $item['pay_id']?></td>
+                  <td><?= $item['name']?></td>
+                  <td><?= $item['subjectname']?></td>
+                  <td><?= $item['type']?></td>
+                  <td>Rs.<?= $item['amount']?></td>
+                  <td><?= $item['date']?></td>
                   <td>
                     <div class="btn-group btn-group-sm">
-                      <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
+                      <a href="../../../../models/cashier.php?paymentID=<?= $item['pay_id']?>" class="btn btn-info"><i class="fas fa-download"></i></a>
                     </div>
                   </td>
                 </tr>
-                <tr>
-                  <td>2</td>
-                  <td>Sandun Perera
-                  </td>
-                  <td>Physics A/L (2023)</td>
-                  <td>Rs.750</td>
-                  <td>07/16/2021</td>
-                  <td>
-                    <div class="btn-group btn-group-sm">
-                      <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>3</td>
-                  <td>Sandun Perera
-                  </td>
-                  <td>Physics A/L (2023)</td>
-                  <td>Rs.750</td>
-                  <td>07/16/2021</td>
-                  <td>
-                    <div class="btn-group btn-group-sm">
-                      <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>4</td>
-                  <td>Sandun Perera
-                  </td>
-                  <td>Physics A/L (2023)</td>
-                  <td>Rs.750</td>
-                  <td>07/16/2021</td>
-                  <td>
-                    <div class="btn-group btn-group-sm">
-                      <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>5</td>
-                  <td>Sandun Perera
-                  </td>
-                  <td>Physics A/L (2023)</td>
-                  <td>Rs.750</td>
-                  <td>07/16/2021</td>
-                  <td>
-                    <div class="btn-group btn-group-sm">
-                      <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>6</td>
-                  <td>Sandun Perera
-                  </td>
-                  <td>Physics A/L (2023)</td>
-                  <td>Rs.750</td>
-                  <td>07/16/2021</td>
-                  <td>
-                    <div class="btn-group btn-group-sm">
-                      <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>7</td>
-                  <td>Sandun Perera
-                  </td>
-                  <td>Physics A/L (2023)</td>
-                  <td>Rs.750</td>
-                  <td>07/16/2021</td>
-                  <td>
-                    <div class="btn-group btn-group-sm">
-                      <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>8</td>
-                  <td>Sandun Perera
-                  </td>
-                  <td>Physics A/L (2023)</td>
-                  <td>Rs.750</td>
-                  <td>07/16/2021</td>
-                  <td>
-                    <div class="btn-group btn-group-sm">
-                      <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>9</td>
-                  <td>Sandun Perera
-                  </td>
-                  <td>Physics A/L (2023)</td>
-                  <td>Rs.750</td>
-                  <td>07/16/2021</td>
-                  <td>
-                    <div class="btn-group btn-group-sm">
-                      <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>10</td>
-                  <td>Sandun Perera
-                  </td>
-                  <td>Physics A/L (2023)</td>
-                  <td>Rs.750</td>
-                  <td>07/16/2021</td>
-                  <td>
-                    <div class="btn-group btn-group-sm">
-                      <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
-                    </div>
-                  </td>
-                </tr>
+                <?php }}?>
                 </tbody>
                 <tfoot>
                 <tr>
                   <th>Payment ID</th>
                   <th>Name</th>
                   <th>Subject</th>
+                  <th>Type</th>
                   <th>Amount</th>
                   <th>Date</th>
                   <th>Action</th>
@@ -349,3 +268,10 @@
 </script>
 </body>
 </html>
+<?php
+}
+else
+{
+  header('location:../../Login.php');
+}
+?>

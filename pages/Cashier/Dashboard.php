@@ -1,3 +1,9 @@
+<?php
+include('../../models/cashier.php');
+if(isset($_SESSION['id']))
+{
+  $cashier = new Cashier();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -40,7 +46,7 @@
     <ul class="navbar-nav ml-auto">
       <!-- Navbar log out -->
       <li class="nav-item">
-        <a href="./Login.php" class="nav-link">Log out</a>
+        <a href="../../models/cashier.php?logout=1" class="nav-link" onclick="return confirm('Are you sure?')">Log out</a>
       </li>
     </ul>
   </nav>
@@ -62,7 +68,7 @@
           <img src="../../dist/img/dashboardImages/user.png" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">User's name</a>
+          <a href="#" class="d-block"><?=$cashier->getName($_SESSION['id'])?></a>
         </div>
       </div>
 
@@ -94,29 +100,46 @@
           <!-- Payments -->
           <li class="nav-item">
             <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-money-check-alt"></i>
+              <i class="nav-icon fas fa-edit"></i>
               <p>
-                Payments
+                Manage Payments
                 <i class="fas fa-angle-left right"></i>
               </p>
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="./Payments/StudentPayments/List.php" class="nav-link">
+                <a href="./ViewPayments/AllPayments/List.php" class="nav-link">
                   <i class="nav-icon fas fa-eye"></i>
-                  <p>View Students Payments</p>
+                  <p>View All Payments</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="./Payments/LecturersPayments/List.php" class="nav-link">
-                  <i class="nav-icon fas fa-eye"></i>
-                  <p>View Lecturers Payments</p>
+                <a href="./ViewPayments/PendingPayments/List.php" class="nav-link">
+                  <i class="nav-icon fas fa-edit"></i>
+                  <p>Manage Pending Payments</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-money-check-alt"></i>
+              <p>
+                Make Payments
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="./MakePayments/ClassPayments/Make.php" class="nav-link">
+                  <i class="nav-icon fas fa-user"></i>
+                  <p>Make Class Payment</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="./Payments/Pay/List.php" class="nav-link">
-                  <i class="nav-icon far fa-credit-card"></i>
-                  <p>Pay Fees</p>
+                <a href="./MakePayments/LecturerPayments/Make.php" class="nav-link">
+                  <i class="nav-icon fas fa-user-tie"></i>
+                  <p>Make Lecturer Payment</p>
                 </a>
               </li>
             </ul>
@@ -156,14 +179,15 @@
             <!-- small box -->
             <div class="small-box bg-danger">
               <div class="inner">
-                <h3>5</h3>
+              <?php $count = $cashier->getPendingCount($_SESSION['id'])?>
+                <h3><?= $count ?></h3>
 
                 <p>Pending Payments</p>
               </div>
               <div class="icon">
                 <i class="nav-icon far fa-credit-card"></i>
               </div>
-              <a href="./Payments/Pay/List.php" class="small-box-footer">Click Here <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="./ViewPayments/PendingPayments/List.php" class="small-box-footer">Click Here <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
@@ -242,3 +266,10 @@
 <script src="../../dist/js/pages/Cashier/dashboard.js"></script>
 </body>
 </html>
+<?php
+}
+else
+{
+  header('location:./Login.php');
+}
+?>

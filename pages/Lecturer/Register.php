@@ -1,3 +1,11 @@
+<?php
+include('../../models/subject.php');
+$subject = new Subject();
+if(!isset($_SESSION)) 
+{ 
+  session_start(); 
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -32,6 +40,14 @@
 <body class="hold-transition register-page">
   <div class="card card-primary">
     <div class="card-header">
+      <?php if(isset($_SESSION['response'])){?>
+        <div class="alert alert-<?=$_SESSION['response']?> alert-dismissible fade show" role="alert">
+          <?=$_SESSION['message']?>
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      <?php } unset($_SESSION['response']); unset($_SESSION['message']); ?>
       <div class="register-logo">
         <a href="#"><b>Lecturer</b>Registration</a>
       </div>
@@ -77,20 +93,20 @@
           </div>
         </div>
         <div class="bs-stepper-content">
-          <form id="register" class="needs-validation" method="POST" action="../../index.php" novalidate>
+          <form id="register" class="needs-validation" method="POST" action="../../models/lecturer.php" novalidate>
             <div id="personal-info" role="tabpanel" class="bs-stepper-pane active dstepper-block" aria-labelledby="personal-info-trigger">
               <div class="form-group">
                 <label for="fname">First Name
                   <span class="text-danger font-weight-bold">*</span>
                 </label>
-                <input type="text" class="form-control" id="fname" placeholder="First Name" required>
+                <input type="text" class="form-control" id="fname" name="fname" placeholder="First Name" required>
                 <div class="invalid-feedback">First Name is required</div>
               </div>
               <div class="form-group">
                 <label for="lname">Last Name
                   <span class="text-danger font-weight-bold">*</span>
                 </label>
-                <input type="text" class="form-control" id="lname" placeholder="Last Name" required>
+                <input type="text" class="form-control" id="lname" name="lname" placeholder="Last Name" required>
                 <div class="invalid-feedback">Last Name is required</div>
               </div>
               <div class="form-group">
@@ -98,7 +114,7 @@
                   <span class="text-danger font-weight-bold">*</span>
                 </label>
                 <div class="input-group date" data-target-input="nearest">
-                    <input id="dob" type="text" class="form-control datetimepicker-input" data-target="#dob" placeholder="Date of Birth" required>
+                    <input id="dob" type="text" name="dob" class="form-control datetimepicker-input" data-target="#dob" placeholder="Date of Birth" required>
                     <div class="input-group-append" data-target="#dob" data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                     </div>
@@ -109,7 +125,7 @@
                 <label for="email">Email
                   <span class="text-danger font-weight-bold">*</span>
                 </label>
-                <input type="email" class="form-control" id="email" placeholder="Email" required>
+                <input type="email" class="form-control" id="email" name="email" placeholder="Email" required>
                 <div class="invalid-feedback">Email is required</div>
               </div>
               <div class="form-group">
@@ -117,7 +133,7 @@
                   <span class="text-danger font-weight-bold">*</span>
                 </label>
                 <div class="input-group">
-                  <input id="cno" type="text" class="form-control" data-inputmask='"mask": "(999) 999-9999"' data-mask required>
+                  <input id="cno" name="cno" type="text" class="form-control" data-inputmask='"mask": "(999) 999-9999"' data-mask required>
                   <div class="input-group-prepend">
                     <span class="input-group-text"><i class="fas fa-phone"></i></span>
                   </div>
@@ -128,7 +144,7 @@
                 <label for="certi">Certification
                   <span class="text-danger font-weight-bold">*</span>
                 </label>
-                <input type="text" class="form-control" id="certi" placeholder="Certification" required>
+                <input type="text" class="form-control" id="certi" name="certi" placeholder="Certification" required>
                 <div class="invalid-feedback">Certification is required</div>
               </div>
               <button type="button" class="btn btn-primary btn-next-form">Next</button>
@@ -138,40 +154,40 @@
                 <label for="adrsl1">Address Line 1
                   <span class="text-danger font-weight-bold">*</span>
                 </label>
-                <input type="text" class="form-control" id="adrsl1" placeholder="Address Line 1" required>
+                <input type="text" class="form-control" id="adrsl1" name="adrsl1" placeholder="Address Line 1" required>
                 <div class="invalid-feedback">Address Line 1 is required</div>
               </div>
               <div class="form-group">
                 <label for="adrsl2">Address Line 2
                   <span class="text-danger font-weight-bold">*</span>
                 </label>
-                <input type="text" class="form-control" id="adrsl2" placeholder="Address Line 2" required>
+                <input type="text" class="form-control" id="adrsl2" name="adrsl2" placeholder="Address Line 2" required>
                 <div class="invalid-feedback">Address Line 2 is required</div>
               </div>
               <div class="form-group">
                 <label for="adrsl3">Address Line 3
                 </label>
-                <input type="text" class="form-control" id="adrsl3" placeholder="Address Line 3">
+                <input type="text" class="form-control" id="adrsl3" name="adrsl3" placeholder="Address Line 3">
               </div>
               <div class="form-group">
                 <label for="city">City
                   <span class="text-danger font-weight-bold">*</span>
                 </label>
-                <input type="text" class="form-control" id="city" placeholder="City" required>
+                <input type="text" class="form-control" id="city" name="city" placeholder="City" required>
                 <div class="invalid-feedback">City is required</div>
               </div>
               <div class="form-group">
                 <label for="district">District
                   <span class="text-danger font-weight-bold">*</span>
                 </label>
-                <input type="text" class="form-control" id="district" placeholder="District" required>
+                <input type="text" class="form-control" id="district" name="district" placeholder="District" required>
                 <div class="invalid-feedback">District is required</div>
               </div>
               <div class="form-group">
                 <label for="zipcode">Zipcode
                   <span class="text-danger font-weight-bold">*</span>
                 </label>
-                <input type="number" class="form-control" id="zipcode" placeholder="Zipcode" required>
+                <input type="number" class="form-control" id="zipcode" name="zipcode" placeholder="Zipcode" required>
                 <div class="invalid-feedback">Zipcode is required</div>
               </div>
               <button type="button" class="btn btn-primary" onclick="stepper.previous()">Previous</button>
@@ -182,35 +198,35 @@
                 <label for="accountno">Account Number
                   <span class="text-danger font-weight-bold">*</span>
                 </label>
-                <input type="number" class="form-control" id="accountno" placeholder="Account Number" required>
+                <input type="number" class="form-control" id="accountno" name="accountno" placeholder="Account Number" required>
                 <div class="invalid-feedback">Account Number is required</div>
               </div>
               <div class="form-group">
                 <label for="accountname">Account Name
                   <span class="text-danger font-weight-bold">*</span>
                 </label>
-                <input type="text" class="form-control" id="accountname" placeholder="Account Name" required>
+                <input type="text" class="form-control" id="accountname" name="accountname" placeholder="Account Name" required>
                 <div class="invalid-feedback">Account Name is required</div>
               </div>
               <div class="form-group">
                 <label for="bankname">Bank Name
                   <span class="text-danger font-weight-bold">*</span>
                 </label>
-                <input type="text" class="form-control" id="bankname" placeholder="Bank Name" required>
+                <input type="text" class="form-control" id="bankname" name="bankname" placeholder="Bank Name" required>
                 <div class="invalid-feedback">Bank Name is required</div>
               </div>
               <div class="form-group">
                 <label for="branchname">Branch Name
                   <span class="text-danger font-weight-bold">*</span>
                 </label>
-                <input type="text" class="form-control" id="branchname" placeholder="Branch Name" required>
+                <input type="text" class="form-control" id="branchname" name="branchname" placeholder="Branch Name" required>
                 <div class="invalid-feedback">Branch Name is required</div>
               </div>
               <div class="form-group">
                 <label for="branchcode">Branch Code
                   <span class="text-danger font-weight-bold">*</span>
                 </label>
-                <input type="number" class="form-control" id="branchcode" placeholder="Branch Code" required>
+                <input type="number" class="form-control" id="branchcode" name="branchcode" placeholder="Branch Code" required>
                 <div class="invalid-feedback">Branch Code is required</div>
               </div>
               <button type="button" class="btn btn-primary" onclick="stepper.previous()">Previous</button>
@@ -221,19 +237,13 @@
                 <label for="subject">Select Subject
                   <span class="text-danger font-weight-bold">*</span>
                 </label>
-                <select id="subject" class="form-control select2" style="width: 100%;" required>
-                  <option value="Science O/L (2021)">Science O/L (2021)</option>
-                  <option value="Maths O/L (2021)">Maths O/L (2021)</option>
-                  <option value="Combined Maths A/L (2023)">Combined Maths A/L (2023)</option>
-                  <option value="Biology A/L (2023)">Biology A/L (2023)</option>
-                  <option value="English O/L (2021)">English O/L (2021)</option>
-                  <option value="Physics A/L (2023)">Physics A/L (2023)</option>
+                <?php $list = $subject->getSubjects();?>
+                <select id="subject" name="subject" class="form-control select2" style="width: 100%;" required>
+                  <?php if($list==null){} else { foreach($list as $item) {?>
+                    <option value="<?= $item['subjectname']?>"><?= $item['subjectname']?></option>
+                  <?php }}?>
                 </select>
                 <div class="invalid-feedback">Subject is required</div>
-              </div>
-              <div class="form-group">
-                <label>Registration Fee</label>
-                <p>*</p>
               </div>
               <button type="button" class="btn btn-primary" onclick="stepper.previous()">Previous</button>
               <button type="button" class="btn btn-primary btn-next-form">Next</button>
@@ -243,7 +253,7 @@
                 <h3>All Set!</h3>
                 <p class="text-danger font-weight-bold">You will get your login username and password through e-mail after Front Officer confirmation.</br>After clicking Register you will redirect to pay the registration fees.</br>Thank you!</p>
                 <button type="button" class="btn btn-primary" onclick="stepper.previous()">Previous</button>
-                <button type="submit" class="btn btn-success">Register</button>
+                <button type="submit" name="regLecturer" class="btn btn-success">Register</button>
               </div>
             </div>
           </form>
@@ -289,7 +299,7 @@
 <!-- Page specific script -->
 <script>
   function register() {
-       $("#register").submit();
+    $("#register").submit();
   }
 </script>
 </body>

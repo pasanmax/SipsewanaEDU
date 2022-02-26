@@ -50,14 +50,14 @@ class Student
     protected $gemail;
     protected $gcontactNo;
     protected $relationship;
-    private $submissiondate;
+    protected $submissiondate;
 
     // methods
-    function setStudent($fname,$lname,$dob,$school,$adrsl1,$adrsl2,$adrsl3,$city,$district,$zipcode,$gfname,$glname,$gemail,$gcontactNo,$relationship,$submissiondate)
+    function setStudent($fname,$lname,$dob,$school,$adrsl1,$adrsl2,$adrsl3,$city,$district,$zipcode,$gfname,$glname,$gemail,$gcontactNo,$relationship)
     {
         $this->fname = $fname;
         $this->lname = $lname;
-        $this->dob = $dob;
+        $this->dob = date("Y-m-d", strtotime($dob));
         $this->school = $school;
         $this->adrsl1 = $adrsl1;
         $this->adrsl2 = $adrsl2;
@@ -70,7 +70,7 @@ class Student
         $this->gemail = $gemail;
         $this->gcontactNo = $gcontactNo;
         $this->relationship = $relationship;
-        $this->submissiondate = $submissiondate;
+        $this->submissiondate = date("Y-m-d");
     }
 
     public function getName($student_id)
@@ -105,6 +105,28 @@ class Student
                     $gemail = $row['gemail'];
                 }
                 return $gemail;
+            } elseif ($result === false) {
+                throw new Exception("Database Error!");
+            } else {
+                return null;
+            }
+            $con->close();
+        } catch (Exception $e) {
+            echo 'Message: ' .$e->getMessage();
+        }
+        
+    }
+
+    public function getLastId()
+    {
+        try {
+            global $con;
+            $result = $con->query("SELECT st.student_id  FROM student st ORDER BY st.student_id DESC LIMIT 1");
+            if ($result->num_rows == 1) {
+                while ($row = $result->fetch_assoc()) {
+                    $student_id = $row['student_id'];
+                }
+                return $student_id;
             } elseif ($result === false) {
                 throw new Exception("Database Error!");
             } else {
@@ -164,7 +186,7 @@ class Student
         try {
             global $con;
             $data = array();
-            $result = $con->query("SELECT online_class.ol_cls_id,subject.subjectname,online_class.classurl,class_dates.date,class.duration,class.starttime FROM student_reg,subject,class_dates,online_class,class WHERE student_reg.id='".$student_id."' AND student_reg.st_sub_id=class.sub_cls_id AND class.sub_cls_id=subject.subject_id AND class.class_id=online_class.ol_cls_id AND class.class_id=class_dates.cls_dt_id AND class_dates.date=curdate()");
+            $result = $con->query("SELECT online_class.ol_cls_id,subject.subjectname,online_class.classurl,class_dates.date,class.duration,class.starttime FROM student_reg,subject,class_dates,online_class,class WHERE student_reg.id='".$student_id."' AND student_reg.st_sub_id=class.sub_cls_id AND class.sub_cls_id=subject.subject_id AND class.class_id=online_class.ol_cls_id AND class.class_id=class_dates.cls_dt_id AND class_dates.date>=curdate()");
             
             if ($result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
@@ -202,7 +224,7 @@ class Student
         try {
             global $con;
             $data = array();
-            $result = $con->query("SELECT offline_class.of_cls_id,subject.subjectname,offline_class.hallno,class_dates.date,class.duration,class.starttime FROM student_reg,subject,class_dates,offline_class,class WHERE student_reg.id='".$student_id."' AND student_reg.st_sub_id=class.sub_cls_id AND class.sub_cls_id=subject.subject_id AND class.class_id=offline_class.of_cls_id AND class.class_id=class_dates.cls_dt_id AND class_dates.date=curdate()");
+            $result = $con->query("SELECT offline_class.of_cls_id,subject.subjectname,offline_class.hallno,class_dates.date,class.duration,class.starttime FROM student_reg,subject,class_dates,offline_class,class WHERE student_reg.id='".$student_id."' AND student_reg.st_sub_id=class.sub_cls_id AND class.sub_cls_id=subject.subject_id AND class.class_id=offline_class.of_cls_id AND class.class_id=class_dates.cls_dt_id AND class_dates.date>=curdate()");
             if ($result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
                     $row = array_map('stripslashes', $row);

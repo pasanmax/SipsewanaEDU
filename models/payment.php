@@ -156,6 +156,76 @@ if(isset($_SESSION['id']))
                 echo 'Message: ' .$e->getMessage();
             }
         }
+
+        public function makeLecPayment($lecturer_id,$subject_id,$method,$type,$amount,$date) {
+            try {
+                $status = "Paid";
+                global $con;
+                if($con->query("INSERT INTO payment(method,status,type,amount,date,pay_sub_id,pay_lec_id,pay_cas_id) VALUES ('".$method."','".$status."','".$type."','".$amount."','".date("Y-m-d", strtotime($date))."','".$subject_id."','".$lecturer_id."','".$_SESSION['id']."')") === True) {
+                    header('location:../pages/Cashier/MakePayments/LecturerPayments/Make.php');
+                    $_SESSION['response']="success";
+                    $_SESSION['message']="Submitted Successfully!";
+                } else {
+                    header('location:../pages/Cashier/MakePayments/LecturerPayments/Make.php');
+                    $_SESSION['response']="danger";
+                    $_SESSION['message']="Database Error!";
+                }
+                $con->close();
+            } catch (Exception $e) {
+                echo 'Message: ' .$e->getMessage();
+            }
+        }
+
+        public function makeStPayment($studentList,$subject_id,$method,$type,$amount,$date) {
+            try {
+                $status = "Pending";
+                $Qstatus = null;
+                global $con;
+                foreach($studentList as $student) {
+                    if($con->query("INSERT INTO payment(method,status,type,amount,date,pay_sub_id,pay_st_id,pay_cas_id) VALUES ('".$method."','".$status."','".$type."','".$amount."','".date("Y-m-d", strtotime($date))."','".$subject_id."','".$student['st_reg_id']."','".$_SESSION['id']."')") === TRUE) {
+                        $Qstatus = true;
+                    } else {
+                        $Qstatus = false;
+                    }
+                }
+                if ($Qstatus === true) {
+                    header('location:../pages/Cashier/MakePayments/ClassPayments/Make.php');
+                    $_SESSION['response']="success";
+                    $_SESSION['message']="Submitted Successfully!";
+                } else {
+                    header('location:../pages/Cashier/MakePayments/ClassPayments/Make.php');
+                    $_SESSION['response']="danger";
+                    $_SESSION['message']="Database error occured!";
+                    //echo "Error: ".$con->error;
+                }
+                $con->close();
+            } catch (Exception $e) {
+                echo 'Message: ' .$e->getMessage();
+            }
+        }
+        
+        function getStudentPaidPaymentsList($student_id)
+        {
+            try {
+                global $con;
+                $data = array();
+                $result = $con->query("SELECT p.pay_id,s.subjectname,p.method,p.type,p.date,p.amount FROM payment p, subject s WHERE p.pay_sub_id=s.subject_id AND p.pay_st_id='".$student_id."' AND p.status='Paid' ORDER BY p.date ASC");
+                if ($result) {
+                    if ($result->num_rows > 0) {
+                        while ($row = $result->fetch_assoc()) {
+                            $data[] = $row;
+                        }
+                        return $data;
+                    } else {
+                        return null;
+                    }
+                }
+                $con->close();
+            } catch (Exception $e) {
+                echo 'Message: ' .$e->getMessage();
+            }
+            
+        }
     }
 
     if (isset($_POST['pay'])) {
@@ -198,6 +268,63 @@ if(isset($_SESSION['id']))
             $payment = new Payment();
             $payment->setLecPaymentID($_POST['lecturerid']);
             $payment->setLecPaymentSession();
+        }
+    }
+
+    if (isset($_POST['makeLecPayment'])) {
+        if (empty($_POST['subname']) || empty($_POST['method']) || empty($_POST['type']) ||
+        empty($_POST['amount']) || empty($_POST['date'])) {
+            header('location:../pages/Cashier/MakePayments/LecturerPayments/Make.php');
+            $_SESSION['response']="danger";
+            $_SESSION['message']="Please fill the relevant details!";
+        } else {
+            include "$_SERVER[DOCUMENT_ROOT]/SipsewanaEDU/models/subject.php";
+            include "$_SERVER[DOCUMENT_ROOT]/SipsewanaEDU/models/lecturer_reg.php";
+            $subject = new Subject();
+            $subject_id = $subject->getId($_POST['subname']);
+            $lecturer_reg = new LecturerReg();
+            if ($lecturer_reg->getLecturerRegId($subject_id) === null) {
+                header('location:../pages/Cashier/MakePayments/LecturerPayments/Make.php');
+                $_SESSION['response']="danger";
+                $_SESSION['message']="Lecturer not found for this subject!";
+            } else {
+                $lecturer_id = $lecturer_reg->getLecturerRegId($subject_id);
+                $payment = new Payment();
+                $payment->makeLecPayment($lecturer_id,$subject_id,$_POST['method'],$_POST['type'],$_POST['amount'],$_POST['date']);
+            }
+        }
+    }
+
+    if (isset($_POST['makeStuPayment'])) {
+        if (empty($_POST['subname']) || empty($_POST['method']) || empty($_POST['type']) ||
+        empty($_POST['amount']) || empty($_POST['date'])) {
+            header('location:../pages/Cashier/MakePayments/ClassPayments/Make.php');
+            $_SESSION['response']="danger";
+            $_SESSION['message']="Please fill the relevant details!";
+        } else {
+            include "$_SERVER[DOCUMENT_ROOT]/SipsewanaEDU/models/subject.php";
+            include "$_SERVER[DOCUMENT_ROOT]/SipsewanaEDU/models/student_reg.php";
+            $subject = new Subject();
+            $fee = $subject->getFee($_POST['subname'])+1000;
+            if ($fee != $_POST['amount']) {
+                header('location:../pages/Cashier/MakePayments/ClassPayments/Make.php');
+                $_SESSION['response']="danger";
+                $_SESSION['message']="Please enter the correct Amount!";
+            } else {
+                $subject_id = $subject->getId($_POST['subname']);
+                $student_reg = new StudentReg();
+                if ($student_reg->getStudentRegId($subject_id) === null) {
+                    header('location:../pages/Cashier/MakePayments/ClassPayments/Make.php');
+                    $_SESSION['response']="danger";
+                    $_SESSION['message']="No Students found for this subject!";
+                } else {
+                    $studentList = array();
+                    $studentList = $student_reg->getStudentRegId($subject_id);
+                    $payment = new Payment();
+                    $payment->makeStPayment($studentList,$subject_id,$_POST['method'],$_POST['type'],$_POST['amount'],$_POST['date']);
+                    
+                }
+            }
         }
     }
 }

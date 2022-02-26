@@ -1,3 +1,11 @@
+<?php
+include('../../models/subject.php');
+$subject = new Subject();
+if(!isset($_SESSION)) 
+{ 
+    session_start(); 
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -32,6 +40,14 @@
 <body class="hold-transition register-page">
   <div class="card card-primary">
     <div class="card-header">
+      <?php if(isset($_SESSION['response'])){?>
+        <div class="alert alert-<?=$_SESSION['response']?> alert-dismissible fade show" role="alert">
+          <?=$_SESSION['message']?>
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      <?php } unset($_SESSION['response']); unset($_SESSION['message']); ?>
       <div class="register-logo">
         <a href="#"><b>O/L Student</b>Registration</a>
       </div>
@@ -77,20 +93,20 @@
           </div>
         </div>
         <div class="bs-stepper-content">
-          <form id="register" class="needs-validation" method="POST" action="../../index.php" novalidate>
+          <form id="register" class="needs-validation" method="POST" action="../../models/olstudent.php" novalidate>
             <div id="personal-info" role="tabpanel" class="bs-stepper-pane active dstepper-block" aria-labelledby="personal-info-trigger">
               <div class="form-group">
                 <label for="fname">First Name
                   <span class="text-danger font-weight-bold">*</span>
                 </label>
-                <input type="text" class="form-control" id="fname" placeholder="First Name" required>
+                <input type="text" class="form-control" name="fname" id="fname" placeholder="First Name" required>
                 <div class="invalid-feedback">First Name is required</div>
               </div>
               <div class="form-group">
                 <label for="lname">Last Name
                   <span class="text-danger font-weight-bold">*</span>
                 </label>
-                <input type="text" class="form-control" id="lname" placeholder="Last Name" required>
+                <input type="text" class="form-control" name="lname" id="lname" placeholder="Last Name" required>
                 <div class="invalid-feedback">Last Name is required</div>
               </div>
               <div class="form-group">
@@ -98,7 +114,7 @@
                   <span class="text-danger font-weight-bold">*</span>
                 </label>
                 <div class="input-group date" data-target-input="nearest">
-                    <input id="dob" type="text" class="form-control datetimepicker-input" data-target="#dob" placeholder="Date of Birth" required>
+                    <input id="dob" name="dob" type="text" class="form-control datetimepicker-input" data-target="#dob" placeholder="Date of Birth" required>
                     <div class="input-group-append" data-target="#dob" data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                     </div>
@@ -109,14 +125,14 @@
                 <label for="school">School
                   <span class="text-danger font-weight-bold">*</span>
                 </label>
-                <input type="text" class="form-control" id="school" placeholder="School" required>
+                <input type="text" class="form-control" name="school" id="school" placeholder="School" required>
                 <div class="invalid-feedback">School is required</div>
               </div>
               <div class="form-group">
                 <label for="ttresults">Term test results
                   <span class="text-danger font-weight-bold">*</span>
                 </label>
-                <input type="number" class="form-control" id="ttresults" placeholder="Term test results" required>
+                <input type="number" class="form-control" name="ttresults" id="ttresults" placeholder="Term test results" required>
                 <div class="invalid-feedback">Term test results is required</div>
               </div>
               <button type="button" class="btn btn-primary btn-next-form">Next</button>
@@ -126,40 +142,40 @@
                 <label for="adrsl1">Address Line 1
                   <span class="text-danger font-weight-bold">*</span>
                 </label>
-                <input type="text" class="form-control" id="adrsl1" placeholder="Address Line 1" required>
+                <input type="text" class="form-control" name="adrsl1" id="adrsl1" placeholder="Address Line 1" required>
                 <div class="invalid-feedback">Address Line 1 is required</div>
               </div>
               <div class="form-group">
                 <label for="adrsl2">Address Line 2
                   <span class="text-danger font-weight-bold">*</span>
                 </label>
-                <input type="text" class="form-control" id="adrsl2" placeholder="Address Line 2" required>
+                <input type="text" class="form-control" name="adrsl2" id="adrsl2" placeholder="Address Line 2" required>
                 <div class="invalid-feedback">Address Line 2 is required</div>
               </div>
               <div class="form-group">
                 <label for="adrsl3">Address Line 3
                 </label>
-                <input type="text" class="form-control" id="adrsl3" placeholder="Address Line 3">
+                <input type="text" class="form-control" name="adrsl3" id="adrsl3" placeholder="Address Line 3">
               </div>
               <div class="form-group">
                 <label for="city">City
                   <span class="text-danger font-weight-bold">*</span>
                 </label>
-                <input type="text" class="form-control" id="city" placeholder="City" required>
+                <input type="text" class="form-control" name="city" id="city" placeholder="City" required>
                 <div class="invalid-feedback">City is required</div>
               </div>
               <div class="form-group">
                 <label for="district">District
                   <span class="text-danger font-weight-bold">*</span>
                 </label>
-                <input type="text" class="form-control" id="district" placeholder="District" required>
+                <input type="text" class="form-control" name="district" id="district" placeholder="District" required>
                 <div class="invalid-feedback">District is required</div>
               </div>
               <div class="form-group">
                 <label for="zipcode">Zipcode
                   <span class="text-danger font-weight-bold">*</span>
                 </label>
-                <input type="number" class="form-control" id="zipcode" placeholder="Zipcode" required>
+                <input type="number" class="form-control" name="zipcode" id="zipcode" placeholder="Zipcode" required>
                 <div class="invalid-feedback">Zipcode is required</div>
               </div>
               <button type="button" class="btn btn-primary" onclick="stepper.previous()">Previous</button>
@@ -170,21 +186,21 @@
                 <label for="gfname">Guardian first name
                   <span class="text-danger font-weight-bold">*</span>
                 </label>
-                <input type="text" class="form-control" id="gfname" placeholder="Guardian first name" required>
+                <input type="text" class="form-control" name="gfname" id="gfname" placeholder="Guardian first name" required>
                 <div class="invalid-feedback">Guardian first name</div>
               </div>
               <div class="form-group">
                 <label for="glname">Guardian last name
                   <span class="text-danger font-weight-bold">*</span>
                 </label>
-                <input type="text" class="form-control" id="glname" placeholder="Guardian last name" required>
+                <input type="text" class="form-control" name="glname" id="glname" placeholder="Guardian last name" required>
                 <div class="invalid-feedback">Guardian last name is required</div>
               </div>
               <div class="form-group">
                 <label for="gemail">Guardian email
                   <span class="text-danger font-weight-bold">*</span>
                 </label>
-                <input type="text" class="form-control" id="gemail" placeholder="Guardian email" required>
+                <input type="text" class="form-control" name="gemail" id="gemail" placeholder="Guardian email" required>
                 <div class="invalid-feedback">Guardian email is required</div>
               </div>
               <div class="form-group">
@@ -192,7 +208,7 @@
                   <span class="text-danger font-weight-bold">*</span>
                 </label>
                 <div class="input-group">
-                  <input id="gcno" type="text" class="form-control" data-inputmask='"mask": "(999) 999-9999"' data-mask required>
+                  <input id="gcno" name="gcno" type="text" class="form-control" data-inputmask='"mask": "(999) 999-9999"' data-mask required>
                   <div class="input-group-prepend">
                     <span class="input-group-text"><i class="fas fa-phone"></i></span>
                   </div>
@@ -203,7 +219,7 @@
                 <label for="relationship">Select relationship
                   <span class="text-danger font-weight-bold">*</span>
                 </label>
-                <select id="relationship" class="form-control select2" style="width: 100%;" required>
+                <select id="relationship" name="relationship" class="form-control select2" style="width: 100%;" required>
                   <option value="Mother">Mother</option>
                   <option value="Father">Father</option>
                   <option value="Other relation">Other relation</option>
@@ -218,19 +234,13 @@
                 <label for="subject">Select Subject
                   <span class="text-danger font-weight-bold">*</span>
                 </label>
-                <select id="subject" class="form-control select2" style="width: 100%;" required>
-                  <option value="Science O/L (2021)">Science O/L (2021)</option>
-                  <option value="Maths O/L (2021)">Maths O/L (2021)</option>
-                  <option value="Combined Maths A/L (2023)">Combined Maths A/L (2023)</option>
-                  <option value="Biology A/L (2023)">Biology A/L (2023)</option>
-                  <option value="English O/L (2021)">English O/L (2021)</option>
-                  <option value="Physics A/L (2023)">Physics A/L (2023)</option>
+                <?php $list = $subject->getOLSubjects();?>
+                <select id="subject" name="subject" class="form-control select2" style="width: 100%;" required>
+                  <?php if($list==null){} else { foreach($list as $item) {?>
+                    <option value="<?= $item['subjectname']?>"><?= $item['subjectname']?></option>
+                  <?php }}?>
                 </select>
                 <div class="invalid-feedback">Subject is required</div>
-              </div>
-              <div class="form-group">
-                <label>Registration Fee</label>
-                <p>*</p>
               </div>
               <button type="button" class="btn btn-primary" onclick="stepper.previous()">Previous</button>
               <button type="button" class="btn btn-primary btn-next-form">Next</button>
@@ -240,7 +250,7 @@
                 <h3>All Set!</h3>
                 <p class="text-danger font-weight-bold">You will get your login username and password through e-mail after Front Officer confirmation.</br>After clicking Register you will redirect to pay the registration fees.</br>Thank you!</p>
                 <button type="button" class="btn btn-primary" onclick="stepper.previous()">Previous</button>
-                <button type="submit" class="btn btn-success">Register</button>
+                <button type="submit" name="regOlStudent" class="btn btn-success">Register</button>
               </div>
             </div>
           </form>
@@ -285,7 +295,7 @@
 <!-- Page specific script -->
 <script>
   function register() {
-       $("#register").submit();
+    $("#register").submit();
   }
 </script>
 </body>

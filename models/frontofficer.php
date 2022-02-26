@@ -363,16 +363,6 @@ class FrontOfficer
         
     }
 
-    function getFrontOfficers()
-    {
-        // get front officers from database
-    }
-
-    function updateInfo($fofficerId)
-    {
-        // update database
-    }
-
     function register()
     {
         try {
@@ -403,16 +393,6 @@ class FrontOfficer
         } catch (Exception $e) {
             echo 'Message: ' .$e->getMessage();
         }
-    }
-
-    function registerbyId($fofficerId)
-    {
-        // enter data to database
-    }
-
-    function delete($fofficerId)
-    {
-        // delete Front Officer
     }
 
     // ==============================Student Approval=====================================
@@ -1373,7 +1353,7 @@ class FrontOfficer
         try {
             global $con;
             $data = array();
-            $result = $con->query("SELECT p.pay_id,CONCAT(st.fname, ' ' ,st.lname) AS 'name',s.subjectname,p.type,p.amount,p.date FROM cashier ca, payment p, student st, subject s WHERE p.pay_cas_id=ca.cashier_id AND p.pay_sub_id=s.subject_id AND p.pay_st_id=IF(p.pay_st_id!=NULL,st.student_id,st.student_id) AND p.pay_cas_id='".$cashier_id."' UNION SELECT p.pay_id,CONCAT(l.fname, ' ' ,l.lname) AS 'name',s.subjectname,p.type,p.amount,p.date FROM cashier ca, payment p, lecturer l, subject s WHERE p.pay_cas_id=ca.cashier_id AND p.pay_sub_id=s.subject_id AND p.pay_lec_id=IF(p.pay_lec_id!=NULL,l.lecturer_id,l.lecturer_id) AND p.pay_cas_id='".$cashier_id."'");
+            $result = $con->query("SELECT p.pay_id,CONCAT(st.fname, ' ' ,st.lname) AS 'name',s.subjectname,p.type,p.amount,p.date FROM cashier ca, payment p, student st, subject s WHERE p.pay_cas_id=ca.cashier_id AND p.pay_sub_id=s.subject_id AND p.pay_st_id=IF(p.pay_st_id!=NULL,st.student_id,st.student_id) AND p.status='Paid' AND p.pay_cas_id='".$cashier_id."' UNION SELECT p.pay_id,CONCAT(l.fname, ' ' ,l.lname) AS 'name',s.subjectname,p.type,p.amount,p.date FROM cashier ca, payment p, lecturer l, subject s WHERE p.pay_cas_id=ca.cashier_id AND p.pay_sub_id=s.subject_id AND p.pay_lec_id=IF(p.pay_lec_id!=NULL,l.lecturer_id,l.lecturer_id) AND p.status='Paid' AND p.pay_cas_id='".$cashier_id."'");
             if ($result) {
                 if ($result->num_rows > 0) {
                     while ($row = $result->fetch_assoc()) {
@@ -1718,5 +1698,4 @@ class FrontOfficer
         
     }
 }
-
 ?>

@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function () {
     stepper = new Stepper(stepperFormEl);
     //Date picker
     $('#dob').datetimepicker({
-          format: 'L'
+      format: 'Y-MM-DD'
     });
     $('[data-mask]').inputmask();
     $('.select2').select2();
@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', function () {
     bootstrapValidate('#fname', 'alpha:You can enter characters only');
     bootstrapValidate('#lname', 'alpha:You can enter characters only');
     bootstrapValidate('#ttresults', 'max:2:Enter a valid result');
-    bootstrapValidate('#school', 'alpha:You can enter characters only');
+    bootstrapValidate('#school', 'alphanumeric:You can enter characters only');
     bootstrapValidate('#adrsl1', 'alphanumeric:You can enter characters only');
     bootstrapValidate('#adrsl2', 'alphanumeric:You can enter characters only');
     bootstrapValidate('#adrsl3', 'alphanumeric:You can enter characters only');

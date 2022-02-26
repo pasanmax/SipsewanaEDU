@@ -93,7 +93,25 @@ if(isset($_SESSION['id']))
 
         function getSubName()
         {
-
+            try {
+                global $con;
+                $data = array();
+                $result = $con->query("SELECT subject.subjectname FROM subject");
+                if ($result) {
+                    if ($result->num_rows > 0) {
+                        while ($row = $result->fetch_assoc()) {
+                            $row = array_map('stripslashes', $row);
+                            $data[] = $row;
+                        }
+                        return $data;
+                    } else {
+                        return null;
+                    }
+                }
+                // $con->close();
+            } catch (Exception $e) {
+                echo 'Message: ' .$e->getMessage();
+            }
         }
 
         function getSType($student_id)
@@ -239,6 +257,75 @@ if(isset($_SESSION['id']))
                 global $con;
                 $data = array();
                 $result = $con->query("SELECT DISTINCT s.fee FROM lecturer_reg lr, subject s WHERE s.subject_id NOT IN (SELECT s.subject_id FROM lecturer_reg lr, subject s WHERE lr.lec_sub_id=s.subject_id AND lr.lec_reg_id='".$lecturer_id."');-- AND s.type='O/L'");
+                if ($result) {
+                    if ($result->num_rows > 0) {
+                        while ($row = $result->fetch_assoc()) {
+                            $row = array_map('stripslashes', $row);
+                            $data[] = $row;
+                        }
+                        return $data;
+                    } else {
+                        return null;
+                    }
+                }
+                $con->close();
+            } catch (Exception $e) {
+                echo 'Message: ' .$e->getMessage();
+            }
+        }
+
+        function getOLSubjects()
+        {
+            try {
+                global $con;
+                $data = array();
+                $result = $con->query("SELECT s.subjectname FROM subject s WHERE s.type='O/L'");
+                if ($result) {
+                    if ($result->num_rows > 0) {
+                        while ($row = $result->fetch_assoc()) {
+                            $row = array_map('stripslashes', $row);
+                            $data[] = $row;
+                        }
+                        return $data;
+                    } else {
+                        return null;
+                    }
+                }
+                $con->close();
+            } catch (Exception $e) {
+                echo 'Message: ' .$e->getMessage();
+            }
+        }
+
+        function getALSubjects()
+        {
+            try {
+                global $con;
+                $data = array();
+                $result = $con->query("SELECT s.subjectname FROM subject s WHERE s.type='A/L'");
+                if ($result) {
+                    if ($result->num_rows > 0) {
+                        while ($row = $result->fetch_assoc()) {
+                            $row = array_map('stripslashes', $row);
+                            $data[] = $row;
+                        }
+                        return $data;
+                    } else {
+                        return null;
+                    }
+                }
+                $con->close();
+            } catch (Exception $e) {
+                echo 'Message: ' .$e->getMessage();
+            }
+        }
+
+        function getSubjects()
+        {
+            try {
+                global $con;
+                $data = array();
+                $result = $con->query("SELECT s.subjectname FROM subject s");
                 if ($result) {
                     if ($result->num_rows > 0) {
                         while ($row = $result->fetch_assoc()) {

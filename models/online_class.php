@@ -128,10 +128,10 @@ if(isset($_SESSION['id']))
                         $_SESSION['response']="success";
                         $_SESSION['message']="Updated Successfully!";
                     } else {
-                        header('location:../pages/Lecturer/Classes/ManageOnline/List.php');
-                        $_SESSION['response']="danger";
-                        $_SESSION['message']="Database error occured!";
-                        //echo "Error: ".$con->error;
+                        // header('location:../pages/Lecturer/Classes/ManageOnline/List.php');
+                        // $_SESSION['response']="danger";
+                        // $_SESSION['message']="Database error occured!";
+                        echo "Error: ".$con->error;
                     }
                 } else {
                     header('location:../pages/Lecturer/Classes/ManageOnline/List.php');

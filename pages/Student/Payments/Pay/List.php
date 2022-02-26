@@ -306,25 +306,25 @@ if(isset($_SESSION['id']))
                       <tr>
                         <div class="form-group">
                           <td><label for="subject">Subject : </label></td>
-                          <td><input type="text" name="subject" value="" id="subject" required></input></td>
+                          <td><input type="text" name="subject" value="" id="subject" required readonly></input></td>
                         </div>
                       </tr>
                       <tr>
                         <div class="form-group">
                           <td><label for="month">Month : </label></td>
-                          <td><input type="text" name="month" value="" id="month" required></input></td>
+                          <td><input type="text" name="month" value="" id="month" required readonly></input></td>
                         </div>
                       </tr>
                       <tr>
                         <div class="form-group">
                           <td><label for="amount">Amount : </label></td>
-                          <td><input type="text" name="amount" value="" id="amount" required></input></td>
+                          <td><input type="text" name="amount" value="" id="amount" required readonly></input></td>
                         </div>
                       </tr>
                       <tr>
                         <div class="form-group">
                           <td><label for="date">Date : </label></td>
-                          <td><input type="text" name="date" value="" id="date" required></input></td>
+                          <td><input type="text" name="date" value="" id="date" required readonly></input></td>
                         </div>
                       </tr>
                       <tr>
