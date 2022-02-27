@@ -1,3 +1,10 @@
+<?php
+if(!isset($_SESSION)) 
+{ 
+  session_start();
+  $_SESSION['id']=999;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 

@@ -3,7 +3,7 @@ include('../../models/subject.php');
 $subject = new Subject();
 if(!isset($_SESSION)) 
 { 
-    session_start(); 
+  session_start();
 }
 ?>
 <!DOCTYPE html>
