@@ -72,9 +72,6 @@
         </a>
       </div>
       <!-- Lecturer-login-links -->
-      <p class="mb-1">
-        <a href="./Forgot-password.php">I forgot my password</a>
-      </p>
       <p class="mb-0">
         <a href="./alRegister.php" class="text-center">Register as a new A/L Student</a>
       </p>

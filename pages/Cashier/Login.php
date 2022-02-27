@@ -62,10 +62,6 @@
           <!-- /.col -->
         </div>
       </form>
-
-      <p class="mb-1">
-        <a href="./Forgot-password.php">I forgot my password</a>
-      </p>
       <p class="mb-1">
         <a href="../../index.php">Go to home</a>
       </p>

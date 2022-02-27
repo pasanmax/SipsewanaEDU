@@ -926,7 +926,7 @@ class FrontOfficer
         try {
             global $con;
             $data = array();
-            $result = $con->query("SELECT st.student_id,st.fname,st.lname,s.subjectname,st.gcontactno,st.dob,st.school,st.adrsl1,st.adrsl2,st.adrsl3,st.city,st.district,st.zipcode,st.gfname,st.glname,st.gemail,st.relationship, IF(st.student_id=ol.OLstudent_id, ol.ttresults, NULL) as 'ttresults',IF(st.student_id=al.ALstudent_id, al.idno, NULL) as 'idno',IF(st.student_id=al.ALstudent_id, al.email, NULL) as 'email',IF(st.student_id=al.ALstudent_id, al.contactno, NULL) as 'contactno' FROM student st, ol_student ol, al_student al, student_reg sr, subject s WHERE (st.student_id=ol.OLstudent_id OR st.student_id=al.ALstudent_id) AND st.student_id=sr.st_reg_id AND sr.st_sub_id=s.subject_id");
+            $result = $con->query("SELECT DISTINCT st.student_id,st.fname,st.lname,s.subjectname,st.gcontactno,st.dob,st.school,st.adrsl1,st.adrsl2,st.adrsl3,st.city,st.district,st.zipcode,st.gfname,st.glname,st.gemail,st.relationship, IF(st.student_id=ol.OLstudent_id, ol.ttresults, NULL) as 'ttresults',IF(st.student_id=al.ALstudent_id, al.idno, NULL) as 'idno',IF(st.student_id=al.ALstudent_id, al.email, NULL) as 'email',IF(st.student_id=al.ALstudent_id, al.contactno, NULL) as 'contactno' FROM student st, ol_student ol, al_student al, student_reg sr, subject s WHERE (st.student_id=ol.OLstudent_id OR st.student_id=al.ALstudent_id) AND st.student_id=sr.st_reg_id AND sr.st_sub_id=s.subject_id AND st.usrname IS NOT NULL AND st.passwordhash IS NOT NULL AND st.frt_st_id IS NOT NULL");
             
             if ($result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
@@ -1133,7 +1133,7 @@ class FrontOfficer
         try {
             global $con;
             $data = array();
-            $result = $con->query("SELECT l.lecturer_id,l.fname,l.lname,s.subjectname,l.contactno,l.dob,l.email,l.certification,l.adrsl1,l.adrsl2,l.adrsl3,l.city,l.district,l.zipcode,l.accountno,l.bankname,l.branchcode,l.branchname,l.accountname FROM lecturer l, lecturer_reg lr, subject s WHERE l.lecturer_id=lr.lec_reg_id AND lr.lec_sub_id=s.subject_id");
+            $result = $con->query("SELECT l.lecturer_id,l.fname,l.lname,s.subjectname,l.contactno,l.dob,l.email,l.certification,l.adrsl1,l.adrsl2,l.adrsl3,l.city,l.district,l.zipcode,l.accountno,l.bankname,l.branchcode,l.branchname,l.accountname FROM lecturer l, lecturer_reg lr, subject s WHERE l.lecturer_id=lr.lec_reg_id AND lr.lec_sub_id=s.subject_id AND l.usrname IS NOT NULL AND l.passwordhash IS NOT NULL AND l.frt_lec_id IS NOT NULL");
             
             if ($result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {

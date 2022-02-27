@@ -189,7 +189,7 @@ if(isset($_SESSION['id']))
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
-            <?php } unset($_SESSION['response']); unset($_SESSION['message']); ?>
+            <?php }unset($_SESSION['response']);unset($_SESSION['message']);?>
             <div class="card-header">
               <h3 class="card-title">Report Form</h3>
 

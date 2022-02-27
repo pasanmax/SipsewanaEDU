@@ -424,7 +424,6 @@ if(isset($_SESSION['id']))
                 <div class="form-group">
                   <label for="medium">Medium</label>
                   <select id="medium" name="medium" class="form-control custom-select" required>
-                    <option disabled selected>Select one</option>
                     <option value="English">English</option>
                     <option value="Sinhala">Sinhala</option>
                     <option value="Tamil">Tamil</option>
@@ -433,13 +432,12 @@ if(isset($_SESSION['id']))
                 <div class="form-group">
                   <label for="type">Type</label>
                   <select id="type" name="type" class="form-control custom-select" required>
-                    <option disabled selected>Select one</option>
                     <option value="O/L">O/L</option>
                     <option value="A/L">A/L</option>
                   </select>
                 </div>
                 <div class="card-footer">
-                  <button type="submit" id="reset" name="addSubject" class="btn btn-info">Register</button>
+                  <button type="submit" id="reset" name="addSubject" class="btn btn-info">Add</button>
                   <button type="reset" class="btn btn-default float-right">Cancel</button>
                 </div>
               </form>

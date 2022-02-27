@@ -245,7 +245,7 @@ if(isset($_SESSION['id']))
                 </tr>
                 </thead>
                 <tbody>
-                <?php foreach($list as $item) {?>
+                <?php if($list==null){}else{ foreach($list as $item) { ?>
                 <tr>
                   <td><?= $item['cls_attst_id']?></td>
                   <td><?= $item['subjectname']?></td>
@@ -253,7 +253,7 @@ if(isset($_SESSION['id']))
                   <td><?= $item['intime']?></td>
                   <td><?= $item['outtime']?></td>
                 </tr>
-                <?php }?>
+                <?php }}?>
                 </tbody>
                 <tfoot>
                 <tr>

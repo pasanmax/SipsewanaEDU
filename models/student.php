@@ -276,7 +276,7 @@ class Student
         try {
             global $con;
             $data = array();
-            $result = $con->query("SELECT hs.id,h.hw_id,h.name,s.subjectname,hc.createddate,hc.deadlinedate,hs.submitdate FROM subject s, student_reg sr, homework h, hw_creation hc, hw_submission hs WHERE sr.st_sub_id = s.subject_id AND sr.st_sub_id = h.hw_sub_id AND h.hw_id = hc.cre_hw_id AND h.hw_id = hs.sub_hw_id AND sr.st_reg_id='".$student_id."'");
+            $result = $con->query("SELECT DISTINCT hs.id,h.hw_id,h.name,s.subjectname,hc.createddate,hc.deadlinedate,hs.submitdate FROM subject s, student_reg sr, homework h, hw_creation hc, hw_submission hs WHERE sr.st_sub_id = s.subject_id AND sr.st_sub_id = h.hw_sub_id AND h.hw_id = hc.cre_hw_id AND h.hw_id = hs.sub_hw_id AND hs.sub_st_id='".$student_id."'");
             if ($result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
                     $row = array_map('stripslashes', $row);
@@ -322,7 +322,7 @@ class Student
     {
         try {
             global $con;
-            $result = $con->query("SELECT ROUND(COUNT(*)/4*100,0) as 'count' FROM stu_attendance sa, class c, online_class oc WHERE (date BETWEEN DATE_FORMAT(NOW() ,'%Y-%m-01') AND LAST_DAY(NOW())) AND sa.cls_attst_id = c.class_id AND c.class_id = oc.ol_cls_id AND c.sub_cls_id IN (SELECT sr.st_sub_id FROM student_reg sr WHERE sr.st_reg_id = '".$student_id."')");
+            $result = $con->query("SELECT ROUND(COUNT(*)/4*100,0) as 'count' FROM stu_attendance sa, class c, online_class oc WHERE (date BETWEEN DATE_FORMAT(NOW() ,'%Y-%m-01') AND LAST_DAY(NOW())) AND sa.cls_attst_id = c.class_id AND c.class_id = oc.ol_cls_id AND c.sub_cls_id IN (SELECT sr.st_sub_id FROM student_reg sr WHERE sr.st_reg_id = '".$student_id."') AND sa.st_att_id='".$student_id."'");
             if ($result->num_rows == 1) {
                 while ($row = $result->fetch_assoc()) {
                     $count = $row['count'];
@@ -365,7 +365,7 @@ class Student
     {
         try {
             global $con;
-            $result = $con->query("SELECT ROUND(COUNT(*)/4*100,0) as 'count' FROM stu_attendance sa, class c, offline_class oc WHERE (date BETWEEN DATE_FORMAT(NOW() ,'%Y-%m-01') AND LAST_DAY(NOW())) AND sa.cls_attst_id = c.class_id AND c.class_id = oc.of_cls_id AND c.sub_cls_id IN (SELECT sr.st_sub_id FROM student_reg sr WHERE sr.st_reg_id = '".$student_id."')");
+            $result = $con->query("SELECT ROUND(COUNT(*)/4*100,0) as 'count' FROM stu_attendance sa, class c, offline_class oc WHERE (date BETWEEN DATE_FORMAT(NOW() ,'%Y-%m-01') AND LAST_DAY(NOW())) AND sa.cls_attst_id = c.class_id AND c.class_id = oc.of_cls_id AND c.sub_cls_id IN (SELECT sr.st_sub_id FROM student_reg sr WHERE sr.st_reg_id = '".$student_id."') AND sa.st_att_id = '".$student_id."'");
             if ($result->num_rows == 1) {
                 while ($row = $result->fetch_assoc()) {
                     $count = $row['count'];
@@ -387,7 +387,7 @@ class Student
     {
         try {
             global $con;
-            $result = $con->query("SELECT COUNT(*) as 'count' FROM hw_submission hs, homework h, student_reg sr, subject s WHERE hs.submitdate IS NULL AND hs.fileName IS NULL AND hs.path IS NULL AND sr.st_sub_id = s.subject_id AND hs.sub_hw_id=h.hw_id AND h.hw_sub_id=sr.st_sub_id AND sr.st_reg_id = '".$student_id."'");
+            $result = $con->query("SELECT COUNT(*) as 'count' FROM hw_submission hs, homework h, student_reg sr, subject s WHERE hs.submitdate IS NULL AND hs.fileName IS NULL AND hs.path IS NULL AND sr.st_sub_id = s.subject_id AND hs.sub_hw_id=h.hw_id AND h.hw_sub_id=sr.st_sub_id AND hs.sub_st_id = '".$student_id."'");
             if ($result->num_rows == 1) {
                 while ($row = $result->fetch_assoc()) {
                     $count = $row['count'];
