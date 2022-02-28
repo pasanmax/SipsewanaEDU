@@ -41,7 +41,7 @@ else if(isset($_GET['delStuApproval']))
 {
     $frontofficer->delStudentApproval($_GET['delStuApproval']);
 }
-else if(isset($_POST['approveslecturer']))
+else if(isset($_POST['approvelecturer']))
 {
     if(empty($_POST['username']) || empty($_POST['password']) || empty($_POST['lecturerid']) || empty($_POST['subjectname'])
     || empty($_POST['lname'])) {

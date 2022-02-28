@@ -277,7 +277,7 @@ if(isset($_SESSION['id']))
               if(isset($_SESSION['classdate'])) {
                 include "$_SERVER[DOCUMENT_ROOT]/SipsewanaEDU/models/stu_attendance.php";
                 $stu_atten = new Stu_Attendance();
-                $list = $stu_atten->getStudentAttendanceList($_SESSION['classdate']);
+                $list = $stu_atten->getStudentAttendanceList($_SESSION['classdate'],$_SESSION['id']);
               } else {
                 $list = null;
               }

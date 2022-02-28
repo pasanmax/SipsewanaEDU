@@ -4,7 +4,10 @@ include_once "$root/SipsewanaEDU/config.php";
 
 $conn = new Conn();
 $con = $conn->getConn();
-session_start();
+if(!isset($_SESSION)) 
+{ 
+    session_start(); 
+}
 
 $lecturer = new Lecturer();
 

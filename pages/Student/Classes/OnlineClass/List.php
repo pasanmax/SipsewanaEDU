@@ -233,6 +233,14 @@ if(isset($_SESSION['id']))
         <div class="col-12">
           <div class="card">
             <div class="card-body">
+              <?php if(isset($_SESSION['response'])){?>
+                <div class="alert alert-<?=$_SESSION['response']?> alert-dismissible fade show" role="alert">
+                  <?=$_SESSION['message']?>
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+              <?php } unset($_SESSION['response']); unset($_SESSION['message']); ?>
               <?php $list = $student->getOnlinelist($_SESSION['id'])?>
               <table id="onlineList" class="table table-bordered table-striped">
                 <thead>
@@ -240,6 +248,7 @@ if(isset($_SESSION['id']))
                   <th>Class ID</th>
                   <th>Subject</th>
                   <th>Class URL</th>
+                  <th>Description</th>
                   <th>Date</th>
                   <th>Duration</th>
                   <th>Start Time</th>
@@ -250,7 +259,8 @@ if(isset($_SESSION['id']))
                 <tr>
                   <td><?= $item['ol_cls_id']?></td>
                   <td><?= $item['subjectname']?></td>
-                  <td><a href="<?= $item['classurl']?>" target="_blank" type="button" class="btn btn-block btn-success">Class Link</a></td>
+                  <td><a href="../../../../models/stu_attendance.php?clsurl=<?=$item['classurl']?>&clsid=<?=$item['ol_cls_id']?>&stid=<?=$_SESSION['id']?>" target="_blank" type="button" class="btn btn-block btn-success">Class Link</a></td>
+                  <td><?= $item['description']?></td>
                   <td><?= $item['date']?></td>
                   <td><?= $item['duration']?></td>
                   <td><?= $item['starttime']?></td>
@@ -262,6 +272,7 @@ if(isset($_SESSION['id']))
                   <th>Class ID</th>
                   <th>Subject</th>
                   <th>Class URL</th>
+                  <th>Description</th>
                   <th>Date</th>
                   <th>Duration</th>
                   <th>Start Time</th>

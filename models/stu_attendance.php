@@ -60,12 +60,12 @@ if(isset($_SESSION['id']))
             //echo "Error: ".$con->error;
         }
 
-        function getStudentAttendanceList($date)
+        function getStudentAttendanceList($date,$lecturer_id)
         {
             try {
                 global $con;
                 $data = array();
-                $result = $con->query("SELECT sa.cls_attst_id,sa.st_att_id,s.subjectname,sa.date,sa.intime,sa.outtime FROM stu_attendance sa, class c, subject s, class_dates cd WHERE sa.cls_attst_id=c.class_id AND c.class_id=cd.cls_dt_id AND c.sub_cls_id=s.subject_id AND sa.date=cd.date AND cd.date='".$date."'");
+                $result = $con->query("SELECT DISTINCT sa.cls_attst_id,sa.st_att_id,s.subjectname,sa.date,sa.intime,sa.outtime FROM stu_attendance sa, student_reg sr, class c, subject s, class_dates cd, lecturer_reg lr WHERE sa.cls_attst_id=c.class_id AND c.class_id=cd.cls_dt_id AND c.sub_cls_id=s.subject_id AND sa.date=cd.date AND sr.st_sub_id=c.sub_cls_id AND lr.lec_sub_id=c.sub_cls_id AND sr.st_sub_id=lr.lec_sub_id AND cd.date='".$date."' AND lr.lec_reg_id='".$lecturer_id."'");
                 if ($result) {
                     if ($result->num_rows > 0) {
                         while ($row = $result->fetch_assoc()) {
@@ -155,6 +155,36 @@ if(isset($_SESSION['id']))
             
         }
 
+        function setStOnlineAttendance($class_url,$class_id,$student_id)
+        {
+            try {
+                global $con;
+                $result = $con->query("SELECT * FROM stu_attendance sa WHERE sa.st_att_id='".$student_id."' AND sa.cls_attst_id='".$class_id."'");
+                if ($result) {
+                    if ($result->num_rows > 0) {
+                        header('location:'.$class_url);
+                        // $_SESSION['response']="danger";
+                        // $_SESSION['message']="Student already attended!";
+                    } else {
+                        $dt = new DateTime("now", new DateTimeZone('Asia/Colombo'));
+                        $intime = $dt->format('H:i:s');
+                        if($con->query("INSERT INTO stu_attendance(st_att_id,cls_attst_id,date,intime,outtime) VALUES ('".$student_id."','".$class_id."','".date('Y-m-d')."','".$intime."',NULL)") === TRUE) {
+                            header('location:'.$class_url);
+                        } else {
+                            header('location:../pages/Student/Classes/OnlineClass/List.php');
+                            $_SESSION['response']="danger";
+                            $_SESSION['message']="Database error occured!";
+                            //echo "Error: ".$con->error;
+                        }
+                    }
+                }
+                
+                $con->close();
+            } catch (Exception $e) {
+                echo 'Message: ' .$e->getMessage();
+            }
+        }
+
     }
 
     if(isset($_POST['dateSearch']))
@@ -204,6 +234,17 @@ if(isset($_SESSION['id']))
             $stAttendance = new Stu_Attendance();
             $stAttendance->setStudentId($_POST['studentid']);
             $stAttendance->setStOnAttSession();
+        }
+    }
+
+    if (isset($_GET['clsurl']) && isset($_GET['clsid']) && isset($_GET['stid'])) {
+        if (!empty($_GET['clsurl']) && !empty($_GET['clsid']) && !empty($_GET['stid'])) {
+            $stAttendance = new Stu_Attendance();
+            $stAttendance->setStOnlineAttendance($_GET['clsurl'],$_GET['clsid'],$_GET['stid']);
+        } else {
+            header('location:../pages/Student/Classes/OnlineClass/List.php');
+            $_SESSION['response']="danger";
+            $_SESSION['message']="Please try again!";
         }
     }
 

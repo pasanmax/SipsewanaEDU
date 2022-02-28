@@ -272,8 +272,8 @@ if(isset($_SESSION['id']))
                   <th>ID</th>
                   <th>Subject</th>
                   <th hidden>Class URL</th>
-                  <th hidden>Description</th>
                   <th>Class URL</th>
+                  <th>Description</th>
                   <th>Date</th>
                   <th>Duration</th>
                   <th>Start Time</th>
@@ -286,8 +286,8 @@ if(isset($_SESSION['id']))
                   <td><?= $item['ol_cls_id']?></td>
                   <td><?= $item['subjectname']?></td>
                   <td hidden><?= $item['classurl']?></td>
-                  <td hidden><?= $item['description']?></td>
-                  <td><a href="<?= $item['classurl']?>" target="_blank" type="button" class="btn btn-block btn-success">Class Link</a></td>
+                  <td><a href="../../../../models/lec_attendance.php?clsurl=<?=$item['classurl']?>&clsid=<?=$item['ol_cls_id']?>&dura=<?= $item['duration']?>&lecid=<?=$_SESSION['id']?>" target="_blank" type="button" class="btn btn-block btn-success">Class Link</a></td>
+                  <td><?= $item['description']?></td>
                   <td><?= $item['date']?></td>
                   <td><?= $item['duration']?></td>
                   <td><?= $item['starttime']?></td>
@@ -305,8 +305,8 @@ if(isset($_SESSION['id']))
                   <th>ID</th>
                   <th>Subject</th>
                   <th hidden>Class URL</th>
-                  <th hidden>Description</th>
                   <th>Class URL</th>
+                  <th>Description</th>
                   <th>Date</th>
                   <th>Duration</th>
                   <th>Start Time</th>

@@ -99,6 +99,37 @@ if(isset($_SESSION['id']))
             
         }
 
+        function setLecOnlineAttendance($class_url,$class_id,$duration,$lecturer_id)
+        {
+            try {
+                global $con;
+                $result = $con->query("SELECT * FROM lec_attendance la WHERE la.lec_att_id='".$lecturer_id."' AND la.cls_attlec_id='".$class_id."'");
+                if ($result) {
+                    if ($result->num_rows > 0) {
+                        header('location:'.$class_url);
+                        // $_SESSION['response']="danger";
+                        // $_SESSION['message']="Lecturer already attended!";
+                    } else {
+                        $dt = new DateTime("now", new DateTimeZone('Asia/Colombo'));
+                        $intime = $dt->format('H:i:s');
+                        $outtime = date("h:m:s", strtotime($intime)+$duration*60*60);
+                        if($con->query("INSERT INTO lec_attendance(lec_att_id,cls_attlec_id,date,intime,outtime) VALUES ('".$lecturer_id."','".$class_id."','".date('Y-m-d')."','".$intime."','".$outtime."')") === TRUE) {
+                            header('location:'.$class_url);
+                        } else {
+                            header('location:../pages/Lecturer/Classes/ManageOnline/List.php');
+                            $_SESSION['response']="danger";
+                            $_SESSION['message']="Database error occured!";
+                            //echo "Error: ".$con->error;
+                        }
+                    }
+                }
+                
+                $con->close();
+            } catch (Exception $e) {
+                echo 'Message: ' .$e->getMessage();
+            }
+        }
+
     }
 
     if (isset($_POST['lecOfAttenSearch'])) {
@@ -122,6 +153,17 @@ if(isset($_SESSION['id']))
             $lecAttendance = new Lec_Attendance();
             $lecAttendance->setLecturerId($_POST['lecturerid']);
             $lecAttendance->setLecOnAttSession();
+        }
+    }
+
+    if (isset($_GET['clsurl']) && isset($_GET['clsid']) && isset($_GET['dura']) && isset($_GET['lecid'])) {
+        if (!empty($_GET['clsurl']) && !empty($_GET['clsid']) && !empty($_GET['dura']) && !empty($_GET['lecid'])) {
+            $lecAttendance = new Lec_Attendance();
+            $lecAttendance->setLecOnlineAttendance($_GET['clsurl'],$_GET['clsid'],$_GET['dura'],$_GET['lecid']);
+        } else {
+            header('location:../pages/Lecturer/Classes/ManageOnline/List.php');
+            $_SESSION['response']="danger";
+            $_SESSION['message']="Please try again!";
         }
     }
 

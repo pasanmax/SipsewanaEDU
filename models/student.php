@@ -186,7 +186,7 @@ class Student
         try {
             global $con;
             $data = array();
-            $result = $con->query("SELECT online_class.ol_cls_id,subject.subjectname,online_class.classurl,class_dates.date,class.duration,class.starttime FROM student_reg,subject,class_dates,online_class,class WHERE student_reg.id='".$student_id."' AND student_reg.st_sub_id=class.sub_cls_id AND class.sub_cls_id=subject.subject_id AND class.class_id=online_class.ol_cls_id AND class.class_id=class_dates.cls_dt_id AND class_dates.date>=curdate()");
+            $result = $con->query("SELECT online_class.ol_cls_id,subject.subjectname,online_class.classurl,online_class.description,class_dates.date,class.duration,class.starttime FROM student_reg,subject,class_dates,online_class,class WHERE student_reg.id='".$student_id."' AND student_reg.st_sub_id=class.sub_cls_id AND class.sub_cls_id=subject.subject_id AND class.class_id=online_class.ol_cls_id AND class.class_id=class_dates.cls_dt_id AND class_dates.date>=curdate()");
             
             if ($result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
