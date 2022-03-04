@@ -66,51 +66,50 @@ if(!isset($_SESSION))
     <div class="lecturers container">
       <div class="lecturers-top">
         <h1 class="section-title"><span>T</span>eachers</h1>
-        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ipsum deleniti maiores pariatur assumenda quas
-          magni et, doloribus quod voluptate quasi molestiae magnam officiis dolorum, dolor provident atque molestias
-          voluptatum explicabo!</p>
+        <p>An unparalleled array of qualified and experienced lecturers are available.
+           Some have small groups enabling them to give individual attention to the student, while others have large groups which help sharpen the competitive instincts of the student.</p>
       </div>
       <div class="lecturers-bottom">
         <div class="lecturers-item">
-          <div class="icon"><img src="https://img.icons8.com/bubbles/100/000000/services.png" /></div>
-          <h2>Web Design</h2>
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis debitis rerum, magni voluptatem sed
-            architecto placeat beatae tenetur officia quod</p>
+          <div class="icon"><img src="./dist/img/appImages/lecturer.png" /></div>
+          <h2>THARINDU AKALANKA</h2>
+          <h4 style="color: whitesmoke;"><i>ICT</i></h4>
+          <p>Bachelor of ICT (Hon.) - University of Jayawardanapura, BIT - UCSC, HDIT - FITP<br>&nbsp;</p>
         </div>
         <div class="lecturers-item">
-          <div class="icon"><img src="https://img.icons8.com/bubbles/100/000000/services.png" /></div>
-          <h2>Web Design</h2>
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis debitis rerum, magni voluptatem sed
-            architecto placeat beatae tenetur officia quod</p>
+          <div class="icon"><img src="./dist/img/appImages/lecturer.png" /></div>
+          <h2>KITHSIRI KUMARA</h2>
+          <h4 style="color: whitesmoke;"><i>CHEMISTRY SINHALA MEDIUM</i></h4>
+          <p>BSc. (Engineering) 1st class , University of Moratuwa , Dip. in CIMA<br>&nbsp;</p>
         </div>
         <div class="lecturers-item">
-          <div class="icon"><img src="https://img.icons8.com/bubbles/100/000000/services.png" /></div>
-          <h2>Web Design</h2>
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis debitis rerum, magni voluptatem sed
-            architecto placeat beatae tenetur officia quod</p>
+          <div class="icon"><img src="./dist/img/appImages/lecturer.png" /></div>
+          <h2>CHANAKA JAYAMAL</h2>
+          <h4 style="color: whitesmoke;"><i>COM MATHS SINHALA MEDIUM</i></h4>
+          <p>BSc. (Engineering) Hons, University of Moratuwa, Dip. in CIMA,P.G Dip in Industrial Mathematics</p>
         </div>
         <div class="lecturers-item">
-          <div class="icon"><img src="https://img.icons8.com/bubbles/100/000000/services.png" /></div>
-          <h2>Web Design</h2>
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis debitis rerum, magni voluptatem sed
-            architecto placeat beatae tenetur officia quod</p>
+          <div class="icon"><img src="./dist/img/appImages/lecturer.png" /></div>
+          <h2>DULIP LUCKSHAN</h2>
+          <h4 style="color: whitesmoke;"><i>ECONOMICS ENGLISH MEDIUM</i></h4>
+          <p>BSc. Business Administration ( Business Economics) Sp.University of Sri Jayawardanapura</p>
         </div>
-
+      
         <div class="lecturers-item">
-          <div class="icon"><img src="https://img.icons8.com/bubbles/100/000000/services.png" /></div>
-          <h2>Web Design</h2>
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis debitis rerum, magni voluptatem sed
-            architecto placeat beatae tenetur officia quod</p>
+          <div class="icon"><img src="./dist/img/appImages/lecturer.png" /></div>
+          <h2>UPUL JAYASOMA</h2>
+          <h4 style="color: whitesmoke;"><i>SCIENCE</i></h4>
+          <p>Sinhala Medium<br>&nbsp;</p>
         </div><div class="lecturers-item">
-          <div class="icon"><img src="https://img.icons8.com/bubbles/100/000000/services.png" /></div>
-          <h2>Web Design</h2>
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis debitis rerum, magni voluptatem sed
-            architecto placeat beatae tenetur officia quod</p>
+          <div class="icon"><img src="./dist/img/appImages/lecturer.png" /></div>
+          <h2>THARAKA JAYASINGHE</h2>
+          <h4 style="color: whitesmoke;"><i>COMMERCE</i></h4>
+          <p>Sinhala Medium<br>&nbsp;</p>
         </div><div class="lecturers-item">
-          <div class="icon"><img src="https://img.icons8.com/bubbles/100/000000/services.png" /></div>
-          <h2>Web Design</h2>
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis debitis rerum, magni voluptatem sed
-            architecto placeat beatae tenetur officia quod</p>
+          <div class="icon"><img src="./dist/img/appImages/lecturer.png" /></div>
+          <h2>IVON ARAVINDA</h2>
+          <h4 style="color: whitesmoke;"><i>COMMERCE</i></h4>
+          <p>English Medium<br>&nbsp;</p>
         </div>
       </div>
     </div>
@@ -126,62 +125,75 @@ if(!isset($_SESSION))
       <div class="all-classes">
         <div class="classes-item">
           <div class="classes-info">
-            <h1>Project 1</h1>
-            <h2>Coding is Love</h2>
-            <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ad, iusto cupiditate voluptatum impedit unde
-              rem ipsa distinctio illum quae mollitia ut, accusantium eius odio ducimus illo neque atque libero non sunt
-              harum? Ipsum repellat animi, fugit architecto voluptatum odit et!</p>
+            <h1>Chemistry</h1>
+            <h2>A/L Chemistry</h2>
+            <p>Discusses all the practicals related to chemistry and teaches do live practicals to the students when required. 
+              Necessary tutorials and question paper sets are provided to each student.
+            </p>
           </div>
           <div class="classes-img">
-            <img src="./dist/img/appImages/img-1.png" alt="img">
+            <img src="./dist/img/appImages/chemistry.jpg" alt="img">
           </div>
         </div>
         <div class="classes-item">
           <div class="classes-info">
-            <h1>Project 2</h1>
-            <h2>Coding is Love</h2>
-            <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ad, iusto cupiditate voluptatum impedit unde
-              rem ipsa distinctio illum quae mollitia ut, accusantium eius odio ducimus illo neque atque libero non sunt
-              harum? Ipsum repellat animi, fugit architecto voluptatum odit et!</p>
+            <h1>Biology</h1>
+            <h2>A/L Biology</h2>
+            <p>Biology lessons are taught in a very interesting way and tutorials with color pictures related to the lessons are also provided.</p>
           </div>
           <div class="classes-img">
-            <img src="./dist/img/appImages/img-1.png" alt="img">
+            <img src="./dist/img/appImages/bio.jpg" alt="img">
           </div>
         </div>
         <div class="classes-item">
           <div class="classes-info">
-            <h1>Project 3</h1>
-            <h2>Coding is Love</h2>
-            <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ad, iusto cupiditate voluptatum impedit unde
-              rem ipsa distinctio illum quae mollitia ut, accusantium eius odio ducimus illo neque atque libero non sunt
-              harum? Ipsum repellat animi, fugit architecto voluptatum odit et!</p>
+            <h1>Physics</h1>
+            <h2>A/L Physics</h2>
+            <p>The tutorial for all the physics related lessons is given at the beginning and videos are shown.
+              In addition, past papers problmes related to them are also discussed at the same time.</p>
           </div>
           <div class="classes-img">
-            <img src="./dist/img/appImages/img-1.png" alt="img">
+            <img src="./dist/img/appImages/physics.jpg" alt="img">
           </div>
         </div>
         <div class="classes-item">
           <div class="classes-info">
-            <h1>Project 4</h1>
-            <h2>Coding is Love</h2>
-            <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ad, iusto cupiditate voluptatum impedit unde
-              rem ipsa distinctio illum quae mollitia ut, accusantium eius odio ducimus illo neque atque libero non sunt
-              harum? Ipsum repellat animi, fugit architecto voluptatum odit et!</p>
+            <h1>ICT</h1>
+            <h2>A/L ICT</h2>
+            <p>It teaches the ICT subject in a very simple way and also explains how to write answers to the question papers through practical activities.</p>
           </div>
           <div class="classes-img">
-            <img src="./dist/img/appImages/img-1.png" alt="img">
+            <img src="./dist/img/appImages/ict.jpg" alt="img">
           </div>
         </div>
         <div class="classes-item">
           <div class="classes-info">
-            <h1>Project 5</h1>
-            <h2>Coding is Love</h2>
-            <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ad, iusto cupiditate voluptatum impedit unde
-              rem ipsa distinctio illum quae mollitia ut, accusantium eius odio ducimus illo neque atque libero non sunt
-              harum? Ipsum repellat animi, fugit architecto voluptatum odit et!</p>
+            <h1>History</h1>
+            <h2>O/L History</h2>
+            <p>Students are taught to memorize very intersting ancient stories about the history of the country and the world. All tutorials and notes are provided at the beginning of the lesson.</p>
           </div>
           <div class="classes-img">
-            <img src="./dist/img/appImages/img-1.png" alt="img">
+            <img src="./dist/img/appImages/history.jpg" alt="img">
+          </div>
+        </div>
+        <div class="classes-item">
+          <div class="classes-info">
+            <h1>Sinhala</h1>
+            <h2>O/L Sinhala</h2>
+            <p>Sinhala language and literature are taught correctly from beginning. Students are also taught to write grammar rules and answer questions correctly.</p>
+          </div>
+          <div class="classes-img">
+            <img src="./dist/img/appImages/sinhala.png" alt="img">
+          </div>
+        </div>
+        <div class="classes-item">
+          <div class="classes-info">
+            <h1>Commerce</h1>
+            <h2>O/L Commerce</h2>
+            <p>The subject of Business Studies  is taught in a very interesting and simple way. Identifies new business opportunities and guides every student to enter the world through them</p>
+          </div>
+          <div class="classes-img">
+            <img src="./dist/img/appImages/commerce.jpg" alt="img">
           </div>
         </div>
       </div>
@@ -199,13 +211,11 @@ if(!isset($_SESSION))
       </div>
       <div class="col-right">
         <h1 class="section-title">About <span>Us</span></h1>
-        <h2>Front End Developer</h2>
-        <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Asperiores, velit alias eius non illum beatae atque
-          repellat ratione qui veritatis repudiandae adipisci maiores. At inventore necessitatibus deserunt
-          exercitationem cumque earum omnis ipsum rem accusantium quis, quas quia, accusamus provident suscipit magni!
-          Expedita sint ad dolore, commodi labore nihil velit earum ducimus nulla quae nostrum fugit aut, deserunt
-          reprehenderit libero enim!</p>
-        <a href="#" style="color: black;" class="ctas">Download Resume</a>
+        <h2>Sipsewana</h2>
+        <p>Sipsewana Institute is the pioneer Higher Education in Sri Lanka sice 2010.The Sipsewana brand is now synonymou with educational excellence and market leadership in the country's educational landscape.
+        Our sole aim is to encourage the children of our nation to reach goals in such a place where they can fully concenrate without any disturbance while enjoying the great facilities with the sole intention of winnig the future.
+        </p>
+        <a href="#contact" style="color: black;" class="ctas">Contact US</a>
       </div>
     </div>
   </section>
@@ -222,22 +232,22 @@ if(!isset($_SESSION))
           <div class="icon"><img src="https://img.icons8.com/bubbles/100/000000/phone.png" /></div>
           <div class="contact-info">
             <h1>Phone</h1>
-            <h2>+1 234 123 1234</h2>
-            <h2>+1 234 123 1234</h2>
+            <h2>071 778 2366</h2>
+            
           </div>
         </div>
         <div class="contact-item">
           <div class="icon"><img src="https://img.icons8.com/bubbles/100/000000/new-post.png" /></div>
           <div class="contact-info">
             <h1>Email</h1>
-            <h2><a href="#">info@gmail.com</a></h2>
+            <h2><a href="mailto:sipsewana@gmail.com">sipsewana@gmail.com</a></h2>
           </div>
         </div>
         <div class="contact-item">
           <div class="icon"><img src="https://img.icons8.com/bubbles/100/000000/map-marker.png" /></div>
           <div class="contact-info">
             <h1>Address</h1>
-            <h2>Fatikchhari, Chittagong, Bangladesh</h2>
+            <h2>Sipsewana Institute,Ihala-Karagahamuna,Ganemulla Rd,Kadawatha.</h2>
           </div>
         </div>
       </div>
@@ -257,11 +267,11 @@ if(!isset($_SESSION))
             <a href="./pages/Director/Login.php">Director</a>
         </div>
 
-        <div class="box">
+        <!-- <div class="box">
             <h3>Quick links</h3>
             <a href="#"><p><i class="fas fa-search"></i>Find a class</p></a>
             <a href="#"><p><i class="fas fa-search"></i>Find a teacher</p></a>
-        </div>
+        </div> -->
         <div class="box">
           <h3>Social links</h3>
           <a href="#"><p><i class="fab fa-facebook"></i>Facebook</p></a>
