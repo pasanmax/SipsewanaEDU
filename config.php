@@ -1,6 +1,7 @@
 <?php
 class Conn
 {
+    // connecting to database
     function getConn()
     {
         $conn = new mysqli("localhost","root","","sipsewanaedu");
