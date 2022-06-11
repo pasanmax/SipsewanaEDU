@@ -47,33 +47,44 @@ else if(isset($_POST['SubStuRegReport']))
         }
     }
 }
-else if(isset($_POST['SubStuPayRegReport']))
+else if(isset($_POST['paymentReport']))
 {
-    if(empty($_POST['studentid'])) {
-        header('location:../pages/Director/Student/Payment/Report.php');
+    //echo $_POST['paymentid'];
+    if(empty($_POST['paymentid'])) {
+        header('location:../pages/Director/Payment/Receipt/Report.php');
         $_SESSION['response']="danger";
-        $_SESSION['message']="Please fill the relevant details!";
+        $_SESSION['message']="Payment Id cannot be blank!";
     } else {
-        include "$_SERVER[DOCUMENT_ROOT]/SipsewanaEDU/models/student_reg.php";
-        $student_reg = new StudentReg();
-        if ($student_reg->getStuRegID($_POST['studentid']) === null) {
-            header('location:../pages/Director/Student/Payment/Report.php');
+        // include "$_SERVER[DOCUMENT_ROOT]/SipsewanaEDU/models/student_reg.php";
+        // $student_reg = new StudentReg();
+        // if ($student_reg->getStuRegID($_POST['studentid']) === null) {
+        //     header('location:../pages/Director/Student/Payment/Report.php');
+        //     $_SESSION['response']="danger";
+        //     $_SESSION['message']="Invalid studdent ID!";
+        // } else {
+        //     include "$_SERVER[DOCUMENT_ROOT]/SipsewanaEDU/models/student.php";
+        //     $student = new Student();
+        //     $studentname = $student->getName($_POST['studentid']);
+        //     include "$_SERVER[DOCUMENT_ROOT]/SipsewanaEDU/models/payment.php";
+        //     $payment = new Payment();
+        //     $list = $payment->getStudentPaidPaymentsList($_POST['studentid']);
+        //     if ($list === null) {
+        //         header('location:../pages/Director/Student/Payment/Report.php');
+        //         $_SESSION['response']="danger";
+        //         $_SESSION['message']="No records found!";
+        //     } else {
+        //         $director->generateStPayReport($studentname,$_POST['studentid'],$list);
+        //     }
+        // }
+        include "$_SERVER[DOCUMENT_ROOT]/SipsewanaEDU/models/payment.php";
+        $payment = new Payment();
+        $list = $payment->getPaidPaymentsList($_POST['paymentid']);
+        if ($list === null) {
+            header('location:../pages/Director/Payment/Receipt/Report.php');
             $_SESSION['response']="danger";
-            $_SESSION['message']="Invalid studdent ID!";
+            $_SESSION['message']="No records found!";
         } else {
-            include "$_SERVER[DOCUMENT_ROOT]/SipsewanaEDU/models/student.php";
-            $student = new Student();
-            $studentname = $student->getName($_POST['studentid']);
-            include "$_SERVER[DOCUMENT_ROOT]/SipsewanaEDU/models/payment.php";
-            $payment = new Payment();
-            $list = $payment->getStudentPaidPaymentsList($_POST['studentid']);
-            if ($list === null) {
-                header('location:../pages/Director/Student/Payment/Report.php');
-                $_SESSION['response']="danger";
-                $_SESSION['message']="No records found!";
-            } else {
-                $director->generateStPayReport($studentname,$_POST['studentid'],$list);
-            }
+            $director->generatePayReport($list);
         }
     }
 }
@@ -95,17 +106,36 @@ else if(isset($_POST['SubLecRegReport']))
     }
 }
 
+else if(isset($_POST['paymentreport']))
+{
+    if(empty($_POST['frmdate']) || empty($_POST['todate'])) {
+        header('location:../pages/Director/Payment/Report/Report.php');
+        $_SESSION['response']="danger";
+        $_SESSION['message']="Please fill the relevant details!";
+    } else {
+        $list = $director->getPaymentList($_POST['frmdate'],$_POST['todate']);
+        if ($list === null) {
+            header('location:../pages/Director/Payment/Report/Report.php');
+            $_SESSION['response']="danger";
+            $_SESSION['message']="No records found!";
+        } else {
+            $total = $director->getTotalPaymentList($_POST['frmdate'],$_POST['todate']);
+            $director->generatePaymentReport($list,$_POST['frmdate'],$_POST['todate'],$total);
+        }
+    }
+}
+
 
 class Director
 {
     // properties
-    protected $fname;
-    protected $lname;
-    protected $usrname;
-    protected $passwordHash;
-    protected $dob;
-    protected $email;
-    protected $contactNo;
+    private $fname;
+    private $lname;
+    private $usrname;
+    private $passwordHash;
+    private $dob;
+    private $email;
+    private $contactNo;
 
     // methods
     function setDirector($fname,$lname,$dob,$email,$contactNo)
@@ -273,6 +303,73 @@ class Director
         }
     }
 
+    function getPaymentList($fromDate,$toDate)
+    {
+        try {
+            global $con;
+            $data = array();
+            $result = $con->query("SELECT s.subject_id,s.subjectname,CONCAT(l.fname,' ',l.lname) AS 'lecturername',SUM(p.amount) AS 'amount' FROM payment p, subject s, lecturer l, lecturer_reg lr WHERE p.pay_sub_id=s.subject_id AND lr.lec_reg_id=l.lecturer_id AND lr.lec_sub_id=s.subject_id AND p.type='Class Fees' AND p.date BETWEEN '".$fromDate."' AND '".$toDate."' GROUP BY p.pay_sub_id");
+            if ($result) {
+                if ($result->num_rows > 0) {
+                    while ($row = $result->fetch_assoc()) {
+                        $data[] = $row;
+                    }
+                    return $data;
+                } else {
+                    return null;
+                }
+            }
+            $con->close();
+        } catch (Exception $e) {
+            echo 'Message: ' .$e->getMessage();
+        }
+    }
+
+    function getTotalPaymentList($fromDate,$toDate)
+    {
+        try {
+            global $con;
+            $data = array();
+            $result = $con->query("SELECT SUM(p.amount) AS 'amount' FROM payment p WHERE p.type='Class Fees' AND p.date BETWEEN '".$fromDate."' AND '".$toDate."'");
+            if ($result) {
+                if ($result->num_rows > 0) {
+                    while ($row = $result->fetch_assoc()) {
+                        $data[] = $row;
+                    }
+                    return $data;
+                } else {
+                    return null;
+                }
+            }
+            $con->close();
+        } catch (Exception $e) {
+            echo 'Message: ' .$e->getMessage();
+        }
+    }
+
+    function getPaymentIdList()
+    {
+        try {
+            global $con;
+            $data = array();
+            $result = $con->query("SELECT p.pay_id FROM payment p");
+            if ($result->num_rows > 0) {
+                while ($row = $result->fetch_assoc()) {
+                    $row = array_map('stripslashes', $row);
+                    $data[] = $row;
+                }
+                return $data;
+            } elseif ($result === false) {
+                throw new Exception("Database Error!");
+            } else {
+                return null;
+            }
+            $con->close();
+        } catch (Exception $e) {
+            echo 'Message: ' .$e->getMessage();
+        }
+    }
+
     function generateStRegReport($list,$fromDate,$toDate)
     {
         require('../plugins/fpdf17/fpdf.php');
@@ -283,6 +380,11 @@ class Director
         $pdf = new FPDF('P','mm','A4');
 
         $pdf->AddPage();
+
+        $pdf->Image('../dist/img/dashboardImages/sipsewanaLogo.jpg',10,10,-300);
+        $pdf->Cell(189	,10,'',0,1);
+        $pdf->Cell(189	,10,'',0,1);
+        $pdf->Cell(189	,10,'',0,1);
 
         //set font to arial, bold, 14pt
         $pdf->SetFont('Arial','B',14);
@@ -338,8 +440,9 @@ class Director
         $pdf->Output();
     }
 
-    function generateStPayReport($studentname,$student_id,$list)
+    function generatePayReport($list)
     {
+        $director_name = $this->getName($_SESSION['id']);
         require('../plugins/fpdf17/fpdf.php');
         //A4 width : 219mm
         //default margin : 10mm each side
@@ -348,6 +451,11 @@ class Director
         $pdf = new FPDF('P','mm','A4');
 
         $pdf->AddPage();
+
+        $pdf->Image('../dist/img/dashboardImages/sipsewanaLogo.jpg',10,10,-300);
+        $pdf->Cell(189	,10,'',0,1);
+        $pdf->Cell(189	,10,'',0,1);
+        $pdf->Cell(189	,10,'',0,1);
 
         //set font to arial, bold, 14pt
         $pdf->SetFont('Arial','B',14);
@@ -369,8 +477,8 @@ class Director
 
         $pdf->Cell(130	,5,'Phone +94 0112 456 355',0,0);
 
-        $pdf->Cell(22	,5,'Director ID',0,0,'R');
-        $pdf->Cell(27	,5,$_SESSION['id'],0,1,'R');//end of line
+        $pdf->Cell(18	,5,'Director ',0,0,'R');
+        $pdf->Cell(30	,5,$director_name,0,1,'R');//end of line
 
         //make a dummy empty cell as a vertical spacer
         $pdf->Cell(189	,10,'',0,1);//end of line
@@ -378,12 +486,12 @@ class Director
         //add dummy cell at beginning of each line for indentation
         $pdf->SetFont('Arial','B',15);
         $pdf->Cell(10	,5,'',0,0);
-        $pdf->Cell(152	,5,'Student Payment Report',0,1,'C');
+        $pdf->Cell(152	,5,'Payment Receipt',0,1,'C');
 
-        $pdf->SetFont('Arial','B',12);
-        $pdf->Cell(10	,5,'',0,1);
-        $pdf->Cell(130	,5,'Student Name: '.$studentname,0,1);
-        $pdf->Cell(130	,5,'Student ID: '.$student_id,0,1);
+        // $pdf->SetFont('Arial','B',12);
+        // $pdf->Cell(10	,5,'',0,1);
+        // $pdf->Cell(130	,5,'Student Name: '.$studentname,0,1);
+        // $pdf->Cell(130	,5,'Student ID: '.$student_id,0,1);
 
         $pdf->SetFont('Arial','B',11);
         $pdf->Cell(189	,10,'',0,1);//end of line
@@ -422,6 +530,11 @@ class Director
         $pdf = new FPDF('P','mm','A4');
 
         $pdf->AddPage();
+
+        $pdf->Image('../dist/img/dashboardImages/sipsewanaLogo.jpg',10,10,-300);
+        $pdf->Cell(189	,10,'',0,1);
+        $pdf->Cell(189	,10,'',0,1);
+        $pdf->Cell(189	,10,'',0,1);
 
         //set font to arial, bold, 14pt
         $pdf->SetFont('Arial','B',14);
@@ -477,11 +590,88 @@ class Director
         $pdf->Output();
     }
 
+    function generatePaymentReport($list,$fromDate,$toDate,$total)
+    {
+        $director_name = $this->getName($_SESSION['id']);
+        require('../plugins/fpdf17/fpdf.php');
+        //A4 width : 219mm
+        //default margin : 10mm each side
+        //writable horizontal : 219-(10*2)=189mm
+
+        $pdf = new FPDF('P','mm','A4');
+
+        $pdf->AddPage();
+
+        $pdf->Image('../dist/img/dashboardImages/sipsewanaLogo.jpg',10,10,-300);
+        $pdf->Cell(189	,10,'',0,1);
+        $pdf->Cell(189	,10,'',0,1);
+        $pdf->Cell(189	,10,'',0,1);
+        //set font to arial, bold, 14pt
+        $pdf->SetFont('Arial','B',14);
+
+        //Cell(width , height , text , border , end line , [align] )
+
+        $pdf->Cell(130	,5,'Sipsewana EDU',0,0);
+        $pdf->Cell(59	,5,'System Generated Report',0,1);//end of line
+
+        //set font to arial, regular, 12pt
+        $pdf->SetFont('Arial','',12);
+
+        $pdf->Cell(130	,5,'No 01, Ganemulla Road, Kadawatha, Sri Lanka',0,0);
+        $pdf->Cell(59	,5,'',0,1);//end of line
+
+        $pdf->Cell(130	,5,'Kadawatha, Sri Lanka, Postal Code:11850',0,0);
+        $pdf->Cell(25	,5,'Date',0,0);
+        $pdf->Cell(34	,5,date('Y-m-d'),0,1);//end of line
+
+        $pdf->Cell(130	,5,'Phone +94 0112 456 355',0,0);
+
+        $pdf->Cell(18	,5,'Director ',0,0,'R');
+        $pdf->Cell(30	,5,$director_name,0,1,'R');//end of line
+
+        //make a dummy empty cell as a vertical spacer
+        $pdf->Cell(189	,10,'',0,1);//end of line
+
+        //add dummy cell at beginning of each line for indentation
+        $pdf->SetFont('Arial','B',15);
+        $pdf->Cell(10	,5,'',0,0);
+        $pdf->Cell(152	,5,'Class Fee Payment Report from '.$fromDate.' to '.$toDate,0,1,'C');
+
+        $pdf->SetFont('Arial','B',11);
+        $pdf->Cell(189	,10,'',0,1);//end of line
+
+        $pdf->Cell(45	,5,'Subject ID',1,0,'C');
+        $pdf->Cell(45	,5,'Subject Name',1,0,'C');
+        $pdf->Cell(45	,5,'Lecturer Name',1,0,'C');
+        $pdf->Cell(45	,5,'Amount',1,1,'C');
+
+        $pdf->SetFont('Arial','',10);
+
+        foreach($list as $item) {
+            $pdf->Cell(45	,5,$item['subject_id'],1,0,'C');
+            $pdf->Cell(45	,5,$item['subjectname'],1,0,'');
+            $pdf->Cell(45	,5,$item['lecturername'],1,0,'');
+            $pdf->Cell(45	,5,'Rs.'.$item['amount'],1,1,'');
+        }
+        $totalAmount = null;
+        foreach($total as $item) {
+            $totalAmount = $item['amount'];
+        }
+        $pdf->SetFont('Arial','B',11);
+        $pdf->Cell(135	,5,'Total Amount',0,0,'R');
+        $pdf->SetFont('Arial','B',11);
+        $pdf->Cell(45	,5,'Rs.'.$totalAmount,0,1,'L');
+        //make a dummy empty cell as a vertical spacer
+        $pdf->Cell(189	,10,'',0,1);//end of line
+
+        $pdf->Output();
+    }
+
     function getRegisteredStudentCount()
     {
         try {
             global $con;
-            $result = $con->query("SELECT COUNT(*) AS 'count' FROM student st WHERE st.usrname IS NOT NULL AND st.passwordhash IS NOT NULL AND st.frt_st_id IS NOT NULL");
+            $result = $con->query("SELECT COUNT(*) AS 'count' FROM student st WHERE st.usrname IS NOT NULL AND st.passwordhash IS NOT NULL");
             if ($result->num_rows == 1) {
                 while ($row = $result->fetch_assoc()) {
                     $count = $row['count'];
@@ -503,7 +693,7 @@ class Director
     {
         try {
             global $con;
-            $result = $con->query("SELECT COUNT(*) AS 'count' FROM lecturer l WHERE l.usrname IS NOT NULL AND l.passwordhash IS NOT NULL AND l.frt_lec_id IS NOT NULL");
+            $result = $con->query("SELECT COUNT(*) AS 'count' FROM lecturer l WHERE l.usrname IS NOT NULL AND l.passwordhash IS NOT NULL");
             if ($result->num_rows == 1) {
                 while ($row = $result->fetch_assoc()) {
                     $count = $row['count'];

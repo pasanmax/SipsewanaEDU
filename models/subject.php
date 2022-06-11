@@ -12,12 +12,12 @@ if(isset($_SESSION['id']))
 
     class Subject
     {
-        protected $subject_id;
-        protected $subjectname;
-        protected $description;
-        protected $fee;
-        protected $type;
-        protected $medium;
+        private $subject_id;
+        private $subjectname;
+        private $description;
+        private $fee;
+        private $type;
+        private $medium;
 
         function setSubject($subjectname,$description,$fee,$type,$medium)
         {

@@ -247,19 +247,19 @@ if(isset($_GET['delSub']))
 class FrontOfficer
 {
     // properties
-    protected $fname;
-    protected $lname;
-    protected $usrname;
-    protected $passwordHash;
-    protected $dob;
-    protected $adrsl1;
-    protected $adrsl2;
-    protected $adrsl3;
-    protected $city;
-    protected $district;
-    protected $zipcode;
-    protected $email;
-    protected $contactNo;
+    private $fname;
+    private $lname;
+    private $usrname;
+    private $passwordHash;
+    private $dob;
+    private $adrsl1;
+    private $adrsl2;
+    private $adrsl3;
+    private $city;
+    private $district;
+    private $zipcode;
+    private $email;
+    private $contactNo;
 
     // methods
     function setFrontOfficer($fname,$lname,$dob,$adrsl1,$adrsl2,$adrsl3,$city,$district,$zipcode,$email,$contactNo)
@@ -402,7 +402,7 @@ class FrontOfficer
         try {
             global $con;
             $data = array();
-            $result = $con->query("SELECT st.student_id,CONCAT(st.fname, ' ' ,st.lname) AS studentname,s.subjectname,st.gcontactno,st.submissiondate FROM student st, student_reg sr, subject s WHERE st.student_id=sr.st_reg_id AND sr.st_sub_id=s.subject_id AND st.usrname IS NULL AND st.passwordhash IS NULL AND st.frt_st_id IS NULL");
+            $result = $con->query("SELECT st.student_id,CONCAT(st.fname, ' ' ,st.lname) AS studentname,s.subjectname,st.gcontactno FROM student st, student_reg sr, subject s WHERE st.student_id=sr.st_reg_id AND sr.st_sub_id=s.subject_id AND st.usrname IS NULL AND st.passwordhash IS NULL");
             
             if ($result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
@@ -457,7 +457,7 @@ class FrontOfficer
                 $passwordHash = password_hash($password, PASSWORD_DEFAULT);
                 global $con;
                 
-                if($con->query("UPDATE student SET usrname='".$username."',passwordhash='".$passwordHash."',frt_st_id='".$_SESSION['id']."' WHERE student_id='".$student_id."'") === TRUE
+                if($con->query("UPDATE student SET usrname='".$username."',passwordhash='".$passwordHash."' WHERE student_id='".$student_id."'") === TRUE
                 && $con->query("UPDATE student_reg SET registrationdate='".$registrationdate."' WHERE st_reg_id='".$student_id."' AND st_sub_id='".$subject_id."'") === TRUE) {
                     header('location:../pages/Front Officer/ManageRegistrations/PendingStudentRegistrations/PendingRegistrations.php');
                     $_SESSION['response']="success";
@@ -510,7 +510,7 @@ class FrontOfficer
         try {
             global $con;
             $data = array();
-            $result = $con->query("SELECT l.lecturer_id,CONCAT(l.fname, ' ' ,l.lname) AS lecturername,s.subjectname,l.contactno,l.submissiondate FROM lecturer l, lecturer_reg lr, subject s WHERE l.lecturer_id=lr.lec_reg_id AND lr.lec_sub_id=s.subject_id AND l.usrname IS NULL AND l.passwordhash IS NULL AND l.frt_lec_id IS NULL");
+            $result = $con->query("SELECT l.lecturer_id,CONCAT(l.fname, ' ' ,l.lname) AS lecturername,s.subjectname,l.contactno FROM lecturer l, lecturer_reg lr, subject s WHERE l.lecturer_id=lr.lec_reg_id AND lr.lec_sub_id=s.subject_id AND l.usrname IS NULL AND l.passwordhash IS NULL");
             
             if ($result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
@@ -565,7 +565,7 @@ class FrontOfficer
                 $passwordHash = password_hash($password, PASSWORD_DEFAULT);
                 global $con;
                 
-                if($con->query("UPDATE lecturer SET usrname='".$username."',passwordhash='".$passwordHash."',frt_lec_id='".$_SESSION['id']."' WHERE lecturer_id='".$lecturer_id."'") === TRUE
+                if($con->query("UPDATE lecturer SET usrname='".$username."',passwordhash='".$passwordHash."' WHERE lecturer_id='".$lecturer_id."'") === TRUE
                 && $con->query("UPDATE lecturer_reg SET registrationdate='".$registrationdate."' WHERE lec_reg_id='".$lecturer_id."' AND lec_sub_id='".$subject_id."'") === TRUE) {
                     header('location:../pages/Front Officer/ManageRegistrations/PendingLecturerRegistrations/PendingRegistrations.php');
                     $_SESSION['response']="success";
@@ -825,7 +825,7 @@ class FrontOfficer
         try {
             global $con;
             $data = array();
-            $result = $con->query("SELECT c.cashier_id,CONCAT(c.fname, ' ' ,c.lname) AS cashiername,c.email,c.contactno FROM cashier c WHERE c.usrname IS NULL AND c.passwordhash IS NULL AND c.frt_cas_id IS NULL");
+            $result = $con->query("SELECT c.cashier_id,CONCAT(c.fname, ' ' ,c.lname) AS cashiername,c.email,c.contactno FROM cashier c WHERE c.usrname IS NULL AND c.passwordhash IS NULL");
             
             if ($result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
@@ -873,7 +873,7 @@ class FrontOfficer
                 $passwordHash = password_hash($password, PASSWORD_DEFAULT);
                 global $con;
                 
-                if($con->query("UPDATE cashier SET usrname='".$username."',passwordhash='".$passwordHash."',frt_cas_id='".$_SESSION['id']."' WHERE cashier_id='".$cashier_id."'") === TRUE) {
+                if($con->query("UPDATE cashier SET usrname='".$username."',passwordhash='".$passwordHash."' WHERE cashier_id='".$cashier_id."'") === TRUE) {
                     header('location:../pages/Front Officer/ManageRegistrations/PendingCashierRegistrations/PendingRegistrations.php');
                     $_SESSION['response']="success";
                     $_SESSION['message']="Approved Successfully!";
@@ -926,7 +926,7 @@ class FrontOfficer
         try {
             global $con;
             $data = array();
-            $result = $con->query("SELECT DISTINCT st.student_id,st.fname,st.lname,s.subjectname,st.gcontactno,st.dob,st.school,st.adrsl1,st.adrsl2,st.adrsl3,st.city,st.district,st.zipcode,st.gfname,st.glname,st.gemail,st.relationship, IF(st.student_id=ol.OLstudent_id, ol.ttresults, NULL) as 'ttresults',IF(st.student_id=al.ALstudent_id, al.idno, NULL) as 'idno',IF(st.student_id=al.ALstudent_id, al.email, NULL) as 'email',IF(st.student_id=al.ALstudent_id, al.contactno, NULL) as 'contactno' FROM student st, ol_student ol, al_student al, student_reg sr, subject s WHERE (st.student_id=ol.OLstudent_id OR st.student_id=al.ALstudent_id) AND st.student_id=sr.st_reg_id AND sr.st_sub_id=s.subject_id AND st.usrname IS NOT NULL AND st.passwordhash IS NOT NULL AND st.frt_st_id IS NOT NULL");
+            $result = $con->query("SELECT DISTINCT st.student_id,st.fname,st.lname,s.subjectname,st.gcontactno,st.dob,st.school,st.adrsl1,st.adrsl2,st.adrsl3,st.city,st.district,st.zipcode,st.gfname,st.glname,st.gemail,st.relationship, IF(st.student_id=ol.OLstudent_id, ol.ttresults, NULL) as 'ttresults',IF(st.student_id=al.ALstudent_id, al.idno, NULL) as 'idno',IF(st.student_id=al.ALstudent_id, al.email, NULL) as 'email',IF(st.student_id=al.ALstudent_id, al.contactno, NULL) as 'contactno' FROM student st, ol_student ol, al_student al, student_reg sr, subject s WHERE (st.student_id=ol.OLstudent_id OR st.student_id=al.ALstudent_id) AND st.student_id=sr.st_reg_id AND sr.st_sub_id=s.subject_id AND st.usrname IS NOT NULL AND st.passwordhash IS NOT NULL");
             
             if ($result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
@@ -1035,12 +1035,12 @@ class FrontOfficer
         }
     }
 
-    function getStPayment($student_id)
+    function getStPayment($payment_id)
     {
         try {
             global $con;
             $data = array();
-            $result = $con->query("SELECT p.pay_id,CONCAT(st.fname, ' ' ,st.lname) AS 'studentname',s.subjectname,p.amount,p.date FROM payment p, student st, student_reg sr, subject s WHERE p.pay_sub_id=s.subject_id AND p.pay_st_id=st.student_id AND st.student_id=sr.st_reg_id AND p.pay_sub_id=sr.st_sub_id AND p.pay_lec_id IS NULL AND p.pay_st_id='".$student_id."'");
+            $result = $con->query("SELECT p.pay_id,s.subjectname,p.amount,p.date FROM payment p, subject s WHERE p.pay_sub_id=s.subject_id AND p.status='Paid' AND p.type='Class Fees' AND p.pay_id='".$payment_id."'");
             if ($result) {
                 if ($result->num_rows > 0) {
                     while ($row = $result->fetch_assoc()) {
@@ -1058,12 +1058,12 @@ class FrontOfficer
         
     }
 
-    function getLecPayment($lecturer_id)
+    function getLecPayment($payment_id)
     {
         try {
             global $con;
             $data = array();
-            $result = $con->query("SELECT p.pay_id,CONCAT(l.fname, ' ' ,l.lname) AS 'lecturername',s.subjectname,p.amount,p.date FROM payment p, lecturer l, lecturer_reg lr, subject s WHERE p.pay_sub_id=s.subject_id AND p.pay_lec_id=l.lecturer_id AND l.lecturer_id=lr.lec_reg_id AND p.pay_sub_id=lr.lec_sub_id AND p.pay_st_id IS NULL AND p.pay_lec_id='".$lecturer_id."'");
+            $result = $con->query("SELECT p.pay_id,s.subjectname,p.amount,p.date FROM payment p, subject s WHERE p.pay_sub_id=s.subject_id AND p.status='Paid' AND p.type='Monthly Fees' AND p.pay_id='".$payment_id."'");
             if ($result) {
                 if ($result->num_rows > 0) {
                     while ($row = $result->fetch_assoc()) {
@@ -1133,7 +1133,7 @@ class FrontOfficer
         try {
             global $con;
             $data = array();
-            $result = $con->query("SELECT l.lecturer_id,l.fname,l.lname,s.subjectname,l.contactno,l.dob,l.email,l.certification,l.adrsl1,l.adrsl2,l.adrsl3,l.city,l.district,l.zipcode,l.accountno,l.bankname,l.branchcode,l.branchname,l.accountname FROM lecturer l, lecturer_reg lr, subject s WHERE l.lecturer_id=lr.lec_reg_id AND lr.lec_sub_id=s.subject_id AND l.usrname IS NOT NULL AND l.passwordhash IS NOT NULL AND l.frt_lec_id IS NOT NULL");
+            $result = $con->query("SELECT l.lecturer_id,l.fname,l.lname,s.subjectname,l.contactno,l.dob,l.email,l.certification,l.adrsl1,l.adrsl2,l.adrsl3,l.city,l.district,l.zipcode,l.accountno,l.bankname,l.branchcode,l.branchname,l.accountname FROM lecturer l, lecturer_reg lr, subject s WHERE l.lecturer_id=lr.lec_reg_id AND lr.lec_sub_id=s.subject_id AND l.usrname IS NOT NULL AND l.passwordhash IS NOT NULL");
             
             if ($result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
@@ -1353,7 +1353,7 @@ class FrontOfficer
         try {
             global $con;
             $data = array();
-            $result = $con->query("SELECT p.pay_id,CONCAT(st.fname, ' ' ,st.lname) AS 'name',s.subjectname,p.type,p.amount,p.date FROM cashier ca, payment p, student st, subject s WHERE p.pay_cas_id=ca.cashier_id AND p.pay_sub_id=s.subject_id AND p.pay_st_id=IF(p.pay_st_id!=NULL,st.student_id,st.student_id) AND p.status='Paid' AND p.pay_cas_id='".$cashier_id."' UNION SELECT p.pay_id,CONCAT(l.fname, ' ' ,l.lname) AS 'name',s.subjectname,p.type,p.amount,p.date FROM cashier ca, payment p, lecturer l, subject s WHERE p.pay_cas_id=ca.cashier_id AND p.pay_sub_id=s.subject_id AND p.pay_lec_id=IF(p.pay_lec_id!=NULL,l.lecturer_id,l.lecturer_id) AND p.status='Paid' AND p.pay_cas_id='".$cashier_id."'");
+            $result = $con->query("SELECT p.pay_id,s.subjectname,p.type,p.amount,p.date FROM cashier ca, payment p, subject s WHERE p.pay_cas_id=ca.cashier_id AND p.pay_sub_id=s.subject_id AND p.status='Paid' AND p.pay_cas_id='".$cashier_id."' UNION SELECT p.pay_id,s.subjectname,p.type,p.amount,p.date FROM cashier ca, payment p, subject s WHERE p.pay_cas_id=ca.cashier_id AND p.pay_sub_id=s.subject_id AND p.status='Paid' AND p.pay_cas_id='".$cashier_id."'");
             if ($result) {
                 if ($result->num_rows > 0) {
                     while ($row = $result->fetch_assoc()) {
@@ -1592,7 +1592,7 @@ class FrontOfficer
     {
         try {
             global $con;
-            $result = $con->query("SELECT COUNT(*) AS 'count' FROM student st WHERE st.usrname IS NOT NULL AND st.passwordhash IS NOT NULL AND st.frt_st_id IS NOT NULL");
+            $result = $con->query("SELECT COUNT(*) AS 'count' FROM student st WHERE st.usrname IS NOT NULL AND st.passwordhash IS NOT NULL");
             if ($result->num_rows == 1) {
                 while ($row = $result->fetch_assoc()) {
                     $count = $row['count'];
@@ -1614,7 +1614,7 @@ class FrontOfficer
     {
         try {
             global $con;
-            $result = $con->query("SELECT COUNT(*) AS 'count' FROM lecturer l WHERE l.usrname IS NOT NULL AND l.passwordhash IS NOT NULL AND l.frt_lec_id IS NOT NULL");
+            $result = $con->query("SELECT COUNT(*) AS 'count' FROM lecturer l WHERE l.usrname IS NOT NULL AND l.passwordhash IS NOT NULL");
             if ($result->num_rows == 1) {
                 while ($row = $result->fetch_assoc()) {
                     $count = $row['count'];
@@ -1658,7 +1658,7 @@ class FrontOfficer
     {
         try {
             global $con;
-            $result = $con->query("SELECT COUNT(*) AS 'count' FROM student st WHERE st.usrname IS NULL AND st.passwordhash IS NULL AND st.frt_st_id IS NULL");
+            $result = $con->query("SELECT COUNT(*) AS 'count' FROM student st WHERE st.usrname IS NULL AND st.passwordhash IS NULL");
             if ($result->num_rows == 1) {
                 while ($row = $result->fetch_assoc()) {
                     $count = $row['count'];
@@ -1680,7 +1680,7 @@ class FrontOfficer
     {
         try {
             global $con;
-            $result = $con->query("SELECT COUNT(*) AS 'count' FROM lecturer l WHERE l.usrname IS NULL AND l.passwordhash IS NULL AND l.frt_lec_id IS NULL");
+            $result = $con->query("SELECT COUNT(*) AS 'count' FROM lecturer l WHERE l.usrname IS NULL AND l.passwordhash IS NULL");
             if ($result->num_rows == 1) {
                 while ($row = $result->fetch_assoc()) {
                     $count = $row['count'];

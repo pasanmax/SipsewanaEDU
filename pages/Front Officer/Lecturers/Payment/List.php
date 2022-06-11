@@ -375,7 +375,7 @@ if(isset($_SESSION['id']))
               <div class="row mt-4">
                 <div class="col-md-4">
                   <div class="form-group">
-                      <input type="text" id="lecturerid" name="lecturerid" placeholder="Lecturer ID" style="width: 100%;">
+                      <input type="text" id="paymentid" name="paymentid" placeholder="Payment ID" style="width: 100%;">
                     </div>
                   </div>
                 <div class="col-md-4">
@@ -420,7 +420,6 @@ if(isset($_SESSION['id']))
                 <thead>
                 <tr>
                   <th>Payment ID</th>
-                  <th>Name</th>
                   <th>Subject</th>
                   <th>Amount</th>
                   <th>Date</th>
@@ -430,7 +429,6 @@ if(isset($_SESSION['id']))
                 <?php if($list==null){}else{ foreach($list as $item) {?>
                 <tr>
                   <td><?= $item['pay_id']?></td>
-                  <td><?= $item['lecturername']?></td>
                   <td><?= $item['subjectname']?></td>
                   <td><?= $item['amount']?></td>
                   <td><?= $item['date']?></td>
@@ -440,7 +438,6 @@ if(isset($_SESSION['id']))
                 <tfoot>
                 <tr>
                   <th>Payment ID</th>
-                  <th>Name</th>
                   <th>Subject</th>
                   <th>Amount</th>
                   <th>Date</th>

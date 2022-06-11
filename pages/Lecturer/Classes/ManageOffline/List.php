@@ -202,7 +202,7 @@ if(isset($_SESSION['id']))
           </ul>
         </li>
         <!-- Payments -->
-        <li class="nav-item">
+        <!-- <li class="nav-item">
           <a href="#" class="nav-link">
             <i class="nav-icon fas fa-money-check-alt"></i>
             <p>
@@ -218,7 +218,7 @@ if(isset($_SESSION['id']))
               </a>
             </li>
           </ul>
-        </li>
+        </li> -->
       </ul>
     </nav>
     <!-- /.sidebar-menu -->

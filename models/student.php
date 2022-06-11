@@ -50,7 +50,7 @@ class Student
     protected $gemail;
     protected $gcontactNo;
     protected $relationship;
-    protected $submissiondate;
+    //protected $submissiondate;
 
     // methods
     function setStudent($fname,$lname,$dob,$school,$adrsl1,$adrsl2,$adrsl3,$city,$district,$zipcode,$gfname,$glname,$gemail,$gcontactNo,$relationship)
@@ -70,7 +70,7 @@ class Student
         $this->gemail = $gemail;
         $this->gcontactNo = $gcontactNo;
         $this->relationship = $relationship;
-        $this->submissiondate = date("Y-m-d");
+        //$this->submissiondate = date("Y-m-d");
     }
 
     public function getName($student_id)
@@ -186,7 +186,7 @@ class Student
         try {
             global $con;
             $data = array();
-            $result = $con->query("SELECT online_class.ol_cls_id,subject.subjectname,online_class.classurl,online_class.description,class_dates.date,class.duration,class.starttime FROM student_reg,subject,class_dates,online_class,class WHERE student_reg.id='".$student_id."' AND student_reg.st_sub_id=class.sub_cls_id AND class.sub_cls_id=subject.subject_id AND class.class_id=online_class.ol_cls_id AND class.class_id=class_dates.cls_dt_id AND class_dates.date>=curdate()");
+            $result = $con->query("SELECT online_class.ol_cls_id,subject.subjectname,online_class.classurl,online_class.description,class_dates.date,class.duration,class.starttime FROM student_reg,subject,class_dates,online_class,class WHERE student_reg.st_reg_id='".$student_id."' AND student_reg.st_sub_id=class.sub_cls_id AND class.sub_cls_id=subject.subject_id AND class.class_id=online_class.ol_cls_id AND class.class_id=class_dates.cls_dt_id AND class_dates.date>=curdate()");
             
             if ($result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
@@ -224,7 +224,7 @@ class Student
         try {
             global $con;
             $data = array();
-            $result = $con->query("SELECT offline_class.of_cls_id,subject.subjectname,offline_class.hallno,class_dates.date,class.duration,class.starttime FROM student_reg,subject,class_dates,offline_class,class WHERE student_reg.id='".$student_id."' AND student_reg.st_sub_id=class.sub_cls_id AND class.sub_cls_id=subject.subject_id AND class.class_id=offline_class.of_cls_id AND class.class_id=class_dates.cls_dt_id AND class_dates.date>=curdate()");
+            $result = $con->query("SELECT offline_class.of_cls_id,subject.subjectname,offline_class.hallno,class_dates.date,class.duration,class.starttime FROM student_reg,subject,class_dates,offline_class,class WHERE student_reg.st_reg_id='".$student_id."' AND student_reg.st_sub_id=class.sub_cls_id AND class.sub_cls_id=subject.subject_id AND class.class_id=offline_class.of_cls_id AND class.class_id=class_dates.cls_dt_id AND class_dates.date>=curdate()");
             if ($result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
                     $row = array_map('stripslashes', $row);
@@ -276,7 +276,7 @@ class Student
         try {
             global $con;
             $data = array();
-            $result = $con->query("SELECT DISTINCT hs.id,h.hw_id,h.name,s.subjectname,hc.createddate,hc.deadlinedate,hs.submitdate FROM subject s, student_reg sr, homework h, hw_creation hc, hw_submission hs WHERE sr.st_sub_id = s.subject_id AND sr.st_sub_id = h.hw_sub_id AND h.hw_id = hc.cre_hw_id AND h.hw_id = hs.sub_hw_id AND hs.sub_st_id='".$student_id."'");
+            $result = $con->query("SELECT DISTINCT h.hw_id,h.name,s.subjectname,hc.createddate,hc.deadlinedate,hs.submitdate FROM subject s, student_reg sr, homework h, hw_creation hc, hw_submission hs WHERE sr.st_sub_id = s.subject_id AND sr.st_sub_id = h.hw_sub_id AND h.hw_id = hc.cre_hw_id AND h.hw_id = hs.sub_hw_id AND hs.sub_st_id='".$student_id."'");
             if ($result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
                     $row = array_map('stripslashes', $row);
@@ -387,7 +387,7 @@ class Student
     {
         try {
             global $con;
-            $result = $con->query("SELECT COUNT(*) as 'count' FROM hw_submission hs, homework h, student_reg sr, subject s WHERE hs.submitdate IS NULL AND hs.fileName IS NULL AND hs.path IS NULL AND sr.st_sub_id = s.subject_id AND hs.sub_hw_id=h.hw_id AND h.hw_sub_id=sr.st_sub_id AND hs.sub_st_id = '".$student_id."'");
+            $result = $con->query("SELECT COUNT(*) as 'count' FROM hw_submission hs, homework h, student_reg sr, subject s WHERE hs.submitdate IS NULL AND hs.fileName IS NULL AND hs.path IS NULL AND sr.st_sub_id = s.subject_id AND hs.sub_hw_id=h.hw_id AND h.hw_sub_id=sr.st_sub_id AND sr.st_reg_id=hs.sub_st_id AND hs.sub_st_id = '".$student_id."'");
             if ($result->num_rows == 1) {
                 while ($row = $result->fetch_assoc()) {
                     $count = $row['count'];
@@ -409,7 +409,7 @@ class Student
     {
         try {
             global $con;
-            $result = $con->query("SELECT COUNT(*) as 'count' FROM payment p, student_reg sr WHERE p.status = 'Pending' AND p.pay_sub_id = sr.st_sub_id AND p.pay_st_id = sr.st_reg_id AND sr.st_reg_id = '".$student_id."'");
+            $result = $con->query("SELECT COUNT(*) as 'count' FROM payment p, student_reg sr WHERE p.status = 'Pending' AND p.pay_sub_id = sr.st_sub_id AND sr.st_reg_id = '".$student_id."'");
             if ($result->num_rows == 1) {
                 while ($row = $result->fetch_assoc()) {
                     $count = $row['count'];

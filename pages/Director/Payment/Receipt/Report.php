@@ -1,24 +1,37 @@
 <?php
-include('../../../../models/student.php');
+include('../../../../models/director.php');
 if(isset($_SESSION['id']))
 {
-  $student = new Student();
+  $director = new Director();
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Student | Offline Class List</title>
+  <title>Director | Payment Receipts</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="../../../../plugins/fontawesome-free/css/all.min.css">
-  <!-- DataTables -->
-  <link rel="stylesheet" href="../../../../plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
-  <link rel="stylesheet" href="../../../../plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
-  <link rel="stylesheet" href="../../../../plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+  <!-- daterange picker -->
+  <link rel="stylesheet" href="../../../../plugins/daterangepicker/daterangepicker.css">
+  <!-- iCheck for checkboxes and radio inputs -->
+  <link rel="stylesheet" href="../../../../plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+  <!-- Bootstrap Color Picker -->
+  <link rel="stylesheet" href="../../../../plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css">
+  <!-- Tempusdominus Bootstrap 4 -->
+  <link rel="stylesheet" href="../../../../plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+  <!-- Select2 -->
+  <link rel="stylesheet" href="../../../../plugins/select2/css/select2.min.css">
+  <link rel="stylesheet" href="../../../../plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+  <!-- Bootstrap4 Duallistbox -->
+  <link rel="stylesheet" href="../../../../plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css">
+  <!-- BS Stepper -->
+  <link rel="stylesheet" href="../../../../plugins/bs-stepper/css/bs-stepper.min.css">
+  <!-- dropzonejs -->
+  <link rel="stylesheet" href="../../../../plugins/dropzone/min/dropzone.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="../../../../dist/css/adminlte.min.css">
 </head>
@@ -41,7 +54,7 @@ if(isset($_SESSION['id']))
     <ul class="navbar-nav ml-auto">
       <!-- Navbar log out -->
       <li class="nav-item">
-        <a href="../../../../models/student.php?logout=1" class="nav-link" onclick="return confirm('Are you sure?')">Log out</a>
+        <a href="../../../../models/director.php?logout=1" class="nav-link" onclick="return confirm('Are you sure?')">Log out</a>
       </li>
     </ul>
   </nav>
@@ -63,7 +76,7 @@ if(isset($_SESSION['id']))
           <img src="../../../../dist/img/dashboardImages/user.png" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block"><?=$student->getName($_SESSION['id'])?></a>
+          <a href="#" class="d-block"><?=$director->getName($_SESSION['id'])?></a>
         </div>
       </div>
 
@@ -92,114 +105,69 @@ if(isset($_SESSION['id']))
             </p>
           </a>
         </li>
-        <!-- Classes -->
-        <li class="nav-item menu-open">
-          <a href="#" class="nav-link active">
-              <i class="nav-icon fas fa-address-book"></i>
+
+        <!-- Register -->
+        
+        <li class="nav-item">
+          <a href="#" class="nav-link">
+            <i class="nav-icon fas fa-user"></i>
             <p>
-              Classes
+            Student
               <i class="fas fa-angle-left right"></i>
             </p>
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item">
-              <a href="../OnlineClass/List.php" class="nav-link">
+              <a href="../../Student/Registration/Report.php" class="nav-link">
                 <i class="nav-icon fas fa-eye"></i>
-                <p>View Online Class</p>
+                <p>View Student Registration Report</p>
               </a>
             </li>
+          </ul>
+        </li>
+
+        <!-- Class -->
+        <li class="nav-item">
+          <a href="#" class="nav-link">
+            <i class="nav-icon fas fa-user-tie"></i>
+            <p>
+            Lecturer
+              <i class="fas fa-angle-left right"></i>
+            </p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="../../Lecturer/Registration/Report.php" class="nav-link">
+                <i class="nav-icon fas fa-eye"></i>
+                <p>View Lecturer Registration Report</p>
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <li class="nav-item menu-open">
+          <a href="#" class="nav-link active">
+            <i class="nav-icon fas fa-user-tie"></i>
+            <p>
+            Payment
+              <i class="fas fa-angle-left right"></i>
+            </p>
+          </a>
+          <ul class="nav nav-treeview">
             <li class="nav-item">
               <a href="#" class="nav-link active">
                 <i class="nav-icon fas fa-eye"></i>
-                <p>View Offline Class</p>
+                <p>Payment Receipt</p>
               </a>
             </li>
-          </ul>
-        </li>
-        <!-- Attendance -->
-        <li class="nav-item">
-          <a href="#" class="nav-link">
-            <i class="nav-icon fas fa-clipboard-check"></i>
-            <p>
-              Attendance
-              <i class="fas fa-angle-left right"></i>
-            </p>
-          </a>
-          <ul class="nav nav-treeview">
             <li class="nav-item">
-              <a href="../../Attendance/OnlineAttendance/List.php" class="nav-link">
+              <a href="../Report/Report.php" class="nav-link">
                 <i class="nav-icon fas fa-eye"></i>
-                <p>View Online Attendance</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="../../Attendance/OfflineAttendance/List.php" class="nav-link">
-                <i class="nav-icon fas fa-eye"></i>
-                <p>View Offline Attendance</p>
+                <p>Payment Report</p>
               </a>
             </li>
           </ul>
         </li>
-        <!-- Register -->
-        <li class="nav-item">
-          <a href="../../Register/Register.php" class="nav-link">
-            <i class="nav-icon fas fa-address-card"></i>
-            <p>
-              Register for a Subject
-            </p>
-          </a>
-        </li>
-        <!-- Homeworks -->
-        <li class="nav-item">
-          <a href="#" class="nav-link">
-            <i class="nav-icon fas fa-file-alt"></i>
-            <p>
-              Homeworks
-              <i class="fas fa-angle-left right"></i>
-            </p>
-          </a>
-          <ul class="nav nav-treeview">
-            <li class="nav-item">
-              <a href="../../Homeworks/Manage/List.php" class="nav-link">
-                <i class="nav-icon far fa-edit"></i>
-                <p>Manage Homeworks</p>
-              </a>
-            </li>
-          </ul>
-        </li>
-        <!-- Learning Modules -->
-        <li class="nav-item">
-          <a href="../../LearningModule/List.php" class="nav-link">
-            <i class="nav-icon fas fa-book"></i>
-            <p>
-              Learning Modules
-            </p>
-          </a>
-        </li>
-        <!-- Payments -->
-        <!-- <li class="nav-item">
-          <a href="#" class="nav-link">
-            <i class="nav-icon fas fa-money-check-alt"></i>
-            <p>
-              Payments
-              <i class="fas fa-angle-left right"></i>
-            </p>
-          </a>
-          <ul class="nav nav-treeview">
-            <li class="nav-item">
-              <a href="../../Payments/View/List.php" class="nav-link">
-                <i class="nav-icon fas fa-eye"></i>
-                <p>View Payments</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="../../Payments/Pay/List.php" class="nav-link">
-                <i class="nav-icon far fa-credit-card"></i>
-                <p>Pay Class Fees</p>
-              </a>
-            </li>
-          </ul>
-        </li> -->
       </ul>
     </nav>
     <!-- /.sidebar-menu -->
@@ -214,13 +182,13 @@ if(isset($_SESSION['id']))
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Offline Class List</h1>
+            <h1>Payment Report</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="../../Dashboard.php">Dashboard</a></li>
-              <li class="breadcrumb-item active">Classes</li>
-              <li class="breadcrumb-item active">View Offline Class</li>
+              <li class="breadcrumb-item active">Payment</li>
+              <li class="breadcrumb-item active">View Payment Report</li>
             </ol>
           </div>
         </div>
@@ -230,50 +198,48 @@ if(isset($_SESSION['id']))
     <!-- Main content -->
     <section class="content">
       <div class="row">
-        <div class="col-12">
-          <div class="card">
+        <div class="col-md-6">
+          <div class="card card-primary">
+            <?php if(isset($_SESSION['response'])){?>
+              <div class="alert alert-<?=$_SESSION['response']?> alert-dismissible fade show" role="alert">
+                <?=$_SESSION['message']?>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+            <?php }unset($_SESSION['response']);unset($_SESSION['message']);?>
+            <div class="card-header">
+              <h3 class="card-title">Report Form</h3>
+
+              <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                  <i class="fas fa-minus"></i>
+                </button>
+              </div>
+            </div>
             <div class="card-body">
-              <?php $list = $student->getOfflinelist($_SESSION['id'])?>
-              <table id="offlineList" class="table table-bordered table-striped">
-                <thead>
-                <tr>
-                  <th>Class ID</th>
-                  <th>Subject</th>
-                  <th>Hall Number</th>
-                  <th>Date</th>
-                  <th>Duration</th>
-                  <th>Start Time</th>
-                </tr>
-                </thead>
-                <tbody>
-                <?php if($list==null){}else{ foreach($list as $item) {?>
-                <tr>
-                  <td><?= $item['of_cls_id']?></td>
-                  <td><?= $item['subjectname']?></td>
-                  <td><?= $item['hallno']?></td>
-                  <td><?= $item['date']?></td>
-                  <td><?= $item['duration']?></td>
-                  <td><?= $item['starttime']?></td>
-                </tr>
-                <?php }}?>
-                </tbody>
-                <tfoot>
-                <tr>
-                  <th>Class ID</th>
-                  <th>Subject</th>
-                  <th>Hall Number</th>
-                  <th>Date</th>
-                  <th>Duration</th>
-                  <th>Start Time</th>
-                </tr>
-                </tfoot>
-              </table>
+              <form action="../../../../models/director.php" method="POST">
+                <div class="row mt-4">
+                  <div class="col-md-5">
+                    <div class="form-group">
+                      <?php $list = $director->getPaymentIdList()?>
+                      <select name="paymentid" class="form-control select2" style="width: 100%;" required>
+                      <?php if($list==null){} else { foreach($list as $item) {?>
+                        <option value="<?= $item['pay_id']?>"><?= $item['pay_id']?></option>
+                      <?php }}?>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <button type="submit" name="paymentReport" class="btn btn-block btn-primary text-left">Generate Receipt</button>
+                  </div>
+                </div>
+              </form>
             </div>
             <!-- /.card-body -->
           </div>
           <!-- /.card -->
         </div>
-      </div>
     </section>
     <!-- /.content -->
   </div>
@@ -292,22 +258,33 @@ if(isset($_SESSION['id']))
 
 <!-- jQuery -->
 <script src="../../../../plugins/jquery/jquery.min.js"></script>
-<!-- DataTables  & Plugins -->
-<script src="../../../../plugins/datatables/jquery.dataTables.min.js"></script>
-<script src="../../../../plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
-<script src="../../../../plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
-<script src="../../../../plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
-<script src="../../../../plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
-<script src="../../../../plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
 <!-- Bootstrap 4 -->
 <script src="../../../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- Select2 -->
+<script src="../../../../plugins/select2/js/select2.full.min.js"></script>
+<!-- Bootstrap4 Duallistbox -->
+<script src="../../../../plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>
+<!-- InputMask -->
+<script src="../../../../plugins/moment/moment.min.js"></script>
+<script src="../../../../plugins/inputmask/jquery.inputmask.min.js"></script>
+<!-- date-range-picker -->
+<script src="../../../../plugins/daterangepicker/daterangepicker.js"></script>
+<!-- bootstrap color picker -->
+<script src="../../../../plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js"></script>
+<!-- Tempusdominus Bootstrap 4 -->
+<script src="../../../../plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+<!-- Bootstrap Switch -->
+<script src="../../../../plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
+<!-- BS-Stepper -->
+<script src="../../../../plugins/bs-stepper/js/bs-stepper.min.js"></script>
+<!-- dropzonejs -->
+<script src="../../../../plugins/dropzone/min/dropzone.min.js"></script>
 <!-- AdminLTE App -->
 <script src="../../../../dist/js/adminlte.min.js"></script>
 <script>
   $(function () {
-    $("#offlineList").DataTable({
-      "responsive": true, "lengthChange": false, "autoWidth": false
-    }).buttons().container().appendTo('#offlineList_wrapper .col-md-6:eq(0)');
+    //Initialize Select2 Elements
+    $('.select2').select2();
   });
 </script>
 </body>
@@ -316,6 +293,6 @@ if(isset($_SESSION['id']))
 }
 else
 {
-  header('location:./Login.php');
+  header('location:../../Login.php');
 }
 ?>

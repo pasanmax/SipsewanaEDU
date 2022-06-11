@@ -123,12 +123,6 @@ if(isset($_SESSION['id']))
                 <p>View All Payments</p>
               </a>
             </li>
-            <li class="nav-item">
-              <a href="../../ViewPayments/PendingPayments/List.php" class="nav-link">
-                <i class="nav-icon fas fa-edit"></i>
-                <p>Manage Pending Payments</p>
-              </a>
-            </li>
           </ul>
         </li>
         <li class="nav-item menu-open">
@@ -143,13 +137,7 @@ if(isset($_SESSION['id']))
             <li class="nav-item">
               <a href="#" class="nav-link active">
                 <i class="nav-icon fas fa-user"></i>
-                <p>Make Class Payment</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="../LecturerPayments/Make.php" class="nav-link">
-                <i class="nav-icon fas fa-user-tie"></i>
-                <p>Make Lecturer Payment</p>
+                <p>Make Payment</p>
               </a>
             </li>
           </ul>
@@ -168,7 +156,7 @@ if(isset($_SESSION['id']))
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Make Class Payment</h1>
+            <h1>Make Payment</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -219,12 +207,14 @@ if(isset($_SESSION['id']))
                   <label for="method">Method</label>
                   <select id="method" name="method" class="form-control custom-select" required>
                     <option value="Cash">Cash</option>
+                    <option value="Bank Transfer">Bank Transfer</option>
                   </select>
                 </div>
                 <div class="form-group">
                   <label for="type">Type</label>
                   <select id="type" name="type" class="form-control custom-select" required>
                     <option value="Class Fees">Class Fees</option>
+                    <option value="Monthly Fees">Monthly Fees</option>
                   </select>
                 </div>
                 <div class="form-group">
@@ -243,7 +233,7 @@ if(isset($_SESSION['id']))
                   </div>
                 </div>
                 <div class="card-footer">
-                  <button type="submit" id="reset" name="makeStuPayment" class="btn btn-info">Submit</button>
+                  <button type="submit" id="reset" name="makePayment" class="btn btn-info">Submit</button>
                   <button type="reset" class="btn btn-default float-right">Cancel</button>
                 </div>
               </form>

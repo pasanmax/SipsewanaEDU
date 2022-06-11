@@ -182,7 +182,7 @@ if(isset($_SESSION['id']))
             </a>
           </li>
           <!-- Payments -->
-          <li class="nav-item">
+          <!-- <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-money-check-alt"></i>
               <p>
@@ -204,7 +204,7 @@ if(isset($_SESSION['id']))
                 </a>
               </li>
             </ul>
-          </li>
+          </li> -->
         </ul>
       </nav>
       <!-- /.sidebar-menu -->
@@ -287,7 +287,7 @@ if(isset($_SESSION['id']))
           <!-- ./col -->
           <div class="col-lg-3 col-6">
             <!-- small box -->
-            <div class="small-box bg-danger">
+            <!-- <div class="small-box bg-danger">
               <div class="inner">
                 <?php $count = $student->getPendingPaymentsCount($_SESSION['id'])?>
                 <h3><?= $count ?></h3>
@@ -298,7 +298,7 @@ if(isset($_SESSION['id']))
                 <i class="nav-icon far fa-credit-card"></i>
               </div>
               <a href="./Payments/Pay/List.php" class="small-box-footer">Click Here <i class="fas fa-arrow-circle-right"></i></a>
-            </div>
+            </div> -->
           </div>
           <!-- ./col -->
         </div>

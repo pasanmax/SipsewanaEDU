@@ -12,12 +12,12 @@ $con = $conn->getConn();
 if(isset($_SESSION['id']))
 {
     class Learning_Module {
-        protected $name;
-        protected $type;
-        protected $fileName;
-        protected $path = '../learning_modules/';
-        protected $description;
-        protected $date;
+        private $name;
+        private $type;
+        private $fileName;
+        private $path = '../learning_modules/';
+        private $description;
+        private $date;
     
         public function setname($name)
         {
@@ -197,7 +197,7 @@ if(isset($_SESSION['id']))
 
     if(isset($_POST['addlearningmodule'])) {
 
-        if(empty($_POST['subname']) || empty($_POST['lmname']) || empty($_POST['type']) || empty($_POST['description']) || empty($_POST['lmfile']))
+        if(empty($_POST['subname']) || empty($_POST['lmname']) || empty($_POST['type']) || empty($_POST['description']) || empty($_FILES['lmfile']))
         {
             header('location:../pages/Lecturer/LearningModule/Manage/List.php');
             $_SESSION['response']="danger";

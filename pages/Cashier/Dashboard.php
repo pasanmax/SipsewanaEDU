@@ -113,12 +113,6 @@ if(isset($_SESSION['id']))
                   <p>View All Payments</p>
                 </a>
               </li>
-              <li class="nav-item">
-                <a href="./ViewPayments/PendingPayments/List.php" class="nav-link">
-                  <i class="nav-icon fas fa-edit"></i>
-                  <p>Manage Pending Payments</p>
-                </a>
-              </li>
             </ul>
           </li>
           <li class="nav-item">
@@ -133,13 +127,7 @@ if(isset($_SESSION['id']))
               <li class="nav-item">
                 <a href="./MakePayments/ClassPayments/Make.php" class="nav-link">
                   <i class="nav-icon fas fa-user"></i>
-                  <p>Make Class Payment</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="./MakePayments/LecturerPayments/Make.php" class="nav-link">
-                  <i class="nav-icon fas fa-user-tie"></i>
-                  <p>Make Lecturer Payment</p>
+                  <p>Make Payment</p>
                 </a>
               </li>
             </ul>
@@ -179,15 +167,15 @@ if(isset($_SESSION['id']))
             <!-- small box -->
             <div class="small-box bg-danger">
               <div class="inner">
-              <?php $count = $cashier->getPendingCount($_SESSION['id'])?>
+              <?php $count = $cashier->getPaymentCount($_SESSION['id'])?>
                 <h3><?= $count ?></h3>
 
-                <p>Pending Payments</p>
+                <p>Total Payments</p>
               </div>
               <div class="icon">
                 <i class="nav-icon far fa-credit-card"></i>
               </div>
-              <a href="./ViewPayments/PendingPayments/List.php" class="small-box-footer">Click Here <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="./ViewPayments/AllPayments/List.php" class="small-box-footer">Click Here <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->

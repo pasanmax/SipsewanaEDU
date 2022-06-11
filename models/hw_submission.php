@@ -19,10 +19,10 @@ if(isset($_SESSION['id']))
     $con = $conn->getConn();
 
     class HwSubmission extends Homework {
-        protected $sub_st_id;
-        protected $submitdate;
-        protected $fileName;
-        protected $path = '../hw_submissions/';
+        private $sub_st_id;
+        private $submitdate;
+        private $fileName;
+        private $path = '../hw_submissions/';
     
 
         function setStudentId($student_id)
@@ -44,12 +44,12 @@ if(isset($_SESSION['id']))
             $this-> fileName = $hsFile;
         }
     
-        public function submitHomework($id,$homework_id,$student_id) {
+        public function submitHomework($homework_id,$student_id) {
             try {
                 global $con;
-                $verify = $this->verify($id,$homework_id,$student_id);
+                $verify = $this->verify($homework_id,$student_id);
                 if($verify['status'] === true) {
-                    if($con->query("UPDATE hw_submission SET submitdate='".$this->submitdate."',fileName='".$this->fileName."',path='".$this->path."' WHERE id='".$id."' AND sub_hw_id='".$homework_id."' AND sub_st_id='".$student_id."'")) {
+                    if($con->query("UPDATE hw_submission SET submitdate='".$this->submitdate."',fileName='".$this->fileName."',path='".$this->path."' WHERE sub_hw_id='".$homework_id."' AND sub_st_id='".$student_id."'")) {
                         header('location:../pages/Student/Homeworks/Manage/List.php');
                         $_SESSION['response']="success";
                         $_SESSION['message']="Uploaded Successfully";
@@ -73,13 +73,13 @@ if(isset($_SESSION['id']))
             }
         }
 
-        public function verify($id,$homework_id,$student_id) {
+        public function verify($homework_id,$student_id) {
             try {
                 // include "$_SERVER[DOCUMENT_ROOT]/SipsewanaEDU/models/subject.php";
                 // $subject = new Subject();
                 // $subject_id = $subject->getId($subjectname);
                 global $con;
-                $result = $con->query("SELECT id,sub_hw_id,sub_st_id FROM hw_submission WHERE id='".$id."' AND sub_hw_id='".$homework_id."' AND sub_st_id='".$student_id."'");
+                $result = $con->query("SELECT sub_hw_id,sub_st_id FROM hw_submission WHERE sub_hw_id='".$homework_id."' AND sub_st_id='".$student_id."'");
                 if ($result->num_rows > 0) {
                     return [
                         'status' => true
@@ -116,11 +116,17 @@ if(isset($_SESSION['id']))
     }
 
     if (isset($_POST['hwSubmit'])) {
-        if(empty($_POST['hs_id']) || empty($_POST['id']) || empty($_POST['name']) || empty($_POST['subject']) || empty($_POST['createdate']) 
-        || empty($_POST['deadlinedate']) || empty($_POST['file']) || empty($_FILES['file'])) {
-            header('location:../pages/Student/Homeworks/Manage/List.php');
-            $_SESSION['response']="danger";
-            $_SESSION['message']="Please enter the details before submit";
+        if(empty($_POST['hs_id']) || empty($_POST['name']) || empty($_POST['subject']) || empty($_POST['createdate']) 
+        || empty($_POST['deadlinedate']) || empty($_FILES['file'])) {
+            // header('location:../pages/Student/Homeworks/Manage/List.php');
+            // $_SESSION['response']="danger";
+            // $_SESSION['message']="Please enter the details before submit";
+            echo $_POST['hs_id'];
+            echo $_POST['name'];
+            echo $_POST['subject'];
+            echo $_POST['createdate'];
+            echo $_POST['deadlinedate'];
+            echo $_FILES['file'];
         } else {
             // header('location:../pages/Student/Homeworks/Manage/List.php');
             // $_SESSION['response']="success";
@@ -158,7 +164,7 @@ if(isset($_SESSION['id']))
                     $hw_submission->setSubmitDate();
                     // realpath($_SERVER["DOCUMENT_ROOT"])."/SipsewanaEDU/hw_submissions/
                     $hw_submission->setSubmitFile($file_name);
-                    $success = $hw_submission->submitHomework($_POST['hs_id'],$_POST['id'],$_SESSION['id']);
+                    $success = $hw_submission->submitHomework($_POST['hs_id'],$_SESSION['id']);
                     if($success['status'] === true) {
                         move_uploaded_file($file_tmp,"../hw_submissions/".$file_name);
                     }

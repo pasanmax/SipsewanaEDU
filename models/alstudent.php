@@ -14,9 +14,9 @@ if(isset($_SESSION['id']))
     class alStudent extends Student
     {
         // properties
-        protected $idno;
-        protected $email;
-        protected $contactno;
+        private $idno;
+        private $email;
+        private $contactno;
 
         // methods
         function setAlStudent($idno,$email,$contactno)
@@ -53,7 +53,7 @@ if(isset($_SESSION['id']))
                 $gcontactno = str_replace(' ','',$gcontactno);
                 $gcontactno = str_replace('-','',$gcontactno);
                 $relationship = $this->relationship;
-                $submissiondate = $this->submissiondate;
+                //$submissiondate = $this->submissiondate;
                 $idno = $this->idno;
                 $email = $this->email;
                 $contactno = $this->contactno;
@@ -62,10 +62,10 @@ if(isset($_SESSION['id']))
                 $contactno = str_replace(' ','',$contactno);
                 $contactno = str_replace('-','',$contactno);
 
-                if($con->query("INSERT INTO student(fname,lname,usrname,passwordhash,dob,school,adrsl1,adrsl2,adrsl3,city,district,zipcode,gfname,glname,gemail,gcontactno,relationship,frt_st_id,submissiondate) VALUES ('".$fname."','".$lname."',NULL,NULL,'".$dob."','".$school."','".$adrsl1."','".$adrsl2."','".$adrsl3."','".$city."','".$district."','".$zipcode."','".$gfname."','".$glname."','".$gemail."','".$gcontactno."','".$relationship."',NULL,'".$submissiondate."')") === true) {
+                if($con->query("INSERT INTO student(fname,lname,usrname,passwordhash,dob,school,adrsl1,adrsl2,adrsl3,city,district,zipcode,gfname,glname,gemail,gcontactno,relationship) VALUES ('".$fname."','".$lname."',NULL,NULL,'".$dob."','".$school."','".$adrsl1."','".$adrsl2."','".$adrsl3."','".$city."','".$district."','".$zipcode."','".$gfname."','".$glname."','".$gemail."','".$gcontactno."','".$relationship."')") === true) {
                     $student_id = $this->getLastId();
                     if($con->query("INSERT INTO al_student(ALstudent_id,idno,email,contactno) VALUES ('".$student_id."','".$idno."','".$email."','".$contactno."')") === true) {
-                        if($con->query("INSERT INTO student_reg(st_reg_id,st_sub_id,registrationdate,regfee) VALUES ('".$student_id."','".$subject_id."','".$submissiondate."','".$fee."')") === true) {
+                        if($con->query("INSERT INTO student_reg(st_reg_id,st_sub_id,registrationdate,regfee) VALUES ('".$student_id."','".$subject_id."',NULL,'".$fee."')") === true) {
                             header('location:../pages/Student/alRegister.php');
                             $_SESSION['response']="success";
                             $_SESSION['message']="Registered successfully!";

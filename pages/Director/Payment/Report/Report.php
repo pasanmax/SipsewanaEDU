@@ -1,17 +1,15 @@
 <?php
-include('../../../../models/cashier.php');
-include('../../../../models/subject.php');
+include('../../../../models/director.php');
 if(isset($_SESSION['id']))
 {
-  $cashier = new Cashier();
-  $subject = new Subject();
+  $director = new Director();
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Cashier | Payment List</title>
+  <title>Director | Payment Report</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -56,7 +54,7 @@ if(isset($_SESSION['id']))
     <ul class="navbar-nav ml-auto">
       <!-- Navbar log out -->
       <li class="nav-item">
-        <a href="../../../../models/cashier.php?logout=1" class="nav-link" onclick="return confirm('Are you sure?')">Log out</a>
+        <a href="../../../../models/director.php?logout=1" class="nav-link" onclick="return confirm('Are you sure?')">Log out</a>
       </li>
     </ul>
   </nav>
@@ -78,7 +76,7 @@ if(isset($_SESSION['id']))
           <img src="../../../../dist/img/dashboardImages/user.png" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block"><?=$cashier->getName($_SESSION['id'])?></a>
+          <a href="#" class="d-block"><?=$director->getName($_SESSION['id'])?></a>
         </div>
       </div>
 
@@ -107,37 +105,65 @@ if(isset($_SESSION['id']))
             </p>
           </a>
         </li>
-        <!-- Payments -->
+
+        <!-- Register -->
+        
         <li class="nav-item">
           <a href="#" class="nav-link">
-            <i class="nav-icon fas fa-edit"></i>
+            <i class="nav-icon fas fa-user"></i>
             <p>
-              Manage Payments
+            Student
               <i class="fas fa-angle-left right"></i>
             </p>
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item">
-              <a href="../../ViewPayments/AllPayments/List.php" class="nav-link">
+              <a href="../../Student/Registration/Report.php" class="nav-link">
                 <i class="nav-icon fas fa-eye"></i>
-                <p>View All Payments</p>
+                <p>View Student Registration Report</p>
               </a>
             </li>
           </ul>
         </li>
-        <li class="nav-item menu-open">
-          <a href="#" class="nav-link active">
-            <i class="nav-icon fas fa-money-check-alt"></i>
+
+        <!-- Class -->
+        <li class="nav-item">
+          <a href="#" class="nav-link">
+            <i class="nav-icon fas fa-user-tie"></i>
             <p>
-              Make Payments
+            Lecturer
               <i class="fas fa-angle-left right"></i>
             </p>
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item">
-              <a href="../ClassPayments/Make.php" class="nav-link">
-                <i class="nav-icon fas fa-user"></i>
-                <p>Make Payment</p>
+              <a href="../../Lecturer/Registration/Report.php" class="nav-link">
+                <i class="nav-icon fas fa-eye"></i>
+                <p>View Lecturer Registration Report</p>
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <li class="nav-item menu-open">
+          <a href="#" class="nav-link active">
+            <i class="nav-icon fas fa-user-tie"></i>
+            <p>
+            Payment
+              <i class="fas fa-angle-left right"></i>
+            </p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="../Receipt/Report.php" class="nav-link">
+                <i class="nav-icon fas fa-eye"></i>
+                <p>Payment Receipt</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="#" class="nav-link active">
+                <i class="nav-icon fas fa-eye"></i>
+                <p>Payment Report</p>
               </a>
             </li>
           </ul>
@@ -156,13 +182,13 @@ if(isset($_SESSION['id']))
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Make Lecturer Payment</h1>
+            <h1>Payment Report</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="../../Dashboard.php">Dashboard</a></li>
-              <li class="breadcrumb-item active">Make Payments</li>
-              <li class="breadcrumb-item active">Make Lecturer Payment</li>
+              <li class="breadcrumb-item active">Payment</li>
+              <li class="breadcrumb-item active">View Payment Report</li>
             </ol>
           </div>
         </div>
@@ -181,9 +207,9 @@ if(isset($_SESSION['id']))
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
-            <?php } unset($_SESSION['response']); unset($_SESSION['message']); ?>
+            <?php }unset($_SESSION['response']);unset($_SESSION['message']);?>
             <div class="card-header">
-              <h3 class="card-title">Payment Form</h3>
+              <h3 class="card-title">Report Form</h3>
 
               <div class="card-tools">
                 <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
@@ -192,47 +218,31 @@ if(isset($_SESSION['id']))
               </div>
             </div>
             <div class="card-body">
-              <form id="lecPayment" action="../../../../models/payment.php" method="POST">
+              <form id="monthlypaymentreport" action="../../../../models/director.php" method="POST">
                 <div class="form-group">
-                <label for="subname">Subject Name</label>
-                <?php $list = $subject->getSubName()?>
-                  <select name="subname" id="subname" class="form-control select2" style="width: 100%;" required>
-                    <!-- <option selected="selected" disabled>Select one</option> -->
-                    <?php if($list==null){} else { foreach($list as $item) {?>
-                    <option><?= $item['subjectname']?></option>
-                    <?php }}?>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label for="method">Method</label>
-                  <select id="method" name="method" class="form-control custom-select" required>
-                    <option value="Cash">Cash</option>
-                    <option value="Bank Transfer">Bank Transfer</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label for="type">Type</label>
-                  <select id="type" name="type" class="form-control custom-select" required>
-                    <option value="Monthly Fees">Monthly Fees</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label for="amount">Amount</label>
-                  <input type="number" id="amount" name="amount" placeholder="Amount" class="form-control" required>
-                </div>
-                <div class="form-group">
-                  <label for="date">Date</label>
+                  <label for="frmdate">From Date</label>
                   <div class="col-6" style="padding-left: 0px; padding-right: 0px;">
-                    <div class="input-group date" data-target-input="nearest">
-                      <input id="date" name="date" type="text" class="form-control datetimepicker-input" data-target="#date" placeholder="Select a Date" required>
-                      <div class="input-group-append" data-target="#date" data-toggle="datetimepicker">
+                    <div class="input-group frmdate" data-target-input="nearest">
+                      <input id="frmdate" name="frmdate" type="text" class="form-control datetimepicker-input" data-target="#frmdate" placeholder="Select From Date" required>
+                      <div class="input-group-append" data-target="#frmdate" data-toggle="datetimepicker">
+                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="todate">To Date</label>
+                  <div class="col-6" style="padding-left: 0px; padding-right: 0px;">
+                    <div class="input-group todate" data-target-input="nearest">
+                      <input id="todate" name="todate" type="text" class="form-control datetimepicker-input" data-target="#todate" placeholder="Select To Date" required>
+                      <div class="input-group-append" data-target="#todate" data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                       </div>
                     </div>
                   </div>
                 </div>
                 <div class="card-footer">
-                  <button type="submit" id="reset" name="makeLecPayment" class="btn btn-info">Submit</button>
+                  <button type="submit" name="paymentreport" class="btn btn-info">Submit</button>
                   <button type="reset" class="btn btn-default float-right">Cancel</button>
                 </div>
               </form>
@@ -283,17 +293,23 @@ if(isset($_SESSION['id']))
 <!-- AdminLTE App -->
 <script src="../../../../dist/js/adminlte.min.js"></script>
 <script>
-  $('#date').datetimepicker({
+  $('#frmdate').datetimepicker({
     format: 'Y-MM-DD'
   });
 
-  $(function () {
-    //Initialize Select2 Elements
-    $('.select2').select2()
+  $('#todate').datetimepicker({
+    format: 'Y-MM-DD'
+  });
 
-    $('#clear').click(function(){
-        $('.select2').val('Select one').trigger('change');
-    });
+  $('#monthlypaymentreport').submit(function() {
+      // check validation
+      var startDate = new Date($('#frmdate').val());
+      var endDate = new Date($('#todate').val());
+
+      if (moment(startDate) >= moment(endDate)){
+        alert("Dates are not valid");
+        return false;
+      }
   });
 </script>
 </body>
@@ -302,6 +318,6 @@ if(isset($_SESSION['id']))
 }
 else
 {
-  header('location:./Login.php');
+  header('location:../../Login.php');
 }
 ?>

@@ -13,10 +13,10 @@ if(isset($_SESSION['id']))
     class Lec_Attendance
     {
         // properties
-        protected $lec_att_id;
-        protected $date;
-        protected $intime;
-        protected $outtime;
+        private $lec_att_id;
+        private $date;
+        private $intime;
+        private $outtime;
 
         //methods
         public function setDate($date)

@@ -15,7 +15,7 @@ if(isset($_SESSION['id']))
     class olStudent extends Student
     {
         // properties
-        protected $ttresults;
+        private $ttresults;
 
         // methods
         function setResults($ttresults)
@@ -50,10 +50,10 @@ if(isset($_SESSION['id']))
                 $gcontactno = str_replace(' ','',$gcontactno);
                 $gcontactno = str_replace('-','',$gcontactno);
                 $relationship = $this->relationship;
-                $submissiondate = $this->submissiondate;
+                //$submissiondate = $this->submissiondate;
                 $ttresults = $this->ttresults;
 
-                if($con->query("INSERT INTO student(fname,lname,usrname,passwordhash,dob,school,adrsl1,adrsl2,adrsl3,city,district,zipcode,gfname,glname,gemail,gcontactno,relationship,frt_st_id,submissiondate) VALUES ('".$fname."','".$lname."',NULL,NULL,'".$dob."','".$school."','".$adrsl1."','".$adrsl2."','".$adrsl3."','".$city."','".$district."','".$zipcode."','".$gfname."','".$glname."','".$gemail."','".$gcontactno."','".$relationship."',NULL,'".$submissiondate."')") === true) {
+                if($con->query("INSERT INTO student(fname,lname,usrname,passwordhash,dob,school,adrsl1,adrsl2,adrsl3,city,district,zipcode,gfname,glname,gemail,gcontactno,relationship) VALUES ('".$fname."','".$lname."',NULL,NULL,'".$dob."','".$school."','".$adrsl1."','".$adrsl2."','".$adrsl3."','".$city."','".$district."','".$zipcode."','".$gfname."','".$glname."','".$gemail."','".$gcontactno."','".$relationship."')") === true) {
                     $student_id = $this->getLastId();
                     if($con->query("INSERT INTO ol_student(OLstudent_id,ttresults) VALUES ('".$student_id."','".$ttresults."')") === true) {
                         if($con->query("INSERT INTO student_reg(st_reg_id,st_sub_id,registrationdate,regfee) VALUES ('".$student_id."','".$subject_id."','".$submissiondate."','".$fee."')") === true) {

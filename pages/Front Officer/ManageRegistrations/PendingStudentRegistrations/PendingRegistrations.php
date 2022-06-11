@@ -404,7 +404,6 @@ if(isset($_SESSION['id']))
                   <th>Name</th>
                   <th>Subject</th>
                   <th>Guardian Contact Number</th>
-                  <th>Submission Date</th>
                   <th>Actions</th>
                 </tr>
                 </thead>
@@ -415,7 +414,6 @@ if(isset($_SESSION['id']))
                   <td><?= $item['studentname']?></td>
                   <td><?= $item['subjectname']?></td>
                   <td><?= $item['gcontactno']?></td>
-                  <td><?= $item['submissiondate']?></td>
                   <td>
                     <div class="btn-group btn-group-sm">
                       <a href="#" class="btn btn-success approveClass" data-toggle="modal" data-target="#modal-update"><i class="fas fa-check"></i></a>
@@ -431,7 +429,6 @@ if(isset($_SESSION['id']))
                   <th>Name</th>
                   <th>Subject</th>
                   <th>Guardian Contact Number</th>
-                  <th>Submission Date</th>
                   <th>Actions</th>
                 </tr>
                 </tfoot>
@@ -478,12 +475,6 @@ if(isset($_SESSION['id']))
                         <div class="form-group">
                           <td><label for="gcontactno">Guardian Contact No : </label></td>
                           <td><input name="gcontactno" id="gcontactno"></td>
-                        </div>
-                      </tr>
-                      <tr>
-                        <div class="form-group">
-                            <td><label for="submissiondate">submission Date : </label></td>
-                            <td><input name="submissiondate" id="submissiondate"></td>
                         </div>
                       </tr>
                       <tr>
@@ -568,7 +559,6 @@ if(isset($_SESSION['id']))
     document.getElementById('sname').value = data[1];
     document.getElementById('subjectname').value = data[2];
     document.getElementById('gcontactno').value = data[3];
-    document.getElementById('submissiondate').value = data[4];
   });
 </script>
 </body>

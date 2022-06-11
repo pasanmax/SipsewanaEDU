@@ -404,7 +404,6 @@ if(isset($_SESSION['id']))
                   <th>Name</th>
                   <th>Subject</th>
                   <th>Contact Number</th>
-                  <th>Submission Date</th>
                   <th>Actions</th>
                 </tr>
                 </thead>
@@ -415,7 +414,6 @@ if(isset($_SESSION['id']))
                   <td><?= $item['lecturername']?></td>
                   <td><?= $item['subjectname']?></td>
                   <td><?= $item['contactno']?></td>
-                  <td><?= $item['submissiondate']?></td>
                   <td>
                     <div class="btn-group btn-group-sm">
                       <a href="#" class="btn btn-success approveClass"  data-toggle="modal" data-target="#modal-update"><i class="fas fa-check"></i></a>
@@ -431,7 +429,6 @@ if(isset($_SESSION['id']))
                   <th>Name</th>
                   <th>Subject</th>
                   <th>Contact Number</th>
-                  <th>Submission Date</th>
                   <th>Actions</th>
                 </tr>
                 </tfoot>
@@ -478,12 +475,6 @@ if(isset($_SESSION['id']))
                         <div class="form-group">
                           <td><label for="contactno">Contact No : </label></td>
                           <td><input name="contactno" id="contactno"></td>
-                        </div>
-                      </tr>
-                      <tr>
-                        <div class="form-group">
-                            <td><label for="submissiondate">submission Date : </label></td>
-                            <td><input name="submissiondate" id="submissiondate"></td>
                         </div>
                       </tr>
                       <tr>
@@ -566,7 +557,6 @@ if(isset($_SESSION['id']))
     document.getElementById('lname').value = data[1];
     document.getElementById('subjectname').value = data[2];
     document.getElementById('contactno').value = data[3];
-    document.getElementById('submissiondate').value = data[4];
   });
 
 

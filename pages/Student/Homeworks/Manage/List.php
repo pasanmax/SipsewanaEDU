@@ -180,7 +180,7 @@ if(isset($_SESSION['id']))
           </a>
         </li>
         <!-- Payments -->
-        <li class="nav-item">
+        <!-- <li class="nav-item">
           <a href="#" class="nav-link">
             <i class="nav-icon fas fa-money-check-alt"></i>
             <p>
@@ -202,7 +202,7 @@ if(isset($_SESSION['id']))
               </a>
             </li>
           </ul>
-        </li>
+        </li> -->
       </ul>
     </nav>
     <!-- /.sidebar-menu -->
@@ -248,7 +248,6 @@ if(isset($_SESSION['id']))
               <table id="homeworkList" class="table table-bordered table-striped">
                 <thead>
                 <tr>
-                  <th hidden>HS ID</th>
                   <th hidden>ID</th>
                   <th>Name</th>
                   <th>Subject</th>
@@ -261,7 +260,6 @@ if(isset($_SESSION['id']))
                 <tbody>
                 <?php if($list==null){}else{ foreach($list as $item) {?>
                 <tr>
-                  <td hidden><?= $item['id']?></td>
                   <td hidden><?= $item['hw_id']?></td>
                   <td><?= $item['name']?></td>
                   <td><?= $item['subjectname']?></td>
@@ -288,7 +286,6 @@ if(isset($_SESSION['id']))
                 </tbody>
                 <tfoot>
                 <tr>
-                  <th hidden>HS ID</th>
                   <th hidden>ID</th>
                   <th>Name</th>
                   <th>Subject</th>
@@ -320,11 +317,6 @@ if(isset($_SESSION['id']))
                   <tr>
                     <div class="form-group">
                       <td><input type="text" name="hs_id" value="" id="hs_id" hidden></input></td>
-                    </div>
-                  </tr>
-                  <tr>
-                    <div class="form-group">
-                      <td><input type="text" name="id" value="" id="id" hidden></input></td>
                     </div>
                   </tr>
                   <tr>
@@ -453,11 +445,10 @@ if(isset($_SESSION['id']))
 
     //console.log(data);
     document.getElementById('hs_id').value = data[0];
-    document.getElementById('id').value = data[1];
-    document.getElementById('name').value = data[2];
-    document.getElementById('subject').value = data[3];
-    document.getElementById('createdate').value = data[4];
-    document.getElementById('deadlinedate').value = data[5];
+    document.getElementById('name').value = data[1];
+    document.getElementById('subject').value = data[2];
+    document.getElementById('createdate').value = data[3];
+    document.getElementById('deadlinedate').value = data[4];
     //$('#name').html(data[1]);
     // $('#subject').html(data[2]);
     // $('#createdate').html(data[3]);

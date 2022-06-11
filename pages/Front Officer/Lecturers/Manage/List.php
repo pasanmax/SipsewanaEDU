@@ -557,7 +557,7 @@ if(isset($_SESSION['id']))
                       </tr>
                       <tr>
                         <div class="form-group">
-                          <td><label for="certification">ACertification : </label></td>
+                          <td><label for="certification">Certification : </label></td>
                           <td><input name="certification" id="certification" required></td>
                         </div>
                       </tr>

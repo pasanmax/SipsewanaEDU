@@ -56,27 +56,27 @@ if(isset($_POST['regLecturer']))
 class Lecturer
 {
     // properties
-    protected $lecturer_id;
-    protected $fname;
-    protected $lname;
-    protected $usrname;
-    protected $passwordHash;
-    protected $dob;
-    protected $email;
-    protected $contactno;
-    protected $certification;
-    protected $adrsl1;
-    protected $adrsl2;
-    protected $adrsl3;
-    protected $city;
-    protected $district;
-    protected $zipcode;
-    protected $accountno;
-    protected $bankname;
-    protected $branchcode;
-    protected $branchname;
-    protected $accountname;
-    protected $submissiondate;
+    private $lecturer_id;
+    private $fname;
+    private $lname;
+    private $usrname;
+    private $passwordHash;
+    private $dob;
+    private $email;
+    private $contactno;
+    private $certification;
+    private $adrsl1;
+    private $adrsl2;
+    private $adrsl3;
+    private $city;
+    private $district;
+    private $zipcode;
+    private $accountno;
+    private $bankname;
+    private $branchcode;
+    private $branchname;
+    private $accountname;
+    private $submissiondate;
 
     // methods
     function setLecturer($fname,$lname,$dob,$email,$contactno,$certification,$adrsl1,$adrsl2,$adrsl3,$city,$district,$zipcode,$accountno,$bankname,$branchcode,$branchname,$accountname)
@@ -128,9 +128,9 @@ class Lecturer
             $contactno = str_replace(')','',$contactno);
             $contactno = str_replace(' ','',$contactno);
             $contactno = str_replace('-','',$contactno);
-            $submissiondate = $this->submissiondate;
+            //$submissiondate = $this->submissiondate;
 
-            if($con->query("INSERT INTO lecturer(fname,lname,usrname,passwordhash,dob,email,contactno,certification,adrsl1,adrsl2,adrsl3,city,district,zipcode,accountno,bankname,branchcode,branchname,accountname,frt_lec_id,submissiondate) VALUES ('".$fname."','".$lname."',NULL,NULL,'".$dob."','".$email."','".$contactno."','".$certification."','".$adrsl1."','".$adrsl2."','".$adrsl3."','".$city."','".$district."','".$zipcode."','".$accountno."','".$bankname."','".$branchcode."','".$branchname."','".$accountname."',NULL,'".$submissiondate."')") === true) {
+            if($con->query("INSERT INTO lecturer(fname,lname,usrname,passwordhash,dob,email,contactno,certification,adrsl1,adrsl2,adrsl3,city,district,zipcode,accountno,bankname,branchcode,branchname,accountname) VALUES ('".$fname."','".$lname."',NULL,NULL,'".$dob."','".$email."','".$contactno."','".$certification."','".$adrsl1."','".$adrsl2."','".$adrsl3."','".$city."','".$district."','".$zipcode."','".$accountno."','".$bankname."','".$branchcode."','".$branchname."','".$accountname."')") === true) {
                 $lecturer_id = $this->getLastId();
                 if($con->query("INSERT INTO lecturer_reg(lec_reg_id,lec_sub_id,registrationdate,regfee) VALUES ('".$lecturer_id."','".$subject_id."','".$submissiondate."','".$fee."')") === true) {
                     header('location:../pages/Lecturer/Register.php');
@@ -268,7 +268,7 @@ class Lecturer
         try {
             global $con;
             $data = array();
-            $result = $con->query("SELECT ol.ol_cls_id,s.subjectname,ol.classurl,ol.description,cd.date,c.duration,c.starttime FROM lecturer_reg lr, subject s, class_dates cd, online_class ol, class c WHERE lr.id='".$lecturer_id."' AND lr.lec_sub_id=c.sub_cls_id AND c.sub_cls_id=s.subject_id AND c.class_id=ol.ol_cls_id AND c.class_id=cd.cls_dt_id AND cd.date>=curdate()");// 
+            $result = $con->query("SELECT ol.ol_cls_id,s.subjectname,ol.classurl,ol.description,cd.date,c.duration,c.starttime FROM lecturer_reg lr, subject s, class_dates cd, online_class ol, class c WHERE lr.lec_reg_id='".$lecturer_id."' AND lr.lec_sub_id=c.sub_cls_id AND c.sub_cls_id=s.subject_id AND c.class_id=ol.ol_cls_id AND c.class_id=cd.cls_dt_id AND cd.date>=curdate()");// 
             
             if ($result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
@@ -293,7 +293,7 @@ class Lecturer
         try {
             global $con;
             $data = array();
-            $result = $con->query("SELECT of.of_cls_id,s.subjectname,of.hallno,cd.date,c.duration,c.starttime FROM lecturer_reg lr, subject s, class_dates cd, offline_class of, class c WHERE lr.id='".$lecturer_id."' AND lr.lec_sub_id=c.sub_cls_id AND c.sub_cls_id=s.subject_id AND c.class_id=of.of_cls_id AND c.class_id=cd.cls_dt_id AND cd.date>=curdate()");
+            $result = $con->query("SELECT of.of_cls_id,s.subjectname,of.hallno,cd.date,c.duration,c.starttime FROM lecturer_reg lr, subject s, class_dates cd, offline_class of, class c WHERE lr.lec_reg_id='".$lecturer_id."' AND lr.lec_sub_id=c.sub_cls_id AND c.sub_cls_id=s.subject_id AND c.class_id=of.of_cls_id AND c.class_id=cd.cls_dt_id AND cd.date>=curdate()");
             
             if ($result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
@@ -460,7 +460,7 @@ class Lecturer
         try {
             global $con;
             $data = array();
-            $result = $con->query("SELECT su.student_id,CONCAT(su.fname,' ',su.lname) AS studentname,h.name,s.subjectname,hc.deadlinedate,hs.submitdate,hs.fileName,hs.path FROM homework h, hw_submission hs, hw_creation hc, student su, subject s WHERE h.hw_id=hs.sub_hw_id AND h.hw_sub_id=s.subject_id AND hc.cre_hw_id=h.hw_id AND hs.submitdate IS NOT NULL AND hs.fileName IS NOT NULL AND hs.path IS NOT NULL AND hs.submitdate <= hc.deadlinedate AND hc.cre_lec_id='".$lecturer_id."' AND hc.cre_hw_id='".$homework_id."'");
+            $result = $con->query("SELECT su.student_id,CONCAT(su.fname,' ',su.lname) AS studentname,h.name,s.subjectname,hc.deadlinedate,hs.submitdate,hs.fileName,hs.path FROM homework h, hw_submission hs, hw_creation hc, student su, subject s WHERE h.hw_id=hs.sub_hw_id AND h.hw_sub_id=s.subject_id AND hc.cre_hw_id=h.hw_id AND hs.sub_st_id=su.student_id AND hs.submitdate IS NOT NULL AND hs.fileName IS NOT NULL AND hs.path IS NOT NULL AND hs.submitdate <= hc.deadlinedate AND hc.cre_lec_id='".$lecturer_id."' AND hc.cre_hw_id='".$homework_id."'");
             if ($result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
                     $row = array_map('stripslashes', $row);

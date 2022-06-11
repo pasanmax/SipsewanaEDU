@@ -14,8 +14,8 @@ if(isset($_SESSION['id']))
     class Online_Class extends Class_
     {
         // properties
-        protected $class_url;
-        protected $description;
+        private $class_url;
+        private $description;
 
         //methods
         public function setClassURL($class_url)

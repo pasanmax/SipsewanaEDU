@@ -123,12 +123,12 @@ if(isset($_SESSION['id']))
                 <p>View Student Registration Report</p>
               </a>
             </li>
-            <li class="nav-item">
+            <!-- <li class="nav-item">
                 <a href="../Payment/Report.php" class="nav-link">
                   <i class="nav-icon fas fa-eye"></i>
                   <p>View Student Payment Report</p>
                 </a>
-              </li>
+              </li> -->
           </ul>
         </li>
 
@@ -146,6 +146,30 @@ if(isset($_SESSION['id']))
               <a href="../../Lecturer/Registration/Report.php" class="nav-link">
                 <i class="nav-icon fas fa-eye"></i>
                 <p>View Lecturer Registration Report</p>
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <li class="nav-item">
+          <a href="#" class="nav-link">
+            <i class="nav-icon fas fa-user-tie"></i>
+            <p>
+            Payment
+              <i class="fas fa-angle-left right"></i>
+            </p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="../../Payment/Receipt/Report.php" class="nav-link">
+                <i class="nav-icon fas fa-eye"></i>
+                <p>Payment Receipt</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="../../Payment/Report/Report.php" class="nav-link">
+                <i class="nav-icon fas fa-eye"></i>
+                <p>Payment Report</p>
               </a>
             </li>
           </ul>

@@ -14,7 +14,7 @@ if(isset($_SESSION['id']))
     class Offline_Class extends Class_
     {
         // properties
-        protected $hallno;
+        private $hallno;
 
         //methods
         public function setHallNo($hallNo)

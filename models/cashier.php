@@ -70,20 +70,20 @@ if(isset($_GET['delPay']))
 class Cashier
 {
     // properties
-    protected $cashier_id;
-    protected $fname;
-    protected $lname;
-    protected $usrname;
-    protected $passwordHash;
-    protected $dob;
-    protected $adrsl1;
-    protected $adrsl2;
-    protected $adrsl3;
-    protected $city;
-    protected $district;
-    protected $zipcode;
-    protected $email;
-    protected $contactNo;
+    private $cashier_id;
+    private $fname;
+    private $lname;
+    private $usrname;
+    private $passwordHash;
+    private $dob;
+    private $adrsl1;
+    private $adrsl2;
+    private $adrsl3;
+    private $city;
+    private $district;
+    private $zipcode;
+    private $email;
+    private $contactNo;
 
     // methods
     function setCashier($fname,$lname,$dob,$adrsl1,$adrsl2,$adrsl3,$city,$district,$zipcode,$email,$contactNo)
@@ -235,7 +235,7 @@ class Cashier
         try {
             global $con;
             $data = array();
-            $result = $con->query("SELECT p.pay_id,CONCAT(st.fname, ' ' ,st.lname) AS 'name',s.subjectname,p.type,p.amount,p.date FROM cashier ca, payment p, student st, subject s WHERE p.pay_cas_id=ca.cashier_id AND p.pay_sub_id=s.subject_id AND p.pay_st_id=IF(p.pay_st_id!=NULL,st.student_id,st.student_id) AND p.status='Paid' AND p.pay_cas_id='".$cashier_id."' UNION SELECT p.pay_id,CONCAT(l.fname, ' ' ,l.lname) AS 'name',s.subjectname,p.type,p.amount,p.date FROM cashier ca, payment p, lecturer l, subject s WHERE p.pay_cas_id=ca.cashier_id AND p.pay_sub_id=s.subject_id AND p.pay_lec_id=IF(p.pay_lec_id!=NULL,l.lecturer_id,l.lecturer_id) AND p.status='Paid' AND p.pay_cas_id='".$cashier_id."'");
+            $result = $con->query("SELECT p.pay_id,s.subjectname,p.type,p.amount,p.date FROM cashier ca, payment p, subject s WHERE p.pay_cas_id=ca.cashier_id AND p.pay_sub_id=s.subject_id AND p.status='Paid' AND p.pay_cas_id='".$cashier_id."'");
             if ($result) {
                 if ($result->num_rows > 0) {
                     while ($row = $result->fetch_assoc()) {
@@ -400,11 +400,11 @@ class Cashier
         }
     }
 
-    function getPendingCount($cashier_id)
+    function getPaymentCount($cashier_id)
     {
         try {
             global $con;
-            $result = $con->query("SELECT COUNT(*) AS 'count' FROM cashier ca, payment p, student st, subject s WHERE p.pay_cas_id=ca.cashier_id AND p.pay_sub_id=s.subject_id AND p.pay_st_id=IF(p.pay_st_id!=NULL,st.student_id,st.student_id) AND p.status='Pending' AND p.pay_cas_id='".$cashier_id."'");
+            $result = $con->query("SELECT COUNT(*) AS 'count' FROM cashier ca, payment p WHERE p.pay_cas_id=ca.cashier_id AND p.pay_cas_id='".$cashier_id."'");
             if ($result->num_rows == 1) {
                 while ($row = $result->fetch_assoc()) {
                     $count = $row['count'];

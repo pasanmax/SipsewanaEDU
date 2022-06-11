@@ -13,10 +13,10 @@ if(isset($_SESSION['id']))
     class Stu_Attendance
     {
         // properties
-        protected $st_att_id;
-        protected $date;
-        protected $intime;
-        protected $outtime;
+        private $st_att_id;
+        private $date;
+        private $intime;
+        private $outtime;
 
         //methods
         public function setDate($date)

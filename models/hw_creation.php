@@ -13,9 +13,9 @@ if(isset($_SESSION['id']))
 
     class Hw_creation extends Homework
     {
-        protected $cre_lec_id;
-        protected $createddate;
-        protected $deadlinedate;
+        private $cre_lec_id;
+        private $createddate;
+        private $deadlinedate;
 
         function setLecturerId($lecturer_id)
         {
@@ -285,7 +285,7 @@ if(isset($_SESSION['id']))
 
     if(isset($_POST['addhomework'])) {
 
-        if(empty($_POST['subname']) || empty($_POST['name']) || empty($_POST['type']) || empty($_POST['description']) || empty($_POST['homeworkfile'])
+        if(empty($_POST['subname']) || empty($_POST['name']) || empty($_POST['type']) || empty($_POST['description']) || empty($_FILES['homeworkfile'])
         || empty($_POST['deadlinedate']))
         {
             header('location:../pages/Lecturer/Homeworks/Manage/List.php');

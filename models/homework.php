@@ -12,13 +12,13 @@ if(isset($_SESSION['id']))
 
     class Homework
     {
-        protected $hw_id;
-        protected $name;
-        protected $type;
-        protected $description;
-        protected $fileName;
-        protected $path = '../hw_creations/';
-        protected $hw_sub_id;
+        private $hw_id;
+        private $name;
+        private $type;
+        private $description;
+        private $fileName;
+        private $path = '../hw_creations/';
+        private $hw_sub_id;
 
         function setHomework($name,$type,$description,$fileName,$hw_sub_id)
         {

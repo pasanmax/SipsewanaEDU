@@ -177,7 +177,7 @@ if(isset($_SESSION['id']))
           </a>
         </li>
         <!-- Payments -->
-        <li class="nav-item menu-open">
+        <!-- <li class="nav-item menu-open">
           <a href="#" class="nav-link active">
             <i class="nav-icon fas fa-money-check-alt"></i>
             <p>
@@ -197,7 +197,7 @@ if(isset($_SESSION['id']))
                 <i class="nav-icon far fa-credit-card"></i>
                 <p>Pay Class Fees</p>
               </a>
-            </li>
+            </li> -->
           </ul>
         </li>
       </ul>

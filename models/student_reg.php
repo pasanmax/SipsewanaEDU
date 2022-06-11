@@ -8,8 +8,8 @@ if(isset($_SESSION['id']))
 
     class StudentReg
     {
-        protected $registrationdate;
-        protected $regfee;
+        private $registrationdate;
+        private $regfee;
 
         // function __construct() {
 

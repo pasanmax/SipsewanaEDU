@@ -420,7 +420,6 @@ if(isset($_SESSION['id']))
                 <thead>
                 <tr>
                   <th>Payment ID</th>
-                  <th>Name</th>
                   <th>Subject</th>
                   <th>Type</th>
                   <th>Amount</th>
@@ -431,7 +430,6 @@ if(isset($_SESSION['id']))
                 <?php if($list==null){}else{ foreach($list as $item) {?>
                 <tr>
                   <td><?= $item['pay_id']?></td>
-                  <td><?= $item['name']?></td>
                   <td><?= $item['subjectname']?></td>
                   <td><?= $item['type']?></td>
                   <td>Rs.<?= $item['amount']?></td>
@@ -442,7 +440,6 @@ if(isset($_SESSION['id']))
                 <tfoot>
                 <tr>
                   <th>Payment ID</th>
-                  <th>Name</th>
                   <th>Subject</th>
                   <th>Type</th>
                   <th>Amount</th>

@@ -108,12 +108,6 @@ if(isset($_SESSION['id']))
                 <p>View All Payments</p>
               </a>
             </li>
-            <li class="nav-item">
-              <a href="../PendingPayments/List.php" class="nav-link">
-                <i class="nav-icon fas fa-edit"></i>
-                <p>Manage Pending Payments</p>
-              </a>
-            </li>
           </ul>
         </li>
         <li class="nav-item">
@@ -128,13 +122,7 @@ if(isset($_SESSION['id']))
             <li class="nav-item">
               <a href="../../MakePayments/ClassPayments/Make.php" class="nav-link">
                 <i class="nav-icon fas fa-user"></i>
-                <p>Make Class Payment</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="../../MakePayments/LecturerPayments/Make.php" class="nav-link">
-                <i class="nav-icon fas fa-user-tie"></i>
-                <p>Make Lecturer Payment</p>
+                <p>Make Payment</p>
               </a>
             </li>
           </ul>
@@ -187,7 +175,6 @@ if(isset($_SESSION['id']))
                 <thead>
                 <tr>
                   <th>Payment ID</th>
-                  <th>Name</th>
                   <th>Subject</th>
                   <th>Type</th>
                   <th>Amount</th>
@@ -199,7 +186,6 @@ if(isset($_SESSION['id']))
                 <?php if($list==null){}else{ foreach($list as $item) {?>
                 <tr>
                   <td><?= $item['pay_id']?></td>
-                  <td><?= $item['name']?></td>
                   <td><?= $item['subjectname']?></td>
                   <td><?= $item['type']?></td>
                   <td>Rs.<?= $item['amount']?></td>
@@ -215,7 +201,6 @@ if(isset($_SESSION['id']))
                 <tfoot>
                 <tr>
                   <th>Payment ID</th>
-                  <th>Name</th>
                   <th>Subject</th>
                   <th>Type</th>
                   <th>Amount</th>
