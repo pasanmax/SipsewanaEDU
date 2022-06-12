@@ -372,6 +372,7 @@ class Director
 
     function generateStRegReport($list,$fromDate,$toDate)
     {
+        $director_name = $this->getName($_SESSION['id']);
         require('../plugins/fpdf17/fpdf.php');
         //A4 width : 219mm
         //default margin : 10mm each side
@@ -406,8 +407,8 @@ class Director
 
         $pdf->Cell(130	,5,'Phone +94 0112 456 355',0,0);
 
-        $pdf->Cell(22	,5,'Director ID',0,0,'R');
-        $pdf->Cell(27	,5,$_SESSION['id'],0,1,'R');//end of line
+        $pdf->Cell(18	,5,'Director ',0,0,'R');
+        $pdf->Cell(30	,5,$director_name,0,1,'R');//end of line
 
         //make a dummy empty cell as a vertical spacer
         $pdf->Cell(189	,10,'',0,1);//end of line
@@ -522,6 +523,7 @@ class Director
 
     function generateLecRegReport($list,$fromDate,$toDate)
     {
+        $director_name = $this->getName($_SESSION['id']);
         require('../plugins/fpdf17/fpdf.php');
         //A4 width : 219mm
         //default margin : 10mm each side
@@ -556,8 +558,8 @@ class Director
 
         $pdf->Cell(130	,5,'Phone +94 0112 456 355',0,0);
 
-        $pdf->Cell(22	,5,'Director ID',0,0,'R');
-        $pdf->Cell(27	,5,$_SESSION['id'],0,1,'R');//end of line
+        $pdf->Cell(18	,5,'Director ',0,0,'R');
+        $pdf->Cell(30	,5,$director_name,0,1,'R');//end of line
 
         //make a dummy empty cell as a vertical spacer
         $pdf->Cell(189	,10,'',0,1);//end of line

@@ -257,7 +257,7 @@ class Cashier
         try {
             global $con;
             $data = array();
-            $result = $con->query("SELECT p.pay_id,CONCAT(st.fname, ' ' ,st.lname) AS 'name',s.subjectname,p.type,p.amount,p.date FROM cashier ca, payment p, student st, subject s WHERE p.pay_cas_id=ca.cashier_id AND p.pay_sub_id=s.subject_id AND p.pay_st_id=IF(p.pay_st_id!=NULL,st.student_id,st.student_id) AND p.status='Paid' AND p.pay_id='".$payment_id."' UNION SELECT p.pay_id,CONCAT(l.fname, ' ' ,l.lname) AS 'name',s.subjectname,p.type,p.amount,p.date FROM cashier ca, payment p, lecturer l, subject s WHERE p.pay_cas_id=ca.cashier_id AND p.pay_sub_id=s.subject_id AND p.pay_lec_id=IF(p.pay_lec_id!=NULL,l.lecturer_id,l.lecturer_id) AND p.status='Paid' AND p.pay_id='".$payment_id."'");
+            $result = $con->query("SELECT p.pay_id,s.subjectname,p.type,p.date,p.amount FROM payment p, subject s WHERE p.pay_sub_id=s.subject_id AND p.pay_id='".$payment_id."'");
             if ($result) {
                 if ($result->num_rows > 0) {
                     while ($row = $result->fetch_assoc()) {
@@ -299,6 +299,7 @@ class Cashier
     function generateReceipt($list)
     {
         require('../plugins/fpdf17/fpdf.php');
+        $cashierName = $this->getName($_SESSION['id']);
         foreach($list as $item) {
             //A4 width : 219mm
 			//default margin : 10mm each side
@@ -307,6 +308,11 @@ class Cashier
 			$pdf = new FPDF('P','mm','A4');
 
 			$pdf->AddPage();
+
+            $pdf->Image('../dist/img/dashboardImages/sipsewanaLogo.jpg',10,10,-300);
+            $pdf->Cell(189	,10,'',0,1);
+            $pdf->Cell(189	,10,'',0,1);
+            $pdf->Cell(189	,10,'',0,1);
 
 			//set font to arial, bold, 14pt
 			$pdf->SetFont('Arial','B',14);
@@ -333,13 +339,16 @@ class Cashier
 			$pdf->Cell(152	,5,'Cashier ID',0,0,'R');
 			$pdf->Cell(27	,5,$_SESSION['id'],0,1,'R');//end of line
 
+            $pdf->Cell(147	,5,'Cashier',0,0,'R');
+			$pdf->Cell(32	,5,$cashierName,0,1,'R');//end of line
+
 			//make a dummy empty cell as a vertical spacer
 			$pdf->Cell(189	,10,'',0,1);//end of line
 
 			//add dummy cell at beginning of each line for indentation
             $pdf->SetFont('Arial','B',12);
-			//$pdf->Cell(10	,5,'',0,0);
-			$pdf->Cell(130	,5,'Name: '.$item['name'],0,1);
+			// //$pdf->Cell(10	,5,'',0,0);
+			// $pdf->Cell(130	,5,'Payment ID: '.$item['pay_id'],0,1);
 
 			//$pdf->Cell(10	,5,'',0,0);
 			$pdf->Cell(130	,5,'Type: '.$item['type'],0,1);

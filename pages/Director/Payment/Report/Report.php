@@ -147,7 +147,7 @@ if(isset($_SESSION['id']))
 
         <li class="nav-item menu-open">
           <a href="#" class="nav-link active">
-            <i class="nav-icon fas fa-user-tie"></i>
+            <i class="nav-icon fas fa-money-check-alt"></i>
             <p>
             Payment
               <i class="fas fa-angle-left right"></i>
