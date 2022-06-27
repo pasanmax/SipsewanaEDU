@@ -48,11 +48,10 @@ if(isset($_SESSION['id']))
             // echo date('Y-m-d', strtotime($date));
             try {
                 global $con;
-                if($con->query("INSERT INTO class (duration,starttime,endtime,lec_cls_id,sub_cls_id) VALUES ($duration,'".$starttime."','".$endtime."',$lecturer_id,$subject_id)") === TRUE) {
+                if($con->query("INSERT INTO class (duration,starttime,endtime,date,lec_cls_id,sub_cls_id) VALUES ($duration,'".$starttime."','".$endtime."','".date("Y-m-d", strtotime($date))."',$lecturer_id,$subject_id)") === TRUE) {
                     if(parent::getLastID() !== null) {
                         $class_id = parent::getLastID();
-                        if($con->query("INSERT INTO class_dates (cls_dt_id,date) VALUES ('$class_id','".date("Y-m-d", strtotime($date))."')") === TRUE
-                        && $con->query("INSERT INTO offline_class (of_cls_id,hallno) VALUES ('$class_id','$hallNo')") === TRUE) {
+                        if($con->query("INSERT INTO offline_class (of_cls_id,hallno) VALUES ('$class_id','$hallNo')") === TRUE) {
                             header('location:../pages/Lecturer/Classes/ManageOffline/List.php');
                             $_SESSION['response']="success";
                             $_SESSION['message']="Created Successfully!";
@@ -108,9 +107,8 @@ if(isset($_SESSION['id']))
             // echo date('Y-m-d', strtotime($date));
             try {
                 global $con;
-                if($con->query("UPDATE class SET duration='".$duration."',starttime='".$starttime."',endtime='".$endtime."',lec_cls_id='".$lecturer_id."',sub_cls_id='".$subject_id."' WHERE class_id='".$class_id."'") === TRUE) {
-                    if($con->query("UPDATE class_dates SET date='".date("Y-m-d", strtotime($date))."' WHERE cls_dt_id='".$class_id."'") === TRUE
-                    && $con->query("UPDATE offline_class SET hallno='".$hallNo."' WHERE of_cls_id='".$class_id."'") === TRUE) {
+                if($con->query("UPDATE class SET duration='".$duration."',starttime='".$starttime."',endtime='".$endtime."',date='".date("Y-m-d", strtotime($date))."',lec_cls_id='".$lecturer_id."',sub_cls_id='".$subject_id."' WHERE class_id='".$class_id."'") === TRUE) {
+                    if($con->query("UPDATE offline_class SET hallno='".$hallNo."' WHERE of_cls_id='".$class_id."'") === TRUE) {
                         header('location:../pages/Lecturer/Classes/ManageOffline/List.php');
                         $_SESSION['response']="success";
                         $_SESSION['message']="Updated Successfully!";

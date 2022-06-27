@@ -1549,7 +1549,7 @@ class FrontOfficer
         try {
             global $con;
             $data = array();
-            $result = $con->query("SELECT c.class_id,s.subjectname,oc.classurl,oc.description,cd.date,c.duration,c.starttime FROM class c, online_class oc, class_dates cd, subject s WHERE c.class_id=oc.ol_cls_id AND oc.ol_cls_id=cd.cls_dt_id AND c.class_id=cd.cls_dt_id AND c.sub_cls_id=s.subject_id");
+            $result = $con->query("SELECT c.class_id,s.subjectname,oc.classurl,oc.description,c.date,c.duration,c.starttime FROM class c, online_class oc, subject s WHERE c.class_id=oc.ol_cls_id AND oc.ol_cls_id=cd.cls_dt_id AND c.sub_cls_id=s.subject_id");
             if ($result) {
                 if ($result->num_rows > 0) {
                     while ($row = $result->fetch_assoc()) {
@@ -1571,7 +1571,7 @@ class FrontOfficer
         try {
             global $con;
             $data = array();
-            $result = $con->query("SELECT c.class_id,s.subjectname,of.hallno,cd.date,c.duration,c.starttime FROM class c, offline_class of, class_dates cd, subject s WHERE c.class_id=of.of_cls_id AND of.of_cls_id=cd.cls_dt_id AND c.class_id=cd.cls_dt_id AND c.sub_cls_id=s.subject_id");
+            $result = $con->query("SELECT c.class_id,s.subjectname,of.hallno,c.date,c.duration,c.starttime FROM class c, offline_class of, subject s WHERE c.class_id=of.of_cls_id AND of.of_cls_id=cd.cls_dt_id AND c.sub_cls_id=s.subject_id");
             if ($result) {
                 if ($result->num_rows > 0) {
                     while ($row = $result->fetch_assoc()) {

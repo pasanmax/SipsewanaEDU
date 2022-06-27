@@ -268,7 +268,7 @@ class Lecturer
         try {
             global $con;
             $data = array();
-            $result = $con->query("SELECT ol.ol_cls_id,s.subjectname,ol.classurl,ol.description,cd.date,c.duration,c.starttime FROM lecturer_reg lr, subject s, class_dates cd, online_class ol, class c WHERE lr.lec_reg_id='".$lecturer_id."' AND lr.lec_sub_id=c.sub_cls_id AND c.sub_cls_id=s.subject_id AND c.class_id=ol.ol_cls_id AND c.class_id=cd.cls_dt_id AND cd.date>=curdate()");// 
+            $result = $con->query("SELECT ol.ol_cls_id,s.subjectname,ol.classurl,ol.description,c.date,c.duration,c.starttime FROM lecturer_reg lr, subject s, online_class ol, class c WHERE lr.lec_reg_id='".$lecturer_id."' AND lr.lec_sub_id=c.sub_cls_id AND c.sub_cls_id=s.subject_id AND c.class_id=ol.ol_cls_id AND c.date>=curdate()");// 
             
             if ($result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
@@ -293,7 +293,7 @@ class Lecturer
         try {
             global $con;
             $data = array();
-            $result = $con->query("SELECT of.of_cls_id,s.subjectname,of.hallno,cd.date,c.duration,c.starttime FROM lecturer_reg lr, subject s, class_dates cd, offline_class of, class c WHERE lr.lec_reg_id='".$lecturer_id."' AND lr.lec_sub_id=c.sub_cls_id AND c.sub_cls_id=s.subject_id AND c.class_id=of.of_cls_id AND c.class_id=cd.cls_dt_id AND cd.date>=curdate()");
+            $result = $con->query("SELECT of.of_cls_id,s.subjectname,of.hallno,c.date,c.duration,c.starttime FROM lecturer_reg lr, subject s, offline_class of, class c WHERE lr.lec_reg_id='".$lecturer_id."' AND lr.lec_sub_id=c.sub_cls_id AND c.sub_cls_id=s.subject_id AND c.class_id=of.of_cls_id AND c.date>=curdate()");
             
             if ($result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
@@ -337,7 +337,7 @@ class Lecturer
     {
         try {
             global $con;
-            $result = $con->query("SELECT ROUND(COUNT(*)/4*100,0) as 'count' FROM lec_attendance la, class c, offline_class oc WHERE (date BETWEEN DATE_FORMAT(NOW() ,'%Y-%m-01') AND LAST_DAY(NOW())) AND la.cls_attlec_id = c.class_id AND c.class_id = oc.of_cls_id AND c.sub_cls_id IN (SELECT lr.lec_sub_id FROM lecturer_reg lr WHERE lr.lec_reg_id = '".$lecturer_id."')");
+            $result = $con->query("SELECT ROUND(COUNT(*)/4*100,0) as 'count' FROM lec_attendance la, class c, offline_class oc WHERE (c.date BETWEEN DATE_FORMAT(NOW() ,'%Y-%m-01') AND LAST_DAY(NOW())) AND la.cls_attlec_id = c.class_id AND c.class_id = oc.of_cls_id AND c.sub_cls_id IN (SELECT lr.lec_sub_id FROM lecturer_reg lr WHERE lr.lec_reg_id = '".$lecturer_id."')");
             if ($result->num_rows == 1) {
                 while ($row = $result->fetch_assoc()) {
                     $count = $row['count'];
@@ -383,7 +383,7 @@ class Lecturer
     {
         try {
             global $con;
-            $result = $con->query("SELECT ROUND(COUNT(*)/4*100,0) as 'count' FROM lec_attendance la, class c, online_class oc WHERE (date BETWEEN DATE_FORMAT(NOW() ,'%Y-%m-01') AND LAST_DAY(NOW())) AND la.cls_attlec_id = c.class_id AND c.class_id = oc.ol_cls_id AND c.sub_cls_id IN (SELECT lr.lec_sub_id FROM lecturer_reg lr WHERE lr.lec_reg_id = '".$lecturer_id."')");
+            $result = $con->query("SELECT ROUND(COUNT(*)/4*100,0) as 'count' FROM lec_attendance la, class c, online_class oc WHERE (c.date BETWEEN DATE_FORMAT(NOW() ,'%Y-%m-01') AND LAST_DAY(NOW())) AND la.cls_attlec_id = c.class_id AND c.class_id = oc.ol_cls_id AND c.sub_cls_id IN (SELECT lr.lec_sub_id FROM lecturer_reg lr WHERE lr.lec_reg_id = '".$lecturer_id."')");
             if ($result->num_rows == 1) {
                 while ($row = $result->fetch_assoc()) {
                     $count = $row['count'];

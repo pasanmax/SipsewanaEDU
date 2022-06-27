@@ -186,7 +186,7 @@ class Student
         try {
             global $con;
             $data = array();
-            $result = $con->query("SELECT online_class.ol_cls_id,subject.subjectname,online_class.classurl,online_class.description,class_dates.date,class.duration,class.starttime FROM student_reg,subject,class_dates,online_class,class WHERE student_reg.st_reg_id='".$student_id."' AND student_reg.st_sub_id=class.sub_cls_id AND class.sub_cls_id=subject.subject_id AND class.class_id=online_class.ol_cls_id AND class.class_id=class_dates.cls_dt_id AND class_dates.date>=curdate()");
+            $result = $con->query("SELECT online_class.ol_cls_id,subject.subjectname,online_class.classurl,online_class.description,class.date,class.duration,class.starttime FROM student_reg,subject,online_class,class WHERE student_reg.st_reg_id='".$student_id."' AND student_reg.st_sub_id=class.sub_cls_id AND class.sub_cls_id=subject.subject_id AND class.class_id=online_class.ol_cls_id AND class.date>=curdate()");
             
             if ($result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
@@ -224,7 +224,7 @@ class Student
         try {
             global $con;
             $data = array();
-            $result = $con->query("SELECT offline_class.of_cls_id,subject.subjectname,offline_class.hallno,class_dates.date,class.duration,class.starttime FROM student_reg,subject,class_dates,offline_class,class WHERE student_reg.st_reg_id='".$student_id."' AND student_reg.st_sub_id=class.sub_cls_id AND class.sub_cls_id=subject.subject_id AND class.class_id=offline_class.of_cls_id AND class.class_id=class_dates.cls_dt_id AND class_dates.date>=curdate()");
+            $result = $con->query("SELECT offline_class.of_cls_id,subject.subjectname,offline_class.hallno,class.date,class.duration,class.starttime FROM student_reg,subject,offline_class,class WHERE student_reg.st_reg_id='".$student_id."' AND student_reg.st_sub_id=class.sub_cls_id AND class.sub_cls_id=subject.subject_id AND class.class_id=offline_class.of_cls_id AND class.date>=curdate()");
             if ($result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
                     $row = array_map('stripslashes', $row);
@@ -322,7 +322,7 @@ class Student
     {
         try {
             global $con;
-            $result = $con->query("SELECT ROUND(COUNT(*)/4*100,0) as 'count' FROM stu_attendance sa, class c, online_class oc WHERE (date BETWEEN DATE_FORMAT(NOW() ,'%Y-%m-01') AND LAST_DAY(NOW())) AND sa.cls_attst_id = c.class_id AND c.class_id = oc.ol_cls_id AND c.sub_cls_id IN (SELECT sr.st_sub_id FROM student_reg sr WHERE sr.st_reg_id = '".$student_id."') AND sa.st_att_id='".$student_id."'");
+            $result = $con->query("SELECT ROUND(COUNT(*)/4*100,0) as 'count' FROM stu_attendance sa, class c, online_class oc WHERE (c.date BETWEEN DATE_FORMAT(NOW() ,'%Y-%m-01') AND LAST_DAY(NOW())) AND sa.cls_attst_id = c.class_id AND c.class_id = oc.ol_cls_id AND c.sub_cls_id IN (SELECT sr.st_sub_id FROM student_reg sr WHERE sr.st_reg_id = '".$student_id."') AND sa.st_att_id='".$student_id."'");
             if ($result->num_rows == 1) {
                 while ($row = $result->fetch_assoc()) {
                     $count = $row['count'];
@@ -365,7 +365,7 @@ class Student
     {
         try {
             global $con;
-            $result = $con->query("SELECT ROUND(COUNT(*)/4*100,0) as 'count' FROM stu_attendance sa, class c, offline_class oc WHERE (date BETWEEN DATE_FORMAT(NOW() ,'%Y-%m-01') AND LAST_DAY(NOW())) AND sa.cls_attst_id = c.class_id AND c.class_id = oc.of_cls_id AND c.sub_cls_id IN (SELECT sr.st_sub_id FROM student_reg sr WHERE sr.st_reg_id = '".$student_id."') AND sa.st_att_id = '".$student_id."'");
+            $result = $con->query("SELECT ROUND(COUNT(*)/4*100,0) as 'count' FROM stu_attendance sa, class c, offline_class oc WHERE (c.date BETWEEN DATE_FORMAT(NOW() ,'%Y-%m-01') AND LAST_DAY(NOW())) AND sa.cls_attst_id = c.class_id AND c.class_id = oc.of_cls_id AND c.sub_cls_id IN (SELECT sr.st_sub_id FROM student_reg sr WHERE sr.st_reg_id = '".$student_id."') AND sa.st_att_id = '".$student_id."'");
             if ($result->num_rows == 1) {
                 while ($row = $result->fetch_assoc()) {
                     $count = $row['count'];
